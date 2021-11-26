@@ -1,0 +1,73 @@
+<template>
+  <div v-cloak>
+    <q-list bordered separator v-if="getSuggestedEvents.length">
+
+      <q-item clickable v-ripple
+              :id="event.id"
+              v-for="event in getSuggestedEvents" :key="event.id">
+        <q-item-section >
+          <q-item-label>{{ event.name }}</q-item-label>
+          <q-item-label caption>{{ event.city }}</q-item-label>
+        </q-item-section>
+        <q-item-section @click.stop="this.removeEvent(event.id)"
+                        style="flex: 10%; padding-right: 16px;">
+          <q-icon name="clear" size="lg" color="red"></q-icon>
+        </q-item-section>
+      </q-item>
+
+    </q-list>
+    <Nothing-message v-else></Nothing-message>
+    <Confirm-dialog ref="confirmDialog"></Confirm-dialog>
+  </div>
+</template>
+
+<script>
+
+import { mapActions, mapGetters } from 'vuex';
+import { gsap } from 'gsap';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import NothingMessage from '@/components/NothingMessage.vue';
+
+export default {
+  name: 'SuggestedList',
+  components: {
+    ConfirmDialog, NothingMessage,
+  },
+  computed: {
+    ...mapGetters(['getSuggestedEvents']),
+  },
+  methods: {
+    ...mapActions(['revokeEvent']),
+    async removeEvent(id) {
+      const ok = await this.$refs.confirmDialog.show({
+        message: 'Вы действительно хотите отозвать мероприятие?',
+        okButton: 'Да',
+        okColor: 'red',
+        noButton: 'Отмена',
+        iconColor: 'red',
+      });
+
+      if (ok) {
+        const el = document.getElementById(id);
+        gsap.to(el, {
+          opacity: 0,
+          height: 0,
+          duration: 1,
+          onComplete: () => {
+            this.revokeEvent(id);
+            gsap.to(el, {
+              opacity: 1,
+              height: 'auto',
+            });
+          },
+        });
+      }
+    },
+
+  },
+};
+</script>
+
+<style scoped>
+
+</style>

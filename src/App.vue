@@ -1,0 +1,68 @@
+<template>
+  <div>
+    <component :is="layout2">
+      <router-view/>
+    </component>
+  </div>
+</template>
+
+<script>
+import LayoutAuth from '@/layouts/LayoutAuth.vue';
+import LayoutDefault from '@/layouts/LayoutDefault.vue';
+
+export default {
+  name: 'app',
+  components: { LayoutAuth, LayoutDefault },
+  computed: {
+    layout2() {
+      if (this.$route.meta.layout === 'LayoutAuth') {
+        return 'LayoutAuth';
+      }
+      return 'LayoutDefault';
+    },
+
+  },
+
+};
+</script>
+
+<style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+#app {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 16px;
+  color: $label-color;
+}
+
+.btn {
+  width: 300px;
+  white-space: nowrap;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mb-1 {
+  margin-bottom: 6px;
+}
+
+h2 {
+  line-height: 1rem;
+}
+
+// QUASAR ==========================
+.q-field--outlined .q-field__control:before {
+  border: 1px solid $input-border-color;
+}
+</style>
