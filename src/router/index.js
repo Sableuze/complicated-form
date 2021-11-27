@@ -71,7 +71,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   gsap.fromTo('body', { opacity: 0 }, { opacity: 1, duration: 1 });
   store.dispatch('changeSuccessStatus', null);
-  debugger;
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (!store.getters.isLoggedIn) {
       next({ name: 'Auth' });

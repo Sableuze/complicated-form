@@ -1,0 +1,6 @@
+{
+  "domain": "sableuze.us.auth0.com",
+  "client_id": "OV2hrwL4yVY5cjJPIO1q2GobeDdF81es",
+  "redirect_url": "http://localhost:8080/login",
+  "audience": "https://sableuze.us.auth0.com/api/v2/"
+}

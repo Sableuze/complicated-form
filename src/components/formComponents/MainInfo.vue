@@ -33,16 +33,9 @@
     </div>
     <div class="flex column col-grow">
       <p class="label mb-1">E-mail</p>
-      <q-input
-        outlined
-        no-error-icon
-        type="email"
-        v-model="emailD"
-        @update:model-value="$emit('update:email', emailD)"
-        placeholder="ivanov@mail.ru"
-        :rules="[val => val.length > 0 || errorTypes.noEmail
-         ,val => checkEmail(val) || errorTypes.wrongEmail]"
-      ></q-input>
+      <Email v-model="emailD"
+             @update:model-value="$emit('update:email', emailD)"
+      ></Email>
     </div>
     <div class="flex column col-grow">
       <p class="label mb-1">Город организатора</p>
@@ -73,8 +66,8 @@
 </template>
 <script>
 import address from '@/api/address';
-import { emailPattern } from '@/helpers/validatorPatterns';
 import { errorTypesMain } from '@/helpers/errorTypes';
+import Email from '@/components/formComponents/Email.vue';
 
 export default {
   name: 'MainInfo',
@@ -95,6 +88,9 @@ export default {
       type: String,
       default: '',
     },
+  },
+  components: {
+    Email,
   },
   mounted() {
     this.errorTypes = errorTypesMain;
@@ -122,16 +118,13 @@ export default {
       });
     },
 
-    checkEmail(val) {
-      return emailPattern.test(val);
-    },
   },
 
 };
 </script>
 
 <style scoped lang="scss">
-.main-fields{
+.main-fields {
   gap: 20px;
 }
 </style>

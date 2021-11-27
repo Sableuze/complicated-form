@@ -1,4 +1,5 @@
 import { getItem, setItem } from '@/helpers/localStorageHelper';
+import Auth from '@/api/authApi';
 
 const state = {
   user: getItem('user') || {
@@ -17,20 +18,19 @@ const getters = {
 };
 
 const mutations = {
-  changeUser(state, userData) {
-    state.user = userData;
+  changeUser(state, user) {
+    state.user = user;
     setItem('user', state.user);
   },
 };
 
 const actions = {
-  // login api({ commit }, { login, password }) {
-  //
-  // },
-  login({ commit, state }, role) {
-    const newData = { ...state.user };
-    newData.role = role;
-    commit('changeUser', newData);
+  async login({ commit }, { login, password }) {
+    const user = await Auth.login(login, password);
+    debugger;
+    if (user) {
+      commit('changeUser', user);
+    }
   },
 
   logout({ commit }) {

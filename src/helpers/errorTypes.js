@@ -1,3 +1,9 @@
+export const errorTypesAuth = {
+  noPassword: 'Введите пароль',
+  shortPassword: 'Пароль должен содержать не менее 8 символов',
+  wrongPassword: 'Пароль должен содержать как минимум одну цифру и спецсимвол',
+};
+
 export const errorTypesMain = {
   noHolder: 'Укажите организатора',
   short: 'Введите не менее трех символов',

@@ -6,5 +6,6 @@ import App from './App.vue';
 import store from './store';
 import router from './router';
 
-createApp(App).use(Quasar, quasarUserOptions).use(router).use(store)
+createApp(App).use(store).use(router)
+  .use(Quasar, quasarUserOptions)
   .mount('#app');

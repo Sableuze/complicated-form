@@ -19,8 +19,11 @@
 </template>
 
 <script>
+
 export default {
   name: 'Auth',
+  methods: {
+  },
 };
 </script>
 
