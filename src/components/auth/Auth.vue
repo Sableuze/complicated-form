@@ -1,6 +1,7 @@
 <template>
   <div class="login-choice beta">
     <q-btn
+      outline
       size="lg"
       padding="md"
       class="label self-center"
@@ -28,5 +29,12 @@ export default {
 </script>
 
 <style scoped>
+.login-choice{
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+}
 
 </style>

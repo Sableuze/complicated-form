@@ -14,6 +14,7 @@ export default createStore({
     isSuccess: null,
     isLoading: false,
     layout: 'layout-default',
+
   },
 
   getters: {

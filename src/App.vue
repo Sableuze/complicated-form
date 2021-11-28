@@ -32,7 +32,11 @@ export default {
 #app {
   font-family: 'Montserrat', sans-serif;
 }
-
+.form-auth{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 .title {
   font-weight: 600;
   font-size: 18px;

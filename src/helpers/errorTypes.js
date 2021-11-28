@@ -3,6 +3,13 @@ export const errorTypesAuth = {
   shortPassword: 'Пароль должен содержать не менее 8 символов',
   wrongPassword: 'Пароль должен содержать как минимум одну цифру и спецсимвол',
 };
+export const errorTypesLogin = {
+  500: 'Неправильный логин или пароль',
+};
+export const errorTypesRegister = {
+  401: 'Данное имя пользователя уже занято',
+
+};
 
 export const errorTypesMain = {
   noHolder: 'Укажите организатора',

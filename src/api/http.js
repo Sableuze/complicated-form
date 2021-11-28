@@ -17,8 +17,8 @@ export const dadata = axios.create({
 });
 
 export const authentication = axios.create({
-  baseURL: 'https://api.m3o.com/v1/',
-
+  baseURL: 'https://api.m3o.com/v1/user',
+  withCredentials: true,
 });
 
 authentication.defaults.headers.common['Content-Type'] = 'application/json';

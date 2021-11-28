@@ -1,27 +1,30 @@
 <template>
   <div class="container">
-    <h2 class="login-title">Зайти как :</h2>
-    <div class="login-choice">
-      <q-btn
-        size="lg"
-        padding="md"
-        class="label self-center"
-        color="accent"
-        @click="onLogin('moder')"
-        >Модератор
-      </q-btn>
-      <q-btn
-        size="lg"
-        padding="md"
-        class="label self-center"
-        color="accent"
-        @click="onLogin('user')"
-        >Обычный пользователь
-      </q-btn>
-    </div>
-  </div>
-  <div>
+
+  <!--  <div class="container">-->
+<!--    <h2 class="login-title">Зайти как :</h2>-->
+<!--    <div class="login-choice">-->
+<!--      <q-btn-->
+<!--        size="lg"-->
+<!--        padding="md"-->
+<!--        class="label self-center"-->
+<!--        color="accent"-->
+<!--        @click="onLogin('moder')"-->
+<!--        >Модератор-->
+<!--      </q-btn>-->
+<!--      <q-btn-->
+<!--        size="lg"-->
+<!--        padding="md"-->
+<!--        class="label self-center"-->
+<!--        color="accent"-->
+<!--        @click="onLogin('user')"-->
+<!--        >Обычный пользователь-->
+<!--      </q-btn>-->
+<!--    </div>-->
+<!--  </div>-->
+  <div class="q-ma-lg auth-cnt">
     <router-view></router-view>
+  </div>
   </div>
 </template>
 
@@ -75,5 +78,6 @@ export default {
     font-size: 16px;
   }
 }
-
+.auth-cnt{
+}
 </style>
