@@ -1,55 +1,32 @@
 <template>
   <apiErrors :errorCodes="errors" :source="errorTypes"></apiErrors>
   <q-form @submit="onSubmit" class="form-auth">
-    <Email v-model="email"></Email>
-    <Password v-model="password"></Password>
-    <q-input
-      outlined
-      no-error-icon
-      placeholder="Ваня..."
-      v-model="username"
-    >
-
-    </q-input>
-    <div class="buttons">
-      <q-btn
-        :disable="getLoadingStatus"
-        outline
-        padding="sm"
-        size="lg"
-        @click="$router.push({name: 'Auth'})"
-      >Назад
-      </q-btn>
-      <q-btn
-        :disable="getLoadingStatus"
-        padding="sm"
-        size="lg"
-        type="submit"
-        color="accent"
-      >Продолжить
-      </q-btn>
-    </div>
+    <Email v-model="email" :register="true"></Email>
+    <Password v-model="password" :register="true"></Password>
+    <Username v-model="username" :register="true"></Username>
+    <AuthButtons></AuthButtons>
   </q-form>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import Email from '@/components/formComponents/Email.vue';
 import Password from '@/components/formComponents/Password.vue';
+import Username from '@/components/formComponents/Username.vue';
 import apiErrors from '@/components/apiErrors.vue';
+import AuthButtons from '@/components/auth/AuthButtons.vue';
+
 import { errorTypesRegister } from '@/helpers/errorTypes';
 
 export default {
   name: 'Register',
   components: {
-    Email, Password, apiErrors,
+    Email, Password, Username, AuthButtons, apiErrors,
   },
   mounted() {
     this.errorTypes = errorTypesRegister;
   },
-  computed: {
-    ...mapGetters(['getLoadingStatus']),
-  },
+
   data() {
     return {
       email: '',
@@ -62,9 +39,9 @@ export default {
   methods: {
     ...mapActions(['register']),
     async onSubmit() {
-      const status = await this.register({ login: this.email,
-        username: this.username,
-        password: this.password });
+      const status = await this.register({ email: this.email.trim(),
+        username: this.username.trim(),
+        password: this.password.trim() });
       if (status) {
         if (status && this.errors.indexOf(status)) this.errors.push(status);
       }

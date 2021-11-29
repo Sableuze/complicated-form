@@ -4,20 +4,31 @@
     no-error-icon
     type="email"
     placeholder="ivanov@mail.ru"
-    :rules="[val => val.length > 0 || errorTypes.noEmail
-         ,val => checkEmail(val) || errorTypes.wrongEmail]"
-  ></q-input>
+    debounce="300"
+    :rules="[val => val.length > 0 || errorTypes.noEmail,
+    val => checkEmail(val) || errorTypes.wrongEmail,
+    val => readEmail(val)]"
+  >
+
+  </q-input>
 
 </template>
 
 <script>
-import { errorTypesMain } from '@/helpers/errorTypes';
+import { errorTypesMain, errorTypesRegister } from '@/helpers/errorTypes';
 import { emailPattern } from '@/helpers/validatorPatterns';
+import Auth from '@/api/authApi';
 
 export default {
   name: 'Email',
+  props: {
+    register: {
+      type: Boolean,
+      default: false,
+    },
+  },
   mounted() {
-    this.errorTypes = errorTypesMain;
+    this.errorTypes = { ...errorTypesMain, ...errorTypesRegister };
   },
   data() {
     return {
@@ -27,6 +38,12 @@ export default {
   methods: {
     checkEmail(val) {
       return emailPattern.test(val);
+    },
+    async readEmail(val) {
+      if (!this.register) return true;
+      const res = await Auth.readUserByEmail(val);
+      console.log(res);
+      return res !== val || this.errorTypes.takenEmail;
     },
   },
 };

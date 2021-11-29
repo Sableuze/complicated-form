@@ -38,6 +38,22 @@ const routes = [
     },
   },
   {
+    path: '/recover',
+    name: 'RecoverPassword',
+    component: () => import('@/views/RecoverPassword.vue'),
+    meta: {
+      layout: 'LayoutAuth',
+    },
+  },
+  {
+    path: '/reset',
+    name: 'NewPassword',
+    component: () => import('@/views/NewPassword.vue'),
+    meta: {
+      layout: 'LayoutAuth',
+    },
+  },
+  {
     path: '/create',
     name: 'CreateEvent',
     component: () => import('@/views/CreateEvent.vue'),
@@ -57,6 +73,9 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: () => import('@/views/404.vue'),
+    meta: {
+      layout: 'LayoutAuth',
+    },
   },
 
 ];

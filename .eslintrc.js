@@ -13,6 +13,7 @@ module.exports = {
     'linebreak-style': 0,
     'consistent-return': 0,
     'no-param-reassign': 0,
-    "no-shadow": 0
+    'no-shadow': 0,
+    'object-curly-newline': 0
   },
 };

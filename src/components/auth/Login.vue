@@ -3,25 +3,10 @@
   <q-form @submit="onSubmit" class="form-auth">
     <Email v-model="email"></Email>
     <Password v-model="password"></Password>
-    <div class="buttons">
-      <q-btn
-        :disable="getLoadingStatus"
-        outline
-        padding="sm"
-        size="lg"
-        @click="$router.push({name: 'Auth'})"
-      >Назад
-      </q-btn>
-      <q-btn
-        :disable="getLoadingStatus"
-        padding="sm"
-        size="lg"
-        type="submit"
-        color="accent"
-      >Продолжить
-      </q-btn>
-    </div>
+    <AuthButtons></AuthButtons>
   </q-form>
+  <router-link class="label recover-link"  :to="{name: 'RecoverPassword'}">
+    Забыли пароль?</router-link>
 </template>
 
 <script>
@@ -29,6 +14,7 @@ import { mapActions, mapGetters } from 'vuex';
 import Email from '@/components/formComponents/Email.vue';
 import Password from '@/components/formComponents/Password.vue';
 import apiErrors from '@/components/apiErrors.vue';
+import AuthButtons from '@/components/auth/AuthButtons.vue';
 import { errorTypesLogin } from '@/helpers/errorTypes';
 
 export default {
@@ -37,12 +23,13 @@ export default {
     Email,
     Password,
     apiErrors,
+    AuthButtons,
   },
   mounted() {
     this.errorTypes = errorTypesLogin;
   },
   computed: {
-    ...mapGetters(['getUser', 'getLoadingStatus']),
+    ...mapGetters(['getUser']),
   },
   data() {
     return {
@@ -50,7 +37,7 @@ export default {
       password: '',
 
       errors: [],
-      errorTypes: '',
+      errorTypes: {},
     };
   },
   methods: {
@@ -74,8 +61,9 @@ export default {
 </script>
 
 <style scoped>
-.buttons {
-  display: flex;
-  gap: 16px;
+.recover-link{
+  display: block;
+  text-decoration: none;
+  margin-top: 12px;
 }
 </style>

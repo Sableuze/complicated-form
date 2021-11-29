@@ -35,8 +35,9 @@ export default {
 .form-auth{
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
+
 .title {
   font-weight: 600;
   font-size: 18px;
@@ -59,6 +60,13 @@ export default {
 
 .mb-1 {
   margin-bottom: 6px;
+}
+.mb-2 {
+  margin-bottom: 12px;
+}
+
+.mb-3 {
+  margin-bottom: 16px;
 }
 
 h2 {

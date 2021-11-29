@@ -3,3 +3,5 @@ export const datePattern = /^(0[1-9]|1\d|2[0-8]|29(?=-\d\d-(?!1[01345789]00|2[12
 export const emailPattern = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/;
 
 export const passwordPattern = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/;
+
+export const usernamePattern = /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/;

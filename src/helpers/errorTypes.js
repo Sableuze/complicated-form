@@ -1,14 +1,23 @@
 export const errorTypesAuth = {
   noPassword: 'Введите пароль',
-  shortPassword: 'Пароль должен содержать не менее 8 символов',
-  wrongPassword: 'Пароль должен содержать как минимум одну цифру и спецсимвол',
+  noUsername: 'Введите имя пользователя',
+  shortUsername: 'Введите не менее пяти символов',
+  tooLongUsername: 'Имя пользователя должно быть короче 10 символов',
+  shortPassword: 'Пароль должен содержать не менее 6 символов',
+
 };
 export const errorTypesLogin = {
   500: 'Неправильный логин или пароль',
 };
 export const errorTypesRegister = {
-  401: 'Данное имя пользователя уже занято',
+  takenUsername: 'Данное имя пользователя уже занято',
+  takenEmail: 'Данная почта уже занята',
+  wrongPassword: 'Необходима как минимум одна цифра, строчная и заглавная буква',
+  wrongUsername: 'Имя пользователя введено некорректно',
+};
 
+export const errorTypesSendResetMessage = {
+  500: 'sxcsdsda',
 };
 
 export const errorTypesMain = {

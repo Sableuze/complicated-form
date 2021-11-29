@@ -58,16 +58,17 @@ const actions = {
     if (id && userId) {
       commit('setSessionId', id);
       await dispatch('updateUser', userId);
-    } else {
-      return status;
-    }
+    } return status;
   },
 
-  async register({ commit }, { login, username, password }) {
+  async register({ commit }, { email, username, password }) {
     commit('changeLoadingStatus', true);
-    const response = await Auth.register(login, username, password);
-    console.log(response);
-    debugger;
+    const { id, status } = await Auth.register(email, username, password);
+    commit('changeLoadingStatus', false);
+
+    if (id) {
+      this.$router.push({ name: 'Login' });
+    } else return status;
   },
 
   async updateUser({ commit }, userId) {

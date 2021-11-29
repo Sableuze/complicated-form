@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p v-show="this.isSuccess" class="result success-text">SUCCESS</p>
+    <p v-show="this.isSuccess" class="result success-text">{{ successText }}</p>
     <p v-show="!this.isSuccess && this.isSuccess !== null"
-       class="result failure-text">FAILURE</p>
+       class="result failure-text">{{ failureText }}</p>
   </div>
 </template>
 
@@ -16,6 +16,18 @@ export default {
     redirect: {
       type: String,
     },
+    successText: {
+      type: String,
+      default: 'Success',
+    },
+    failureText: {
+      type: String,
+      default: 'Failure',
+    },
+    redirectOnFailure: {
+      type: Boolean,
+      default: true,
+    },
   },
   mounted() {
     this.$store.dispatch('changeSuccessStatus', null);
@@ -26,7 +38,15 @@ export default {
   },
   methods: {
     completed() {
-      if (this.redirect) this.$router.push(this.redirect);
+      debugger;
+      if (!this.isSuccess && this.redirectOnFailure && this.redirect) {
+        debugger;
+        this.$router.push(this.redirect);
+        debugger;
+      } else if (this.redirect) {
+        debugger;
+        this.$router.push(this.redirect);
+      }
     },
   },
   watch: {
