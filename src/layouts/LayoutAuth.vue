@@ -1,31 +1,11 @@
 <template>
-  <div class="container">
+  <div class="cnt flex column items-center">
+    <h2 class="logo">RedBox</h2>
+    <div class="q-ma-lg auth-wrapper">
+      <router-view></router-view>
+    </div>
+  </div>
 
-  <!--  <div class="container">-->
-<!--    <h2 class="login-title">Зайти как :</h2>-->
-<!--    <div class="login-choice">-->
-<!--      <q-btn-->
-<!--        size="lg"-->
-<!--        padding="md"-->
-<!--        class="label self-center"-->
-<!--        color="accent"-->
-<!--        @click="onLogin('moder')"-->
-<!--        >Модератор-->
-<!--      </q-btn>-->
-<!--      <q-btn-->
-<!--        size="lg"-->
-<!--        padding="md"-->
-<!--        class="label self-center"-->
-<!--        color="accent"-->
-<!--        @click="onLogin('user')"-->
-<!--        >Обычный пользователь-->
-<!--      </q-btn>-->
-<!--    </div>-->
-<!--  </div>-->
-  <div class="q-ma-lg auth-cnt">
-    <router-view></router-view>
-  </div>
-  </div>
 </template>
 
 <script>
@@ -54,18 +34,27 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.container {
-  height: 70vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+<style lang="scss" >
 
 .login-title {
   font-size: 36px;
   font-weight: 900;
+}
+
+.cnt {
+  gap: 24px;
+
+  .logo {
+    font-size: 92px;
+    margin-bottom: 24px;
+    font-weight: 900;
+    color: $title-color;
+  }
+
+  .auth-cnt{
+    padding: 60px 96px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+  }
 }
 
 .login-choice {
@@ -78,6 +67,5 @@ export default {
     font-size: 16px;
   }
 }
-.auth-cnt{
-}
+
 </style>

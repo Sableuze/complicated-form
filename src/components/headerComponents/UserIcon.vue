@@ -1,27 +1,30 @@
 <template>
   <q-btn-dropdown flat round dense icon="person">
     <div class="row no-wrap q-pa-md">
-      <div class="column">
-        <div class="text-h6 q-mb-md">Settings</div>
-        <q-toggle v-model="onlineStatus" label="В сети"/>
-      </div>
-
-      <q-separator vertical inset class="q-mx-lg"/>
 
       <div class="column items-center">
 
-        <div class="text-subtitle1 q-mt-md">{{'Гараев Равиль'}}</div>
-        <div class="text-subtitle2 q-mt-xs q-mb-xs">{{theRole}}</div>
+        <div class="text-subtitle1 ">{{ getUser.username }}</div>
+        <div class="text-subtitle2 q-mt-xs q-mb-xs">{{ theRole }}</div>
         <q-space></q-space>
-
-        <q-btn
-          color="primary"
-          label="Выйти"
-          push
-          size="sm"
-          v-close-popup
-          @click="onLogout"
-        />
+        <div class="row q-mt-md q-gutter-xs">
+          <q-btn
+            color="primary"
+            label="Выйти"
+            push
+            size="sm"
+            v-close-popup
+            @click="onLogout"
+          />
+          <q-btn
+            color="accent"
+            label="Открыть профиль"
+            push
+            size="sm"
+            v-close-popup
+            @click="onLogout"
+          />
+        </div>
       </div>
     </div>
   </q-btn-dropdown>
@@ -34,7 +37,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'UserIcon',
   computed: {
-    ...mapGetters(['getUserRole']),
+    ...mapGetters(['getUserRole', 'getUser']),
     theRole() {
       switch (this.getUserRole) {
         case 'moder': {
@@ -52,9 +55,18 @@ export default {
     };
   },
   methods: {
-    onLogout() {
-      this.$store.dispatch('logout');
-      this.$router.push({ name: 'Auth' });
+    async onLogout() {
+      const ok = await this.$root.$refs.confirmDialog.show({
+        message: 'Do you really want to logout?',
+        okButton: 'YES',
+        okColor: 'red',
+        icon: 'remove',
+        iconColor: 'red',
+      });
+      if (ok) {
+        this.$store.dispatch('logout');
+        this.$router.push({ name: 'Auth' });
+      }
     },
   },
 };

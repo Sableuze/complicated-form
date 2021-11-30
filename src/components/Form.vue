@@ -79,7 +79,6 @@
       </q-select>
     </div>
   </q-form>
-  <Confirm-dialog ref="confirmDialog"></Confirm-dialog>
 
 </template>
 
@@ -93,7 +92,6 @@ import Rating from '@/components/formComponents/Rating.vue';
 import Address from '@/components/formComponents/Address.vue';
 import ActionResult from '@/components/ActionResult.vue';
 import { reformatDates } from '@/helpers/reformatDatesHelper';
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
 
 export default {
   name: 'Form',
@@ -117,7 +115,6 @@ export default {
     Rating,
     Address,
     ActionResult,
-    ConfirmDialog,
   },
   mounted() {
     this.$store.dispatch('loadRating');
@@ -191,7 +188,7 @@ export default {
     },
     async onReset() {
       // eslint-disable-next-line no-return-assign,no-unused-vars
-      const ok = await this.$refs.confirmDialog.show({
+      const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Вы действительно хотите очистить форму?',
         okButton: 'Да',
         okColor: 'red',

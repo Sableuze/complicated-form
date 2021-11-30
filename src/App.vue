@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ConfirmDialog ref="confirmDialog"></ConfirmDialog>
     <component :is="layout2">
       <router-view/>
     </component>
@@ -9,10 +10,11 @@
 <script>
 import LayoutAuth from '@/layouts/LayoutAuth.vue';
 import LayoutDefault from '@/layouts/LayoutDefault.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 
 export default {
   name: 'app',
-  components: { LayoutAuth, LayoutDefault },
+  components: { LayoutAuth, LayoutDefault, ConfirmDialog },
   computed: {
     layout2() {
       if (this.$route.meta.layout === 'LayoutAuth') {
@@ -27,7 +29,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,900;1,900&display=swap');
 
 #app {
   font-family: 'Montserrat', sans-serif;

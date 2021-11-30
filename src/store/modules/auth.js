@@ -19,7 +19,7 @@ const state = {
 const getters = {
   getUser: (state) => state.user,
   getUserRole: (state) => state.user.role,
-  isLoggedIn: (state) => !!state.user.role,
+  isLoggedIn: (state) => !!state.user.username,
   getAuthErrors: (state) => state.authErrors,
 };
 const mutations = {
@@ -72,12 +72,12 @@ const actions = {
   },
 
   async updateUser({ commit }, userId) {
-    const { email, username, id, profile } = await Auth.getUserInfo(userId);
+    const { email, username, id, profile } = await Auth.readUserById(userId);
     commit('setUser', { email, username, accountId: id, profile });
   },
 
   logout({ commit }) {
-    commit('sessionId', '');
+    commit('setSessionId', '');
     commit('setUser', '');
   },
 

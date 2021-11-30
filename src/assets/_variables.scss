@@ -4,6 +4,7 @@ $close-color: #ffffff;
 $hint-color: rgba(33, 21, 54, 0.7);
 $dateRow-bg: #FAF7FE;
 $input-border-color: #CDB1FB;
-$label-color: #211536;
+$title-color: #211536FF;
+$label-color: lighten($title-color, 10%);
 $error-color: #C10015;
 $hint-color-holder: #8E69CC;

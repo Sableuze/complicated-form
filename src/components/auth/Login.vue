@@ -1,12 +1,15 @@
 <template>
-  <apiErrors :errorCodes="errors" :source="errorTypes"></apiErrors>
-  <q-form @submit="onSubmit" class="form-auth">
-    <Email v-model="email"></Email>
-    <Password v-model="password"></Password>
-    <AuthButtons></AuthButtons>
-  </q-form>
-  <router-link class="label recover-link"  :to="{name: 'RecoverPassword'}">
-    Забыли пароль?</router-link>
+  <div class="auth-cnt">
+    <apiErrors :errorCodes="errors" :source="errorTypes"></apiErrors>
+    <q-form @submit="onSubmit" class="form-auth">
+      <Email v-model="email"></Email>
+      <Password v-model="password"></Password>
+      <AuthButtons></AuthButtons>
+    </q-form>
+    <router-link class="label recover-link" :to="{name: 'RecoverPassword'}">
+      Забыли пароль?
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -61,7 +64,7 @@ export default {
 </script>
 
 <style scoped>
-.recover-link{
+.recover-link {
   display: block;
   text-decoration: none;
   margin-top: 12px;

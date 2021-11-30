@@ -8,7 +8,7 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat :label="this.noButton || 'Нет'" @click="_cancel" color="primary" v-close-popup/>
+        <q-btn flat :label="this.noButton || 'No'" @click="_cancel" color="primary" v-close-popup/>
         <q-btn
           flat
           :label="this.okButton" @click="_confirm" :color="this.okColor || 'primary'"

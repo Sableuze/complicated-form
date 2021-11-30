@@ -16,7 +16,6 @@
 
     </q-list>
     <Nothing-message v-else></Nothing-message>
-    <Confirm-dialog ref="confirmDialog"></Confirm-dialog>
   </div>
 </template>
 
@@ -24,13 +23,12 @@
 
 import { mapActions, mapGetters } from 'vuex';
 import { gsap } from 'gsap';
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import NothingMessage from '@/components/NothingMessage.vue';
 
 export default {
   name: 'DraftList',
   components: {
-    ConfirmDialog, NothingMessage,
+    NothingMessage,
   },
   computed: {
     ...mapGetters(['getDraftEvents']),
@@ -38,7 +36,7 @@ export default {
   methods: {
     ...mapActions(['deleteEvent']),
     async removeEvent(id) {
-      const ok = await this.$refs.confirmDialog.show({
+      const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Do you really want to delete the event and all its data?',
         okButton: 'YES',
         okColor: 'red',

@@ -14,6 +14,21 @@ export default class Auth {
     }
   }
 
+  static async sendVerificationEmail(email) {
+    try {
+      await authentication.post('/SendVerificationEmail', {
+        email,
+        failureRedirectUrl: 'http://localhost:8080/verification-failed',
+        fromName: 'Awesome Dot Com',
+        redirectUrl: 'http://localhost:8080',
+        subject: 'Email verification',
+        textContent: 'Hi there,\n\nPlease verify your email by clicking this link: $micro_verification_link',
+      });
+    } catch (err) {
+      return err.response;
+    }
+  }
+
   static async login(email, password) {
     try {
       const { data } = await authentication.post('/Login', { email, password });
@@ -29,11 +44,13 @@ export default class Auth {
     try {
       // eslint-disable-next-line no-unused-vars
       const emailDecoded = btoa(email);
+      const date = Date.now();
       await authentication.post('/SendPasswordResetEmail', {
         email,
         fromName: 'Redbox',
         subject: 'Password reset',
-        textContent: `Hi there,\n click here to reset your password:  http://localhost:8080/reset/?cd=$code&ml=${emailDecoded}`,
+        textContent: `Hi there,\n click here to reset your password:  http://localhost:8080/reset/?cd=$code&ml=${emailDecoded} \n
+        ${new Date(date)}`,
       });
       return true;
     } catch (err) {
@@ -57,6 +74,18 @@ export default class Auth {
     return !!response;
   }
 
+  static async readUserById(id) {
+    try {
+      const { data } = await authentication.post('/Read', {
+        id,
+      });
+      if (data) return data.account;
+    } catch (err) {
+      return err.response;
+    }
+  }
+
+  // for checking whether username or email is vacant
   static async readUserByUsername(username) {
     try {
       const { data } = await authentication.post('/Read', {

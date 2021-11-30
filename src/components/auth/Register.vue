@@ -1,11 +1,13 @@
 <template>
-  <apiErrors :errorCodes="errors" :source="errorTypes"></apiErrors>
-  <q-form @submit="onSubmit" class="form-auth">
-    <Email v-model="email" :register="true"></Email>
-    <Password v-model="password" :register="true"></Password>
-    <Username v-model="username" :register="true"></Username>
-    <AuthButtons></AuthButtons>
-  </q-form>
+  <div class="auth-cnt">
+    <apiErrors :errorCodes="errors" :source="errorTypes"></apiErrors>
+    <q-form @submit="onSubmit" class="form-auth">
+      <Email v-model="email" :register="true"></Email>
+      <Password v-model="password" :register="true"></Password>
+      <Username v-model="username" :register="true"></Username>
+      <AuthButtons></AuthButtons>
+    </q-form>
+  </div>
 </template>
 
 <script>
@@ -39,9 +41,11 @@ export default {
   methods: {
     ...mapActions(['register']),
     async onSubmit() {
-      const status = await this.register({ email: this.email.trim(),
+      const status = await this.register({
+        email: this.email.trim(),
         username: this.username.trim(),
-        password: this.password.trim() });
+        password: this.password.trim(),
+      });
       if (status) {
         if (status && this.errors.indexOf(status)) this.errors.push(status);
       }
