@@ -3,7 +3,7 @@ export const errorTypesAuth = {
   noUsername: 'Введите имя пользователя',
   shortUsername: 'Введите не менее пяти символов',
   tooLongUsername: 'Имя пользователя должно быть короче 10 символов',
-  shortPassword: 'Пароль должен содержать не менее 6 символов',
+  shortPassword: 'Пароль должен содержать не менее 8 символов',
 
 };
 export const errorTypesLogin = {
@@ -14,6 +14,12 @@ export const errorTypesRegister = {
   takenEmail: 'Данная почта уже занята',
   wrongPassword: 'Необходима как минимум одна цифра, строчная и заглавная буква',
   wrongUsername: 'Имя пользователя введено некорректно',
+};
+
+export const errorTypesInfo = {
+  shortName: 'Введите не менее трех букв',
+  noBlockNumber: 'Укажите номер блока',
+  noRoomNumber: 'Укажите номер комнаты',
 };
 
 export const errorTypesSendResetMessage = {

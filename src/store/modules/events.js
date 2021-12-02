@@ -1,5 +1,6 @@
 import { setItem, getItem } from '@/helpers/localStorageHelper';
 import { formatDates } from '@/helpers/reformatDatesHelper';
+import Db from '@/api/databaseWrapper';
 
 const state = {
   eventsPublished: getItem('eventsPublished') || [],
@@ -67,11 +68,11 @@ const actions = {
     theEvent.status = 'suggested';
     debugger;
     // await bla bla bla......
+    // eslint-disable-next-line no-constant-condition
     if (true) {
       commit('addEventToSuggested', theEvent);
       commit('removeEventFromDraft', eventId);
       commit('changeSuccessStatus', true);
-      debugger;
     } else commit('changeSuccessStatus', false);
 
     commit('changeLoadingStatus', false);
@@ -80,7 +81,8 @@ const actions = {
   async createEvent({ commit }, data) {
     commit('changeLoadingStatus', true);
     data.dates = formatDates(data.dates);
-    // await bla bla bla......
+    Db.create({ field: data, table: 'events' });
+    // eslint-disable-next-line no-constant-condition
     if (true) {
       commit('addEventToDraft', data);
       commit('changeSuccessStatus', true);
@@ -102,6 +104,7 @@ const actions = {
   deleteEvent({ commit }, id) {
     commit('changeLoadingStatus', true);
     // const res = await bla bla bla
+    // eslint-disable-next-line no-constant-condition
     if (true) {
       commit('removeEventFromDraft', id);
       commit('changeSuccessStatus', true);

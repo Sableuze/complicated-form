@@ -18,6 +18,7 @@ const state = {
 
 const getters = {
   getUser: (state) => state.user,
+  isProfileFilled: (state) => Object.values(state.user.profile).every((i) => i),
   getUserRole: (state) => state.user.role,
   isLoggedIn: (state) => !!state.user.username,
   getAuthErrors: (state) => state.authErrors,
@@ -57,23 +58,38 @@ const actions = {
     commit('changeLoadingStatus', false);
     if (id && userId) {
       commit('setSessionId', id);
-      await dispatch('updateUser', userId);
-    } return status;
+      await dispatch('readUser', userId);
+    }
+    return status;
   },
 
   async register({ commit }, { email, username, password }) {
     commit('changeLoadingStatus', true);
-    const { id, status } = await Auth.register(email, username, password);
+    debugger;
+    const { id, status } = await Auth.register({ email, username, password });
     commit('changeLoadingStatus', false);
 
     if (id) {
-      this.$router.push({ name: 'Login' });
-    } else return status;
+      return true;
+    } return status;
   },
 
-  async updateUser({ commit }, userId) {
+  async readUser({ commit }, userId) {
     const { email, username, id, profile } = await Auth.readUserById(userId);
     commit('setUser', { email, username, accountId: id, profile });
+  },
+
+  async updateUserInfo({ commit, dispatch }, { id, data }) {
+    commit('changeLoadingStatus', true);
+    const { status } = await Auth.updateUserInfo({ id, data });
+    commit('changeLoadingStatus', false);
+    if (!status) {
+      dispatch('readUser', id);
+      commit('changeSuccessStatus', true);
+    } else {
+      commit('changeSuccessStatus', true);
+      return status;
+    }
   },
 
   logout({ commit }) {

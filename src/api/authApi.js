@@ -1,13 +1,11 @@
 import { authentication } from './http';
-
 // eslint-disable-next-line import/prefer-default-export
 export default class Auth {
-  static async register(email, password, username) {
+  static async register({ email, username, password }) {
     try {
       const { data } = await authentication.post('/Create', {
         email, password, username,
       });
-      debugger;
       return data.account;
     } catch (err) {
       return err.response;
@@ -35,6 +33,17 @@ export default class Auth {
       if (data) {
         return data.session;
       }
+    } catch (err) {
+      return err.response;
+    }
+  }
+
+  static async updateUserInfo({ id, data }) {
+    debugger;
+    try {
+      await authentication.post('/Update', {
+        id, profile: { ...data },
+      });
     } catch (err) {
       return err.response;
     }
@@ -92,7 +101,9 @@ export default class Auth {
         username,
       });
       if (data) return data.account?.username;
+      debugger;
     } catch (err) {
+      console.clear();
       return 'vacant';
     }
   }
@@ -104,6 +115,7 @@ export default class Auth {
       });
       if (data) return data.account.email;
     } catch (err) {
+      console.clear();
       return 'vacant';
     }
   }

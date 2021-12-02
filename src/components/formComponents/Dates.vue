@@ -299,6 +299,9 @@ export default {
 
 .addDateRowBtn {
   align-self: flex-start;
+  @media (max-width: 555px) {
+    align-self: center;
+  }
 }
 
 </style>

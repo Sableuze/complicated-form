@@ -20,21 +20,28 @@
 </template>
 
 <script>
+import Db from '@/api/databaseWrapper';
 
 export default {
   name: 'Auth',
+  mounted() {
+    Db.list();
+    Db.read({ table: 'users' });
+  },
   methods: {
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .login-choice{
   display: flex;
   height: 100%;
   justify-content: center;
   align-items: center;
-
+  @media (max-width: 500px) {
+    display: grid;
+  }
 }
 
 </style>

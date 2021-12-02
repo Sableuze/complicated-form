@@ -16,14 +16,14 @@
         <template v-slot:file></template>
       </q-file>
       <div class="previewPicture" v-if="pictureD">
-        <img :src="previewPicture" id="previewImage" alt="chosen picture">
+        <img :src="picture" id="previewImage" alt="chosen picture">
         <q-btn icon="close" round size="sm"
                class="removeFile" @click="removeFile"></q-btn>
       </div>
       <p class="hint"
          :class="{'error' : hasErrors}"
       >
-        {{ hasErrors ? errorTypes.noPicture : hintMsgPicture }}</p>
+        {{ hasErrors ? errorTypes.noPicture : hintMsg }}</p>
     </div>
 
   </div>
@@ -31,36 +31,42 @@
 </template>
 
 <script>
+import { nextTick } from 'vue';
 import { errorTypesFiles } from '@/helpers/errorTypes';
 
 export default {
   name: 'FileUploader',
   props: {
     picture: {
-      type: FormData,
-      default: undefined,
+      type: String,
+    },
+    hintMsg: {
+      type: String,
+      default: 'Главная фотография (обложка мероприятия)',
     },
   },
   mounted() {
     this.errorTypes = errorTypesFiles;
+    nextTick(() => {
+      if (this.picture) {
+        this.pictureD = this.picture;
+      }
+    });
   },
+
   data() {
     return {
-      pictureD: this.picture,
-      previewPicture: '',
+      pictureD: '',
       errorTypes: '',
       hasErrors: false,
-      hintMsgPicture: 'Главная фотография (обложка мероприятия)',
     };
   },
-  computed: {
-    // eslint-disable-next-line vue/return-in-computed-property
-  },
+
   methods: {
     // eslint-disable-next-line no-unused-vars
     async onFileSelect(file) {
       if (!file) return false;
-      this.previewPicture = URL.createObjectURL(file);
+      // this.previewPicture = URL.createObjectURL(file);
       const reader = new FileReader();
       reader.addEventListener('load', () => {
         this.$emit('update:picture', reader.result);

@@ -66,17 +66,6 @@
         label="Далее"
       >
       </q-btn>
-      <q-select
-        filled
-        padding="md"
-        v-model="this.form"
-        class="btn label"
-        v-if="action === 'create'"
-        :options="getDraftEvents"
-        label="Созданные мероприятия"
-      >
-
-      </q-select>
     </div>
   </q-form>
 
@@ -118,7 +107,10 @@ export default {
   },
   mounted() {
     this.$store.dispatch('loadRating');
-    if (this.action === 'create') this.form.id = this.getLastEventId + 1;
+    if (this.action === 'create') {
+      this.form.id = this.getLastEventId + 1;
+      this.form.creatorId = this.getUser.id;
+    }
     if (this.action === 'edit') {
       const theForm = this.$store.getters.getEventById(this.id);
       theForm.dates = reformatDates(theForm.dates, 'DD/MM/YYYY');
@@ -126,12 +118,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getRatingList', 'getLastEventId', 'getDraftEvents']),
+    ...mapGetters(['getRatingList', 'getLastEventId', 'getDraftEvents', 'getUser']),
   },
   data() {
     return {
       form: {
         id: '',
+        creatorId: '',
         holder: '',
         number: '',
         email: '',

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { dadataToken, authToken } from '@/api/tokens';
+import { dadataToken, authToken, db } from '@/api/tokens';
 
 export const redbox = axios.create({
   baseURL: 'http://testwork.rdbx24.ru/api/',
@@ -23,3 +23,11 @@ export const authentication = axios.create({
 
 authentication.defaults.headers.common['Content-Type'] = 'application/json';
 authentication.defaults.headers.common.Authorization = `Bearer ${authToken}`;
+
+export const database = axios.create({
+  baseURL: 'https://api.m3o.com/v1/db',
+  withCredentials: true,
+});
+
+database.defaults.headers.common['Content-Type'] = 'application/json';
+database.defaults.headers.common.Authorization = `Bearer ${db}`;

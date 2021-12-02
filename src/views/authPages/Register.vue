@@ -16,7 +16,7 @@ import Email from '@/components/formComponents/Email.vue';
 import Password from '@/components/formComponents/Password.vue';
 import Username from '@/components/formComponents/Username.vue';
 import apiErrors from '@/components/apiErrors.vue';
-import AuthButtons from '@/components/auth/AuthButtons.vue';
+import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
 import { errorTypesRegister } from '@/helpers/errorTypes';
 
@@ -41,13 +41,17 @@ export default {
   methods: {
     ...mapActions(['register']),
     async onSubmit() {
-      const status = await this.register({
+      const { status } = await this.register({
         email: this.email.trim(),
         username: this.username.trim(),
         password: this.password.trim(),
       });
+      debugger;
       if (status) {
         if (status && this.errors.indexOf(status)) this.errors.push(status);
+      } else {
+        debugger;
+        this.$router.push({ name: 'Login' });
       }
     },
   },

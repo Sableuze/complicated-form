@@ -1,7 +1,7 @@
 <template>
   <div>
     <ConfirmDialog ref="confirmDialog"></ConfirmDialog>
-    <component :is="layout2">
+    <component :is="layout">
       <router-view/>
     </component>
   </div>
@@ -16,7 +16,7 @@ export default {
   name: 'app',
   components: { LayoutAuth, LayoutDefault, ConfirmDialog },
   computed: {
-    layout2() {
+    layout() {
       if (this.$route.meta.layout === 'LayoutAuth') {
         return 'LayoutAuth';
       }
@@ -54,6 +54,12 @@ export default {
 .btn {
   width: 300px;
   white-space: nowrap;
+  @media (max-width: 500px) {
+    font-size: 12px;
+  }
+  @media (max-width: 400px) {
+    font-size: 10px;
+  }
 }
 
 .mb-0 {

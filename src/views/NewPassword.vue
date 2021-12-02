@@ -18,7 +18,7 @@
 <script>
 import { mapActions } from 'vuex';
 import Password from '@/components/formComponents/Password.vue';
-import AuthButtons from '@/components/auth/AuthButtons.vue';
+import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 import Auth from '@/api/authApi';
 import ActionResult from '@/components/ActionResult.vue';
 

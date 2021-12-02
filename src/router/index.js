@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/auth',
     name: 'Auth',
-    component: () => import('@/components/auth/Auth.vue'),
+    component: () => import('@/views/authPages/Auth.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -24,7 +24,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/components/auth/Login.vue'),
+    component: () => import('@/views/authPages/Login.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -32,7 +32,15 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: () => import('@/components/auth/Register.vue'),
+    component: () => import('@/views/authPages/Register.vue'),
+    meta: {
+      layout: 'LayoutAuth',
+    },
+  },
+  {
+    path: '/edit-user',
+    name: 'EditUserInfo',
+    component: () => import('@/views/authPages/EditUserInfo.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -90,6 +98,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   gsap.fromTo('body', { opacity: 0 }, { opacity: 1, duration: 1 });
   store.dispatch('changeSuccessStatus', null);
+
+  if (to.name !== 'EditUserInfo' && store.getters.isLoggedIn && !store.getters.isProfileFilled) {
+    next({ name: 'EditUserInfo' });
+    return;
+  }
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (!store.getters.isLoggedIn) {
       next({ name: 'Auth' });

@@ -6,7 +6,7 @@
     placeholder="Ваня..."
     :rules="[val => val.length > 0 || errorTypes.noUsername,
     val => val.length < 10 || errorTypes.tooLongUsername,
-    val => readUsername(val)]"
+    val => readUsername(val.toLowerCase())]"
   >
 
   </q-input>

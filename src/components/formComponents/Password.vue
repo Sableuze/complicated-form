@@ -4,7 +4,7 @@
     :type="hidePassword ? 'password' : 'text' "
     no-error-icon
     :rules="[val => val.length > 0 || errorTypes.noPassword,
-    val => val.length > 6 || errorTypes.shortPassword,
+    val => val.length >= 8 || errorTypes.shortPassword,
     val => validatePassword(val) || errorTypes.wrongPassword]"
     >
     <template v-slot:append>

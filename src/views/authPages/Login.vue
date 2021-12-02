@@ -17,7 +17,7 @@ import { mapActions, mapGetters } from 'vuex';
 import Email from '@/components/formComponents/Email.vue';
 import Password from '@/components/formComponents/Password.vue';
 import apiErrors from '@/components/apiErrors.vue';
-import AuthButtons from '@/components/auth/AuthButtons.vue';
+import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 import { errorTypesLogin } from '@/helpers/errorTypes';
 
 export default {

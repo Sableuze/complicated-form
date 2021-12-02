@@ -34,7 +34,7 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 
 .login-title {
   font-size: 36px;
@@ -49,11 +49,16 @@ export default {
     margin-bottom: 24px;
     font-weight: 900;
     color: $title-color;
+    @media (max-width: 650px) {
+      font-size: 40px;
+    }
   }
 
-  .auth-cnt{
-    padding: 60px 96px;
-    border: 1px solid rgba(0, 0, 0, 0.4);
+  .auth-cnt {
+    @media (min-width: 650px) {
+      padding: 60px 96px;
+      border: 1px solid rgba(0, 0, 0, 0.4);
+    }
   }
 }
 

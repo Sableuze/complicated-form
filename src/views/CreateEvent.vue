@@ -1,17 +1,17 @@
 <template>
- <Form :action="'create'">
+ <Custom-form :action="'create'">
    <template v-slot:title-first><h2>Информация об организаторе</h2></template>
    <template v-slot:title-second><h2>Общая информация</h2></template>
- </Form>
+ </Custom-form>
 </template>
 
 <script>
-import Form from '@/components/Form.vue';
+import CustomForm from '@/components/CustomForm.vue';
 
 export default {
   name: 'CreateEvent',
   components: {
-    Form,
+    CustomForm,
   },
 };
 </script>

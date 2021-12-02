@@ -1,8 +1,8 @@
 import { createStore } from 'vuex';
 import rating from '@/api/rating';
-import events from '@/store/modules/events';
-import auth from '@/store/modules/auth';
-
+import events from './modules/events';
+import auth from './modules/auth';
+import blogSocket from '@/plugins/blogSocket';
 // eslint-disable-next-line no-unused-vars
 import { getItem, removeItem, setItem } from '@/helpers/localStorageHelper';
 // eslint-disable-next-line no-unused-vars
@@ -116,4 +116,5 @@ export default createStore({
   modules: {
     events, auth,
   },
+  plugins: [blogSocket],
 });

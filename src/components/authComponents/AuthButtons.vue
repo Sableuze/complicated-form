@@ -36,5 +36,6 @@ export default {
   margin-top: 8px;
   display: flex;
   gap: 16px;
+
 }
 </style>
