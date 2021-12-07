@@ -1,9 +1,9 @@
 <template>
   <div v-cloak>
-    <q-list bordered separator v-if="getDraftEvents.length">
+    <q-list bordered separator v-if="eventsList.length">
       <q-item clickable v-ripple
               :id="event.id"
-              v-for="event in getDraftEvents" :key="event.id">
+              v-for="event in eventsList" :key="event.id">
         <q-item-section @click="$router.push(`/${event.id}/suggest`)">
           <q-item-label>{{ event.name }}</q-item-label>
           <q-item-label caption>{{ event.city }}</q-item-label>
@@ -31,10 +31,10 @@ export default {
     NothingMessage,
   },
   computed: {
-    ...mapGetters(['getDraftEvents']),
+    ...mapGetters('events', { eventsList: 'getDraftEvents' }),
   },
   methods: {
-    ...mapActions(['deleteEvent']),
+    ...mapActions('events', { deleteEvent: 'deleteEvent' }),
     async removeEvent(id) {
       const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Do you really want to delete the event and all its data?',

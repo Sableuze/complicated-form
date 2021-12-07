@@ -14,14 +14,16 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { useQuasar } from 'quasar';
 import Email from '@/components/formComponents/Email.vue';
 import Password from '@/components/formComponents/Password.vue';
-import apiErrors from '@/components/apiErrors.vue';
+import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 import { errorTypesLogin } from '@/helpers/errorTypes';
 
 export default {
   name: 'Login',
+
   components: {
     Email,
     Password,
@@ -29,7 +31,9 @@ export default {
     AuthButtons,
   },
   mounted() {
+    const $q = useQuasar();
     this.errorTypes = errorTypesLogin;
+    $q.notify('Message');
   },
   computed: {
     ...mapGetters(['getUser']),
@@ -48,7 +52,7 @@ export default {
     async onSubmit() {
       const status = await this.login({ login: this.email, password: this.password });
       if (status) {
-        if (status && this.errors.indexOf(status)) this.errors.push(status);
+        if (status && this.errors.indexOf(status) === -1) this.errors.push(status);
       }
     },
   },

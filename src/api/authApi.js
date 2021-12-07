@@ -1,15 +1,13 @@
 import { authentication } from './http';
 // eslint-disable-next-line import/prefer-default-export
+import { errorTypesAuthApi } from '@/helpers/errorTypes';
+
 export default class Auth {
   static async register({ email, username, password }) {
-    try {
-      const { data } = await authentication.post('/Create', {
-        email, password, username,
-      });
-      return data.account;
-    } catch (err) {
-      return err.response;
-    }
+    const { data } = await authentication.post('/Create', {
+      email, password, username },
+    { vueAlert: '404' });
+    return data.account;
   }
 
   static async sendVerificationEmail(email) {
@@ -28,54 +26,35 @@ export default class Auth {
   }
 
   static async login(email, password) {
-    try {
-      const { data } = await authentication.post('/Login', { email, password });
-      if (data) {
-        return data.session;
-      }
-    } catch (err) {
-      return err.response;
-    }
+    const { data } = await authentication.post('/Login', { email, password },
+      { vueAlert: errorTypesAuthApi.wrongLoginOrPassword });
+    return data ? data.session : false;
   }
 
   static async updateUserInfo({ id, data }) {
-    debugger;
-    try {
-      await authentication.post('/Update', {
-        id, profile: { ...data },
-      });
-    } catch (err) {
-      return err.response;
-    }
+    return authentication.post('/Update2', {
+      id,
+      profile: { ...data } },
+    { vueAlert: errorTypesAuthApi.updateUserInfo });
   }
 
   static async sendPasswordResetEmail(email) {
-    try {
-      // eslint-disable-next-line no-unused-vars
-      const emailDecoded = btoa(email);
-      const date = Date.now();
-      await authentication.post('/SendPasswordResetEmail', {
-        email,
-        fromName: 'Redbox',
-        subject: 'Password reset',
-        textContent: `Hi there,\n click here to reset your password:  http://localhost:8080/reset/?cd=$code&ml=${emailDecoded} \n
+    // eslint-disable-next-line no-unused-vars
+    const emailDecoded = btoa(email);
+    const date = Date.now();
+    return authentication.post('/SendPasswordResetEmail', {
+      email,
+      fromName: 'Redbox',
+      subject: 'Password reset',
+      textContent: `Hi there,\n click here to reset your password:  http://localhost:8080/reset/?cd=$code&ml=${emailDecoded} \n
         ${new Date(date)}`,
-      });
-      return true;
-    } catch (err) {
-      return err.response;
-    }
+    }, { vueAlert: errorTypesAuthApi.sendResetEmail });
   }
 
   static async resetPassword({ code, email, newPassword, confirmPassword }) {
-    try {
-      await authentication.post('/ResetPassword', {
-        code, email, newPassword, confirmPassword,
-      });
-      return true;
-    } catch (err) {
-      return err.response;
-    }
+    await authentication.post('/ResetPassword', {
+      code, email, newPassword, confirmPassword,
+    }, { vueAlert: errorTypesAuthApi.resetPassword });
   }
 
   static async readSession(sessionId) {
@@ -84,14 +63,10 @@ export default class Auth {
   }
 
   static async readUserById(id) {
-    try {
-      const { data } = await authentication.post('/Read', {
-        id,
-      });
-      if (data) return data.account;
-    } catch (err) {
-      return err.response;
-    }
+    const { data } = await authentication.post('/Read', {
+      id,
+    }, { vueAlert: errorTypesAuthApi.readUserInfo });
+    return data ? data.account : false;
   }
 
   // for checking whether username or email is vacant

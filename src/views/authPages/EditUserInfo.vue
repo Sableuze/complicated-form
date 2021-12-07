@@ -53,7 +53,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import apiErrors from '@/components/apiErrors.vue';
+import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import { errorTypesInfo } from '@/helpers/errorTypes';
 import FileUploader from '@/components/formComponents/FileUploader.vue';
 
@@ -81,6 +81,7 @@ export default {
         picture: '',
         blockNumber: '',
         roomNumber: '',
+        role: 'user',
       },
       errorTypes: '',
       errors: [],

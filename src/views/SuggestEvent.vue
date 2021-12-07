@@ -31,7 +31,7 @@
 import { mapActions } from 'vuex';
 import AlertBox from '@/components/AlertBox.vue';
 import EventShowcase from '@/components/EventShowcase.vue';
-import ActionResult from '@/components/ActionResult.vue';
+import ActionResult from '@/components/dialogComponents/ActionResult.vue';
 
 export default {
   name: 'SuggestEvent',

@@ -1,10 +1,10 @@
 <template>
   <div v-cloak>
-    <q-list bordered separator v-if="getSuggestedEvents.length">
+    <q-list bordered separator v-if="eventsList.length">
 
       <q-item clickable v-ripple
               :id="event.id"
-              v-for="event in getSuggestedEvents" :key="event.id">
+              v-for="event in eventsList" :key="event.id">
         <q-item-section >
           <q-item-label>{{ event.name }}</q-item-label>
           <q-item-label caption>{{ event.city }}</q-item-label>
@@ -32,10 +32,10 @@ export default {
     NothingMessage,
   },
   computed: {
-    ...mapGetters(['getSuggestedEvents']),
+    ...mapGetters('events', { eventsList: 'getSuggestedEvents' }),
   },
   methods: {
-    ...mapActions(['revokeEvent']),
+    ...mapActions('events', ['revokeEvent']),
     async removeEvent(id) {
       const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Вы действительно хотите отозвать мероприятие?',

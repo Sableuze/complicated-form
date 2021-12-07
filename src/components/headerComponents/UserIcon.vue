@@ -59,8 +59,8 @@ export default {
     ...mapGetters(['getUserRole', 'getUser']),
     theRole() {
       switch (this.getUserRole) {
-        case 'moder': {
-          return 'Модератор';
+        case 'admin': {
+          return 'Администратор';
         }
         default: {
           return 'Пользователь';

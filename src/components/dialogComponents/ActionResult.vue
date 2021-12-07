@@ -14,7 +14,10 @@ export default {
   name: 'ActionResult',
   props: {
     redirect: {
-      type: String,
+      type: Object,
+      default() {
+        return { name: 'Home' };
+      },
     },
     successText: {
       type: String,

@@ -16,7 +16,7 @@
 import { gsap } from 'gsap';
 import Email from '@/components/formComponents/Email.vue';
 import Auth from '@/api/authApi';
-import apiErrors from '@/components/apiErrors.vue';
+import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
 import { errorTypesSendResetMessage } from '@/helpers/errorTypes';

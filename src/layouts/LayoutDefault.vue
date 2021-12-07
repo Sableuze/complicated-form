@@ -1,7 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="q-ma-none" v-if="this.$store.getters.isLoggedIn">
     <q-header class="header">
-
       <q-toolbar>
         <q-btn flat round dense @click="drawer = !drawer" icon="menu" class="q-mr-sm"/>
         <q-space></q-space>
@@ -45,6 +44,16 @@
 
             <q-item-section>
               Профиль
+            </q-item-section>
+          </q-item>
+          <q-item clickable v-ripple :to="{name: 'ActivateCode'}"
+            class="bg-deep-orange-14 text-white">
+            <q-item-section avatar>
+              <q-icon name="workspace_premium" />
+            </q-item-section>
+
+            <q-item-section>
+              Активировать
             </q-item-section>
           </q-item>
         </q-list>

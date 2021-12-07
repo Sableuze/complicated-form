@@ -6,24 +6,35 @@ export const errorTypesAuth = {
   shortPassword: 'Пароль должен содержать не менее 8 символов',
 
 };
-export const errorTypesLogin = {
-  500: 'Неправильный логин или пароль',
+export const errorTypesAuthApi = {
+  500: 'Ошибка сервера',
+  wrongLoginOrPassword: 'Неправильный логин или пароль',
+  readUserInfo: 'Ошибка при получении данных пользователя',
+  updateUserInfo: 'Ошибка при обновлении данных пользователя',
+  sendResetEmail: 'Ошибка при отправке сообщения',
+  resetPassword: 'Ошибка при изминении пароля',
 };
+
+export const errorTypesDB = {
+  read: 'Ошибка при получении данных с базы',
+  create: 'Ошибка при добавлении данных в базу',
+  delete: 'Ошибка при удалении данных с базы',
+};
+
 export const errorTypesRegister = {
   takenUsername: 'Данное имя пользователя уже занято',
   takenEmail: 'Данная почта уже занята',
   wrongPassword: 'Необходима как минимум одна цифра, строчная и заглавная буква',
   wrongUsername: 'Имя пользователя введено некорректно',
 };
-
+export const errorTypesRedeem = {
+  noCode: 'Поле не может быть пустым',
+  invalidCode: 'Некорректный код активации',
+};
 export const errorTypesInfo = {
   shortName: 'Введите не менее трех букв',
   noBlockNumber: 'Укажите номер блока',
   noRoomNumber: 'Укажите номер комнаты',
-};
-
-export const errorTypesSendResetMessage = {
-  500: 'sxcsdsda',
 };
 
 export const errorTypesMain = {

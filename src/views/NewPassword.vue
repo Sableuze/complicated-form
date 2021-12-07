@@ -20,7 +20,7 @@ import { mapActions } from 'vuex';
 import Password from '@/components/formComponents/Password.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 import Auth from '@/api/authApi';
-import ActionResult from '@/components/ActionResult.vue';
+import ActionResult from '@/components/dialogComponents/ActionResult.vue';
 
 export default {
   name: 'NewPassword',

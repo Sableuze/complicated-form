@@ -1,12 +1,8 @@
 import { createStore } from 'vuex';
 import rating from '@/api/rating';
 import events from './modules/events';
+import alerts from './modules/alerts';
 import auth from './modules/auth';
-import blogSocket from '@/plugins/blogSocket';
-// eslint-disable-next-line no-unused-vars
-import { getItem, removeItem, setItem } from '@/helpers/localStorageHelper';
-// eslint-disable-next-line no-unused-vars
-import { formatDates, reformatDates } from '@/helpers/reformatDatesHelper';
 
 export default createStore({
   state: {
@@ -114,7 +110,6 @@ export default createStore({
   },
 
   modules: {
-    events, auth,
+    events, auth, alerts,
   },
-  plugins: [blogSocket],
 });

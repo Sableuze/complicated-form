@@ -15,7 +15,7 @@ import { mapActions } from 'vuex';
 import Email from '@/components/formComponents/Email.vue';
 import Password from '@/components/formComponents/Password.vue';
 import Username from '@/components/formComponents/Username.vue';
-import apiErrors from '@/components/apiErrors.vue';
+import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
 import { errorTypesRegister } from '@/helpers/errorTypes';
@@ -48,7 +48,7 @@ export default {
       });
       debugger;
       if (status) {
-        if (status && this.errors.indexOf(status)) this.errors.push(status);
+        if (status && this.errors.indexOf(status) === -1) this.errors.push(status);
       } else {
         debugger;
         this.$router.push({ name: 'Login' });

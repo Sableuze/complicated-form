@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Notify } from 'quasar';
 import { dadataToken, authToken, db } from '@/api/tokens';
 
 export const redbox = axios.create({
@@ -31,3 +32,22 @@ export const database = axios.create({
 
 database.defaults.headers.common['Content-Type'] = 'application/json';
 database.defaults.headers.common.Authorization = `Bearer ${db}`;
+
+export function addErrorHandler(fn) {
+  authentication.interceptors.response.use((response) => response, fn);
+  database.interceptors.response.use((response) => response, fn);
+}
+
+addErrorHandler((response) => {
+  let text = 'Ошибка ответа от сервера';
+
+  if ('vueAlert' in response.config) {
+    text = ` ${response.config.vueAlert}`;
+  }
+  Notify.create({
+    message: text,
+    type: 'negative',
+    position: 'top-right',
+  });
+  return { res: false };
+});

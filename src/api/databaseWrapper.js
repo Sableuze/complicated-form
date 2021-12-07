@@ -1,38 +1,31 @@
 import { database } from '@/api/http';
+import { errorTypesAuthApi, errorTypesDB } from '@/helpers/errorTypes';
 
 export default class Db {
-  static async create(record, table) {
-    try {
-      await database.post('/Create', {
-        record,
-        table,
-      });
-    } catch (err) {
-      return err.response;
-    }
+  static async create({ record, table }) {
+    return database.post('/Create', {
+      record,
+      table,
+    }, { vueAlert: errorTypesDB.create });
   }
 
-  static async update(record, table) {
-    try {
-      await database.post('Update', {
-        record,
-        table,
-      });
-    } catch (err) {
-      return err.response;
-    }
+  static async update({ id, record, table }) {
+    return database.post('Update11', {
+      id,
+      record,
+      table,
+    }, { vueAlert: errorTypesAuthApi.updateUserInfo });
+  }
+
+  static async delete({ id, table }) {
+    return database.post('/Delete', { id, table }, { vueAlert: errorTypesDB.delete });
   }
 
   static async read(args) {
-    try {
-      debugger;
-      const response = await database.post('/Read', {
-        ...args,
-      });
-      console.log(response);
-    } catch (err) {
-      return err.response;
-    }
+    const { data } = await database.post('/Read', {
+      ...args,
+    }, { vueAlert: errorTypesDB.read });
+    return data ? data.records : false;
   }
 
   static async list() {

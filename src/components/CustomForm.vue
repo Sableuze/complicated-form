@@ -79,7 +79,7 @@ import FileUploader from '@/components/formComponents/FileUploader.vue';
 import Dates from '@/components/formComponents/Dates.vue';
 import Rating from '@/components/formComponents/Rating.vue';
 import Address from '@/components/formComponents/Address.vue';
-import ActionResult from '@/components/ActionResult.vue';
+import ActionResult from '@/components/dialogComponents/ActionResult.vue';
 import { reformatDates } from '@/helpers/reformatDatesHelper';
 
 export default {

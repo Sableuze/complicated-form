@@ -10,7 +10,7 @@
 <script>
 import LayoutAuth from '@/layouts/LayoutAuth.vue';
 import LayoutDefault from '@/layouts/LayoutDefault.vue';
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import ConfirmDialog from '@/components/dialogComponents/ConfirmDialog.vue';
 
 export default {
   name: 'app',

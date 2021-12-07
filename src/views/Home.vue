@@ -24,12 +24,16 @@
 import { mapGetters, mapActions } from 'vuex';
 import DraftList from '@/components/DraftList.vue';
 import SuggestedList from '@/components/SuggestedList.vue';
+import Db from '../api/databaseWrapper';
 
 export default {
   name: 'Home',
   components: { DraftList, SuggestedList },
   data() {
     return {};
+  },
+  async mounted() {
+    Db.read({ table: 'codes' });
   },
   computed: {
     ...mapGetters([]),
@@ -55,10 +59,12 @@ export default {
   display: flex;
   justify-content: space-around;
   min-height: 300px;
+
   > div {
     flex: 1;
     max-width: 350px
   }
+
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
@@ -67,7 +73,7 @@ export default {
       max-width: unset;
     }
   }
-  }
+}
 
 .title-suggested {
   color: green;

@@ -22,7 +22,7 @@ const routes = [
   },
 
   {
-    path: '/login',
+    path: '/auth/login',
     name: 'Login',
     component: () => import('@/views/authPages/Login.vue'),
     meta: {
@@ -30,7 +30,7 @@ const routes = [
     },
   },
   {
-    path: '/register',
+    path: '/auth/register',
     name: 'Register',
     component: () => import('@/views/authPages/Register.vue'),
     meta: {
@@ -38,7 +38,7 @@ const routes = [
     },
   },
   {
-    path: '/edit-user',
+    path: '/auth/edit',
     name: 'EditUserInfo',
     component: () => import('@/views/authPages/EditUserInfo.vue'),
     meta: {
@@ -46,7 +46,7 @@ const routes = [
     },
   },
   {
-    path: '/recover',
+    path: '/auth/recover',
     name: 'RecoverPassword',
     component: () => import('@/views/RecoverPassword.vue'),
     meta: {
@@ -54,12 +54,17 @@ const routes = [
     },
   },
   {
-    path: '/reset',
+    path: '/auth/reset',
     name: 'NewPassword',
     component: () => import('@/views/NewPassword.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
+  },
+  {
+    path: '/activate',
+    name: 'ActivateCode',
+    component: () => import('@/views/ActivateCode.vue'),
   },
   {
     path: '/create',
