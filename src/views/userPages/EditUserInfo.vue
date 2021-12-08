@@ -33,13 +33,13 @@
       <div class="buttons">
         <q-btn
           :disable="getLoadingStatus"
-          v-if="isFirstTime"
+          v-if="isProfileFilled"
           size="lg"
           @click="$router.back()"
           label="Назад"
         ></q-btn>
         <q-btn
-          :disable="getLoadingStatus"
+          :loading="getLoadingStatus"
           type="submit"
           color="deep-orange-10"
           size="lg"
@@ -69,10 +69,8 @@ export default {
     });
   },
   computed: {
-    ...mapGetters(['getUser', 'getLoadingStatus']),
-    isFirstTime() {
-      return Object.values(this.form).some((i) => i);
-    },
+    ...mapGetters(['getUser', 'getLoadingStatus', 'isProfileFilled']),
+
   },
   data() {
     return {
@@ -89,15 +87,16 @@ export default {
   },
   methods: {
     ...mapActions(['updateUserInfo']),
-    onSubmit() {
-      const { status } = this.updateUserInfo({
+    async onSubmit() {
+      const ok = await this.updateUserInfo({
         id: this.getUser.accountId,
         data: {
           ...this.form,
         },
       });
-      if (status) {
-        if (status && this.errors.indexOf(status)) this.errors.push(status);
+      debugger;
+      if (ok) {
+        this.$router.push({ name: 'Home' });
       }
     },
   },

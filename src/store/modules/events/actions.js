@@ -11,14 +11,11 @@ export default {
   async createEvent({ commit }, data) {
     commit('changeLoadingStatus', true);
     data.dates = formatDates(data.dates);
-    const { status } = Db.create({ field: data, table: 'draft' });
-    // eslint-disable-next-line no-constant-condition
-    if (!status) {
+    const { ok } = await Db.create({ record: data, table: 'draft' });
+    debugger;
+    if (ok) {
       commit('addEventToDraft', data);
-      commit('changeSuccessStatus', true);
     } else commit('changeSuccessStatus', false);
-
-    commit('changeLoadingStatus', false);
   },
 
   async suggestEvent({ commit }, eventId) {
@@ -65,8 +62,11 @@ export default {
   },
 
   getMySuggestedEvents() {},
-  async getAllSuggestedEvents() {
+  async getAllSuggestedEvents({ commit }) {
+    debugger;
     const { records } = await Db.read({ table: 'suggested' });
-    console.log(records);
+    records.forEach((i) => {
+      commit('addEventToSuggested', i);
+    });
   },
 };

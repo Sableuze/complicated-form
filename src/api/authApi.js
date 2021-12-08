@@ -1,12 +1,13 @@
 import { authentication } from './http';
 // eslint-disable-next-line import/prefer-default-export
 import { errorTypesAuthApi } from '@/helpers/errorTypes';
+import { successTypesUser } from '@/helpers/successTypes';
 
 export default class Auth {
   static async register({ email, username, password }) {
     const { data } = await authentication.post('/Create', {
       email, password, username },
-    { vueAlert: '404' });
+    { onError: '404' });
     return data.account;
   }
 
@@ -32,10 +33,10 @@ export default class Auth {
   }
 
   static async updateUserInfo({ id, data }) {
-    return authentication.post('/Update2', {
-      id,
-      profile: { ...data } },
-    { vueAlert: errorTypesAuthApi.updateUserInfo });
+    return authentication.post('/Update', { id, profile: { ...data } },
+      {
+        onSuccess: successTypesUser.updateUserInfo,
+        onError: errorTypesAuthApi.updateUserInfo });
   }
 
   static async sendPasswordResetEmail(email) {
@@ -48,13 +49,16 @@ export default class Auth {
       subject: 'Password reset',
       textContent: `Hi there,\n click here to reset your password:  http://localhost:8080/reset/?cd=$code&ml=${emailDecoded} \n
         ${new Date(date)}`,
-    }, { vueAlert: errorTypesAuthApi.sendResetEmail });
+    }, { onSuccess: successTypesUser.sendResetEmail,
+      onError: errorTypesAuthApi.sendResetEmail });
   }
 
   static async resetPassword({ code, email, newPassword, confirmPassword }) {
     await authentication.post('/ResetPassword', {
       code, email, newPassword, confirmPassword,
-    }, { vueAlert: errorTypesAuthApi.resetPassword });
+    }, {
+      onSuccess: successTypesUser.resetPassword,
+      onError: errorTypesAuthApi.resetPassword });
   }
 
   static async readSession(sessionId) {
@@ -65,7 +69,7 @@ export default class Auth {
   static async readUserById(id) {
     const { data } = await authentication.post('/Read', {
       id,
-    }, { vueAlert: errorTypesAuthApi.readUserInfo });
+    }, { onError: errorTypesAuthApi.readUserInfo });
     return data ? data.account : false;
   }
 

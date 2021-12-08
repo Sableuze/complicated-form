@@ -32,10 +32,10 @@ export default {
     NothingMessage,
   },
   computed: {
-    ...mapGetters('events', { eventsList: 'getSuggestedEvents' }),
+    ...mapGetters({ eventsList: 'getSuggestedEvents' }),
   },
   methods: {
-    ...mapActions('events', ['revokeEvent']),
+    ...mapActions(['revokeEvent']),
     async removeEvent(id) {
       const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Вы действительно хотите отозвать мероприятие?',

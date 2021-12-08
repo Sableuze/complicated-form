@@ -31,10 +31,10 @@ export default {
     NothingMessage,
   },
   computed: {
-    ...mapGetters('events', { eventsList: 'getDraftEvents' }),
+    ...mapGetters({ eventsList: 'getDraftEvents' }),
   },
   methods: {
-    ...mapActions('events', { deleteEvent: 'deleteEvent' }),
+    ...mapActions({ deleteEvent: 'deleteEvent' }),
     async removeEvent(id) {
       const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Do you really want to delete the event and all its data?',

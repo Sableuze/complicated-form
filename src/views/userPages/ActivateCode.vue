@@ -1,8 +1,8 @@
 <template>
   <div>
-    <ActionResult :redirect="{name: 'Home'}"></ActionResult>
+    <ActionResult :failureText="''" :successText="''" :redirect="{name: 'Home'}"></ActionResult>
     <h2 class="title"></h2>
-    <api-errors :errorCodes="errors" :source="errorTypes"></api-errors>
+<!--    <api-errors :errorCodes="errors" :source="errorTypes"></api-errors>-->
     <q-form @submit="onSubmit">
       <q-input
         v-model="code"
@@ -29,31 +29,28 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { Notify } from 'quasar';
 import Db from '@/api/databaseWrapper';
 import ActionResult from '@/components/dialogComponents/ActionResult.vue';
-import apiErrors from '@/components/dialogComponents/apiErrors.vue';
+// import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import { errorTypesRedeem } from '@/helpers/errorTypes';
 
 export default {
   name: 'ActivateCode',
   components: {
-    ActionResult, apiErrors,
+    ActionResult,
+    // apiErrors,
   },
-  async mounted() {
-    this.errorTypes = errorTypesRedeem;
-    await Db.create({
-      record: {
-        code: '111-111-111',
-      },
-      table: 'codes',
-    });
-    console.log(await Db.read({
-      table: 'codes',
-    }));
-    console.log(await Db.read({
-      table: 'users',
-    }));
-  },
+  // async mounted() {
+  //   // this.errorTypes = errorTypesRedeem;
+  //   // debugger;
+  //   await Db.create({
+  //     record: {
+  //       code: '111-111-111',
+  //     },
+  //     table: 'codes',
+  //   }, false);
+  // },
   computed: {
     ...mapGetters(['getLoadingStatus', 'getUser']),
   },
@@ -62,8 +59,8 @@ export default {
       code: '',
       theCode: '',
 
-      errors: [],
-      errorTypes: '',
+      // errors: [],
+      // errorTypes: '',
     };
   },
   methods: {
@@ -74,11 +71,11 @@ export default {
       const records = await Db.read({
         query: `code == "${this.code}"`,
         table: 'codes',
-      });
+      }, false);
       if (records.length) {
         this.setTheCode(records);
         if (this.theCode) {
-          const { res } = await Db.update({
+          const ok = await this.updateUserInfo({
             id: this.getUser.accountId,
             record: {
               profile: {
@@ -86,14 +83,19 @@ export default {
                 role: 'admin',
               },
             },
-            table: 'users',
           });
-          if (res) {
-            Db.delete({ id: this.theCode.id, table: 'codes' });
+          if (ok) {
+            Db.delete({ id: this.theCode.id, table: 'codes' }, false);
             this.$store.dispatch('changeSuccessStatus', true);
           }
         }
-      } else if (this.errors.indexOf('invalidCode') === -1) this.errors.push('invalidCode');
+      } else {
+        Notify.create({
+          message: errorTypesRedeem.invalidCode,
+          type: 'negative',
+          position: 'top-right',
+        });
+      }
     },
 
     setTheCode(val) {

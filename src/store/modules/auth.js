@@ -17,7 +17,8 @@ const state = {
 
 const getters = {
   getUser: (state) => state.user,
-  isProfileFilled: (state) => Object.values(state.user.profile).every((i) => i),
+  isProfileFilled: (state) => Object.values(state.user.profile).length
+    && Object.values(state.user.profile).every((i) => i),
   getUserRole: (state) => state.user.profile.role,
   isLoggedIn: (state) => !!state.user.username,
   getAuthErrors: (state) => state.authErrors,
@@ -75,20 +76,16 @@ const actions = {
   async readUser({ commit, dispatch }, userId) {
     const { email, username, id, profile } = await Auth.readUserById(userId);
     commit('setUser', { email, username, accountId: id, profile });
+    debugger;
     if (profile.role === 'admin') dispatch('getAllSuggestedEvents');
   },
 
-  async updateUserInfo({ commit, dispatch }, { id, data }) {
-    commit('changeLoadingStatus', true);
-    const { status } = await Auth.updateUserInfo({ id, data });
-    commit('changeLoadingStatus', false);
-    if (!status) {
+  async updateUserInfo({ dispatch }, { id, data }) {
+    const { ok } = await Auth.updateUserInfo({ id, data });
+    if (ok) {
       dispatch('readUser', id);
-      commit('changeSuccessStatus', true);
-    } else {
-      commit('changeSuccessStatus', false);
-      return status;
     }
+    return ok;
   },
 
   logout({ commit }) {

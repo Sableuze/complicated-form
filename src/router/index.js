@@ -40,7 +40,7 @@ const routes = [
   {
     path: '/auth/edit',
     name: 'EditUserInfo',
-    component: () => import('@/views/authPages/EditUserInfo.vue'),
+    component: () => import('@/views/userPages/EditUserInfo.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -48,7 +48,7 @@ const routes = [
   {
     path: '/auth/recover',
     name: 'RecoverPassword',
-    component: () => import('@/views/RecoverPassword.vue'),
+    component: () => import('@/views/userPages/RecoverPassword.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -56,7 +56,7 @@ const routes = [
   {
     path: '/auth/reset',
     name: 'NewPassword',
-    component: () => import('@/views/NewPassword.vue'),
+    component: () => import('@/views/userPages/NewPassword.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -64,7 +64,7 @@ const routes = [
   {
     path: '/activate',
     name: 'ActivateCode',
-    component: () => import('@/views/ActivateCode.vue'),
+    component: () => import('@/views/userPages/ActivateCode.vue'),
   },
   {
     path: '/create',
@@ -105,7 +105,7 @@ router.beforeEach((to, from, next) => {
   store.dispatch('changeSuccessStatus', null);
 
   if (to.name !== 'EditUserInfo' && store.getters.isLoggedIn && !store.getters.isProfileFilled) {
-    next({ name: 'EditUserInfo' });
+    router.replace({ name: 'EditUserInfo' });
     return;
   }
   if (to.matched.some((route) => route.meta.requiresAuth)) {

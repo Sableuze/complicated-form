@@ -1,10 +1,12 @@
 import { createStore } from 'vuex';
+import { Notify } from 'quasar';
 import rating from '@/api/rating';
 import events from './modules/events';
 import alerts from './modules/alerts';
 import auth from './modules/auth';
+import { addRequestHandler, addResponseHandler } from '@/api/http';
 
-export default createStore({
+const store = createStore({
   state: {
     ratingList: null,
     isSuccess: null,
@@ -50,55 +52,6 @@ export default createStore({
       commit('changeLoadingStatus', false);
     },
 
-    // async fetchTracks({ commit }) {
-    //   commit('changeLoadingStatus', true);
-    //   const response = await track.getTracks(this.state.user.role);
-    //   if (response.data && response.data.length) {
-    //     if (this.state.user.role !== 'teacher') {
-    //       response.data = response.data.filter((item) => item.data.published === true);
-    //     }
-    //     response.data.map((i) => reformatDates(i.data));
-    //     commit('changeTracks', response.data);
-    //   }
-    //   commit('changeLoadingStatus', false);
-    // },
-    //
-    // async createEvent({commit}, form) {
-    //   // проверяем, загрузил ли пользователь изображение, и, если да,
-    //   // заменяем ссылку в previewPicture
-    //   // if (form.previewPicture instanceof FormData) {
-    //   //   const imgUrl = await products.uploadImage(form.previewPicture, /////);
-    //   //     form.previewPicture = imgUrl;
-    //   // }
-    //   form = formatDates(form);
-    //   const response = await track.createEvent(form, /////);
-    //   if (response) {
-    //     commit('removeTracks');
-    //     commit('changeSuccessStatus', true);
-    //   } else {
-    //     commit('changeSuccessStatus', false);
-    //   }
-    // },
-
-    // async editTrack({ commit, state }, data) {
-    //   if (data.form.previewPicture instanceof FormData) {
-    //     data.form.previewPicture = await track.uploadImage(data.form.previewPicture,
-    //       this.getters.getUser.role);
-    //   }
-    //   data.form = formatDates(data.form);
-    //   const response = await track.changeTrack(data.id, data.form, this.getters.getUser.role);
-    //   if (response) {
-    //     data.form = reformatDates(data.form);
-    //
-    //     const trackIndex = state.tracks.findIndex((i) => i.id === data.id);
-    //     const currentTrack = state.tracks[trackIndex].data;
-    //     commit('changeTrack', { currentTrack, form: data.form });
-    //     commit('changeSuccessStatus', true);
-    //   } else {
-    //     commit('changeSuccessStatus', false);
-    //   }
-    // },
-
     changeLoadingStatus({ commit }, status) {
       commit('changeLoadingStatus', status);
     },
@@ -113,3 +66,39 @@ export default createStore({
     events, auth, alerts,
   },
 });
+addRequestHandler((fn) => {
+  store.dispatch('changeLoadingStatus', true);
+  return fn;
+});
+
+addResponseHandler(
+  (success) => {
+    store.dispatch('changeLoadingStatus', false);
+    const { config } = success;
+    if ('onSuccess' in config) {
+      Notify.create({
+        message: config.onSuccess,
+        type: 'positive',
+        position: 'top-right',
+      });
+    }
+
+    return { ok: true, data: success.data };
+  },
+
+  (error) => {
+    store.dispatch('changeLoadingStatus', false);
+    const { config } = error;
+    if ('onError' in config) {
+      Notify.create({
+        message: config.onError,
+        type: 'negative',
+        position: 'top-right',
+      });
+      return { ok: false };
+    }
+    return Promise.reject((error));
+  },
+);
+
+export default store;

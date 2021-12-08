@@ -19,6 +19,7 @@ export const errorTypesDB = {
   read: 'Ошибка при получении данных с базы',
   create: 'Ошибка при добавлении данных в базу',
   delete: 'Ошибка при удалении данных с базы',
+  update: 'Ошибка при обновлении данных',
 };
 
 export const errorTypesRegister = {
