@@ -8,11 +8,17 @@ const getEvents = (accountId) => {
 
   else if (store.getters.getUser.accountId === accountId) store.dispatch('getMySuggestedEvents');
 };
-const isItMe = (accountId) => store.getters.getUser.profile.accountId === accountId;
+const isItMe = (accountId) => {
+  console.log(store.getters.getUser.accountId, accountId,
+    store.getters.getUser.accountId === accountId);
+  debugger;
+  return store.getters.getUser.accountId === accountId;
+};
 
 export default function startEventHandler() {
   const channelMain = ably.channels.get('main');
   const channelPersonal = ably.channels.get(store.getters.getUser.accountId);
+  console.log(store.getters.getUser.accountId);
 
   channelMain.subscribe('mainFlow', async (msg) => {
     switch (msg.data.event) {
@@ -22,11 +28,17 @@ export default function startEventHandler() {
       }
       case eventTypesPosts.e_published: {
         getEvents(msg.data.accountId);
-        debugger;
         await store.dispatch('createNotification', msg.data);
-        debugger;
+        console.log(store.getters.getUser.accountId);
         if (isItMe(msg.data.accountId)) {
-          ably.channels.get(msg.data.accountId).publish('personalFlow', { event: eventTypesPosts.e_published, text: msg.text });
+          debugger;
+          store.dispatch('getMySuggestedEvents');
+          Notify.create({
+            message: 'Ваше мероприятие было одобрено модератором',
+            type: 'positive',
+            position: 'top-right',
+          });
+          // channelPersonal.publish('personalFlow', { event: eventTypesPosts.e_published, text: msg.data.text });
         }
         break;
       }
@@ -55,12 +67,13 @@ export default function startEventHandler() {
   });
 
   channelPersonal.subscribe('personalFlow', async (msg) => {
+    debugger;
     switch (msg.data.event) {
       case eventTypesPosts.e_published: {
         store.dispatch('getMySuggestedEvents');
         Notify.create({
           message: msg.data.text,
-          type: 'negative',
+          type: 'positive',
           position: 'top-right',
         });
 

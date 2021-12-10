@@ -8,7 +8,7 @@ const channelMain = ably.channels.get('main');
 
 export default {
 
-  async publishEvent({ commit, getters }, eventId) { // for admin
+  async publishEvent({ commit }, eventId) { // for admin
     const theEvent = { ...this.getters.getEventById(eventId) };
     theEvent.status = 'published';
     const { ok } = await Db.update({
@@ -20,7 +20,7 @@ export default {
       commit('addEventToPublished', theEvent);
       commit('removeEventFromSuggested', eventId);
       channelMain.publish('mainFlow', { event: eventTypesPosts.e_published,
-        accountId: getters.getUser.profile.accountId,
+        accountId: theEvent.creatorId,
         text: 'Ваше мероприятие опубликовано' });
     }
   },
@@ -35,7 +35,7 @@ export default {
     } commit('changeSuccessStatus', false);
   },
 
-  async suggestEvent({ commit, getters }, eventId) {
+  async suggestEvent({ commit }, eventId) {
     const theEvent = { ...this.getters.getEventById(eventId) };
     theEvent.status = 'suggested';
     const { ok } = await Db.update({
@@ -49,7 +49,7 @@ export default {
       commit('changeSuccessStatus', true);
       debugger;
       channelMain.publish('mainFlow', { event: eventTypesPosts.e_suggested,
-        accountId: getters.getUser.profile.accountId,
+        accountId: theEvent.creatorId,
         text: 'Ваше мероприятие опубликовано' });
     }
   },
@@ -80,8 +80,8 @@ export default {
       commit('changeSuccessStatus', true);
     } else commit('changeSuccessStatus', false);
   },
-  async getMySuggestedEvents({ commit, getters }, { onSuccess }) {
-    const { records } = await Db.read({ query: `status == 'suggested' and id == '${getters.getUser.accountId}'`, table: 'events' }, { onSuccess });
+  async getMySuggestedEvents({ commit, getters }) {
+    const { records } = await Db.read({ query: `status == 'suggested' and id == '${getters.getUser.accountId}'`, table: 'events' }, { });
     commit('setSuggestedEvents', records);
   },
   async getAllSuggestedEvents({ commit }) {

@@ -68,7 +68,8 @@ export default {
     },
 
     onClick(eventId) {
-      if (this.getUserRole === 'admin') this.$router.push((`/${eventId}/moderate`));
+      debugger;
+      if (this.userRole === 'admin') this.$router.push((`/${eventId}/moderate`));
     },
 
   },

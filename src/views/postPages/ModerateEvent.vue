@@ -21,7 +21,7 @@
         padding="md"
         class="btn label"
         color="accent"
-        @click="onSubmit"
+        @click="onClick"
       >Опубликовать</q-btn>
     </div>
     <ActionResult :redirect="'/'" :show-text="false"></ActionResult>
@@ -49,7 +49,7 @@ export default {
   methods: {
     ...mapActions(['publishEvent']),
 
-    omSubmit() {
+    onClick() {
       this.publishEvent(this.id);
     },
   },
