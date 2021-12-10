@@ -80,14 +80,15 @@ export default {
   name: 'EventShowcase',
   props: {
     eventId: {
-      type: Number,
+      type: String,
     },
 
   },
   computed: {
     ...mapGetters(['getEventById']),
     theEvent() {
-      const theEvent = this.getEventById(this.eventId);
+      const theEvent = { ...this.getEventById(this.eventId) };
+      debugger;
       theEvent.dates = reformatDates(theEvent.dates, this.toReformatDate);
       return theEvent;
     },

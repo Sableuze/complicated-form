@@ -4,6 +4,7 @@ import rating from '@/api/rating';
 import events from './modules/events';
 import alerts from './modules/alerts';
 import auth from './modules/auth';
+import notifications from './modules/notifications';
 import { addRequestHandler, addResponseHandler } from '@/api/http';
 
 const store = createStore({
@@ -63,11 +64,12 @@ const store = createStore({
   },
 
   modules: {
-    events, auth, alerts,
+    events, auth, alerts, notifications,
   },
 });
 addRequestHandler((fn) => {
   store.dispatch('changeLoadingStatus', true);
+  debugger;
   return fn;
 });
 
@@ -75,7 +77,7 @@ addResponseHandler(
   (success) => {
     store.dispatch('changeLoadingStatus', false);
     const { config } = success;
-    if ('onSuccess' in config) {
+    if ('onSuccess' in config && config.showResult) {
       Notify.create({
         message: config.onSuccess,
         type: 'positive',
@@ -89,7 +91,7 @@ addResponseHandler(
   (error) => {
     store.dispatch('changeLoadingStatus', false);
     const { config } = error;
-    if ('onError' in config) {
+    if ('onError' in config && config.showResult) {
       Notify.create({
         message: config.onError,
         type: 'negative',

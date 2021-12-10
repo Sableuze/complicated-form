@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <p v-show="this.isSuccess" class="result success-text">{{ successText }}</p>
+    <p v-show="this.isSuccess" class="result success-text">{{ showText ? successText : ''}}</p>
     <p v-show="!this.isSuccess && this.isSuccess !== null"
-       class="result failure-text">{{ failureText }}</p>
-  </div>
+       class="result failure-text">{{ showText ? failureText : '' }}</p>
 </template>
 
 <script>
@@ -18,6 +16,10 @@ export default {
       default() {
         return { name: 'Home' };
       },
+    },
+    showText: {
+      type: Boolean,
+      default: true,
     },
     successText: {
       type: String,

@@ -70,19 +70,33 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import UserIcon from '@/components/headerComponents/UserIcon.vue';
+import startEventHandler from '@/helpers/eventHandler';
 
 export default {
   name: 'LayoutDefault',
   components: {
     UserIcon,
   },
+  mounted() {
+    if (this.role === 'admin') {
+      this.getAllSuggestedEvents();
+    } else if (this.role === 'user') {
+      this.getMySuggestedEvents();
+    }
+    startEventHandler();
+  },
   computed: {
+    ...mapGetters({ role: 'getUserRole' }),
   },
   data() {
     return {
       drawer: false,
     };
+  },
+  methods: {
+    ...mapActions(['getMySuggestedEvents', 'getAllSuggestedEvents']),
   },
 };
 </script>

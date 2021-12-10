@@ -19,7 +19,6 @@ import Email from '@/components/formComponents/Email.vue';
 import Password from '@/components/formComponents/Password.vue';
 import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
-import { errorTypesLogin } from '@/helpers/errorTypes';
 
 export default {
   name: 'Login',
@@ -32,7 +31,6 @@ export default {
   },
   mounted() {
     const $q = useQuasar();
-    this.errorTypes = errorTypesLogin;
     $q.notify('Message');
   },
   computed: {

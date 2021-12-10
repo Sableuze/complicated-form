@@ -26,6 +26,14 @@ export default {
     setItem('eventsDraft', state.eventsDraft);
   },
 
+  setDraftEvents(state, events) {
+    state.eventsDraft = events;
+  },
+
+  setSuggestedEvents(state, events) {
+    state.eventsSuggested = events;
+  },
+
   editEvent(state, { event, newData }) {
     event = newData;
     if (event.status === 'published') setItem('eventsPublished', state.eventsPublished);

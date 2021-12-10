@@ -3,10 +3,9 @@ import Auth from '@/api/authApi';
 
 const state = {
   user: getItem('user') || {
-    name: '',
-    surname: '',
-    id: '',
-    isOnline: '',
+    profile: {
+
+    },
   },
   sessionId: getItem('sessionId') || '',
   // isRegistrationSuccess: null,

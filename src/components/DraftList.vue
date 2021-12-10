@@ -50,8 +50,8 @@ export default {
           opacity: 0,
           height: 0,
           duration: 1,
-          onComplete: () => {
-            this.deleteEvent(id);
+          onComplete: async () => {
+            await this.deleteEvent(id);
             gsap.to(el, {
               opacity: 1,
               height: 'auto',

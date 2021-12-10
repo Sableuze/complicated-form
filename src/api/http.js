@@ -33,7 +33,7 @@ database.defaults.headers.common['Content-Type'] = 'application/json';
 database.defaults.headers.common.Authorization = `Bearer ${db}`;
 export function addRequestHandler(fn) {
   authentication.interceptors.request.use(fn);
-  database.interceptors.response.use(fn);
+  database.interceptors.request.use(fn);
 }
 export function addResponseHandler(onSuccess, onError) {
   authentication.interceptors.response.use(onSuccess, onError);

@@ -43,6 +43,7 @@ const routes = [
     component: () => import('@/views/userPages/EditUserInfo.vue'),
     meta: {
       layout: 'LayoutAuth',
+      requiresAuth: true,
     },
   },
   {
@@ -65,6 +66,9 @@ const routes = [
     path: '/activate',
     name: 'ActivateCode',
     component: () => import('@/views/userPages/ActivateCode.vue'),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/create',
@@ -77,7 +81,24 @@ const routes = [
   {
     path: '/:id/suggest',
     name: 'SuggestEvent',
-    component: () => import('@/views/SuggestEvent.vue'),
+    component: () => import('@/views/postPages/SuggestEvent.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/:id/moderate',
+    name: 'ModerateEvent',
+    component: () => import('@/views/postPages/ModerateEvent.vue'),
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('@/views/userPages/Notifications.vue'),
     meta: {
       requiresAuth: true,
     },

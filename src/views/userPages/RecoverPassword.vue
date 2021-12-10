@@ -19,7 +19,7 @@ import Auth from '@/api/authApi';
 import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
-import { errorTypesSendResetMessage } from '@/helpers/errorTypes';
+// import { errorTypesSendResetMessage } from '@/helpers/errorTypes';
 
 export default {
   name: 'RecoverPassword',
@@ -28,7 +28,7 @@ export default {
   },
   mounted() {
     gsap.fromTo('.result', { opacity: 0 }, { opacity: 1, duration: 0.4 });
-    this.errorTypes = errorTypesSendResetMessage;
+    // this.errorTypes = errorTypesSendResetMessage;
   },
   data() {
     return {

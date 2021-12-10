@@ -2,10 +2,15 @@
   <div v-cloak>
     <q-list bordered separator v-if="eventsList.length">
 
-      <q-item clickable v-ripple
-              :id="event.id"
-              v-for="event in eventsList" :key="event.id">
-        <q-item-section >
+      <q-item
+        :clickable="userRole === 'admin'"
+        v-ripple
+        :id="event.id"
+        v-for="event in eventsList"
+        :key="event.id"
+        @click="onClick(event.id)"
+      >
+        <q-item-section>
           <q-item-label>{{ event.name }}</q-item-label>
           <q-item-label caption>{{ event.city }}</q-item-label>
         </q-item-section>
@@ -32,7 +37,7 @@ export default {
     NothingMessage,
   },
   computed: {
-    ...mapGetters({ eventsList: 'getSuggestedEvents' }),
+    ...mapGetters({ eventsList: 'getSuggestedEvents', userRole: 'getUserRole' }),
   },
   methods: {
     ...mapActions(['revokeEvent']),
@@ -51,8 +56,8 @@ export default {
           opacity: 0,
           height: 0,
           duration: 1,
-          onComplete: () => {
-            this.revokeEvent(id);
+          onComplete: async () => {
+            await this.revokeEvent(id);
             gsap.to(el, {
               opacity: 1,
               height: 'auto',
@@ -60,6 +65,10 @@ export default {
           },
         });
       }
+    },
+
+    onClick(eventId) {
+      if (this.getUserRole === 'admin') this.$router.push((`/${eventId}/moderate`));
     },
 
   },

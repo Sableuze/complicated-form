@@ -91,10 +91,6 @@ export default {
         return ['create', 'edit'].includes(value);
       },
     },
-    id: {
-      type: Number,
-      default: 0,
-    },
   },
   components: {
     RegularInfo,
@@ -108,11 +104,11 @@ export default {
   mounted() {
     this.$store.dispatch('loadRating');
     if (this.action === 'create') {
-      this.form.id = this.getLastEventId + 1;
-      this.form.creatorId = this.getUser.id;
+      this.form.id = Date.now().toString();
+      this.form.creatorId = this.getUser.accountId;
     }
     if (this.action === 'edit') {
-      const theForm = this.$store.getters.getEventById(this.id);
+      const theForm = this.$store.getters.getEventById(this.form.id);
       theForm.dates = reformatDates(theForm.dates, 'DD/MM/YYYY');
       this.form = theForm;
     }
@@ -174,8 +170,8 @@ export default {
     async onSubmit() {
       const event = { ...this.form };
       if (this.action === 'create') {
-        await this.createEvent(event);
-        this.$router.push(`/${event.id}/suggest`);
+        const res = await this.createEvent(event);
+        if (res) this.$router.push(`/${event.id}/suggest`);
       }
       if (this.action === 'edit') await this.editEvent(this.form.id, event);
     },

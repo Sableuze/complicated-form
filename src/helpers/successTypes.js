@@ -9,6 +9,7 @@ export const successTypesUser = {
 export const successTypesPosts = {
   createEvent: 'Меропориятие было успешно создано',
   suggestEvent: 'Мероприятие отправлено на модерацию',
+  deleteEvent: 'Мероприятие было успешно удалено',
 };
 
 export const successTypesDBRegular = {
