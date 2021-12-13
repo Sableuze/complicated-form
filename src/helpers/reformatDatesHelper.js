@@ -8,7 +8,6 @@ export const formatDates = (data) => {
       }
       if (key === 'timeStart' || key === 'timeFinish') {
         dateItem[key] = moment(value, 'HH:mm').format('X');
-        debugger;
       }
     });
   });

@@ -9,7 +9,7 @@ import { addRequestHandler, addResponseHandler } from '@/api/http';
 
 const store = createStore({
   state: {
-    ratingList: null,
+    ratingList: [],
     isSuccess: null,
     isLoading: false,
     layout: 'layout-default',
@@ -18,7 +18,7 @@ const store = createStore({
 
   getters: {
     getSuccessStatus: (state) => state.isSuccess,
-    getLoadingStatus: (state) => state.isLoading,
+    isLoading: (state) => state.isLoading,
     getRatingList: (state) => state.ratingList,
     getLayout: (state) => state.layout,
   },
@@ -37,7 +37,6 @@ const store = createStore({
     },
 
     setLayout(state, payload) {
-      debugger;
       state.layout = payload;
     },
   },
@@ -69,7 +68,7 @@ const store = createStore({
 });
 addRequestHandler((fn) => {
   store.dispatch('changeLoadingStatus', true);
-  debugger;
+
   return fn;
 });
 
@@ -91,6 +90,10 @@ addResponseHandler(
   (error) => {
     store.dispatch('changeLoadingStatus', false);
     const { config } = error;
+    // if (error.response.status === 401) {
+    //   // router.push({ name: 'Auth' });
+    // }
+    // else
     if ('onError' in config && config.showResult) {
       Notify.create({
         message: config.onError,

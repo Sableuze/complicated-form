@@ -43,7 +43,7 @@ export default {
   },
   // async mounted() {
   //   // this.errorTypes = errorTypesRedeem;
-  //   // debugger;
+  //   // ;
   //   await Db.create({
   //     record: {
   //       code: '111-111-111',
@@ -52,7 +52,7 @@ export default {
   //   }, false);
   // },
   computed: {
-    ...mapGetters(['getLoadingStatus', 'getUser']),
+    ...mapGetters(['isLoading', 'getUser']),
   },
   data() {
     return {
@@ -67,7 +67,6 @@ export default {
     ...mapActions(['updateUserInfo']),
 
     async onSubmit() {
-      debugger;
       const records = await Db.read({
         query: `code == "${this.code}"`,
         table: 'codes',

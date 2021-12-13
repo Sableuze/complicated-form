@@ -2,7 +2,7 @@
   <div>
     <ConfirmDialog ref="confirmDialog"></ConfirmDialog>
     <component :is="layout">
-      <router-view/>
+
     </component>
   </div>
 </template>

@@ -28,19 +28,26 @@ export default {
       },
     },
   },
+  created() {
+
+  },
   mounted() {
     this.errorTypes = errorTypesRating;
+    // eslint-disable-next-line no-new
+    new Promise(() => {
+      this.$store.dispatch('loadRating').then(() => {
+        this.ratingTitles = this.getRatingList.map((i) => i.title);
+      });
+    });
   },
   computed: {
     ...mapGetters(['getRatingList']),
-    ratingTitles() {
-      return this.getRatingList.map((i) => i.title);
-    },
   },
   data() {
     return {
       ratingD: this.rating.title || '',
       errorTypes: '',
+      ratingTitles: '',
     };
   },
   methods: {

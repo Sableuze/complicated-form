@@ -1,55 +1,57 @@
 /* eslint no-return-assign: 0 */
-import { setItem, getItem } from '@/helpers/localStorageHelper';
+// import { setItem, getItem } from '@/helpers/localStorageHelper';
 import Db from '@/api/databaseWrapper';
 
 export default {
   state: {
-    notifications: getItem('notifications') || [],
+    notifications: [],
   },
 
   getters: {
-    getAllNotifications: (state) => state.notifications,
-    getReadenNotifications: (state) => state.notifications.map((i) => i.status === 'readen'),
-    getOutstandingNotifications: (state) => state.notifications.map((i) => i.status === 'outstandig'),
+    getAllNotifications: (state) => state.notifications.sort((a, b) => b.date - a.date),
+    getSeenNotifications: (state) => state.notifications.filter((i) => i.status === 'seen'),
+    getOutstandingNotifications: (state) => state.notifications.filter((i) => i.status === 'outstanding'),
   },
 
   mutations: {
     readNotifications(state) {
       // eslint-disable-next-line no-return-assign
-      state.notifications.map((i) => i.status = 'readen');
-      setItem('notifications', state.notifications);
+      state.notifications.map((i) => i.status = 'seen');
     },
 
-    addNotification(state, payload) {
-      state.notifications.push(payload);
-      setItem('notifications', state.notifications);
+    setNotifications(state, notifications) {
+      state.notifications = notifications;
     },
 
     clearNotifications(state) {
       state.notifications = [];
-      setItem('notifications', state.notifications);
     },
   },
 
   actions: {
-    async fetchNotifications({ commit }, { accountId }) {
-      const data = await Db.read({ query: `accountId == '${accountId}'`, table: 'notifications' });
-      if (data) data.forEach((i) => commit('addNotification', i));
+    async fetchNotifications({ commit, getters }) {
+      const accountId = getters.getAccountId;
+      const { records } = await Db.read({ query: `accountId == '${accountId}'`, table: 'notifications' });
+
+      if (records) commit('setNotifications', records);
     },
 
     readNotifications({ commit, getters }) {
-      const theNotifications = { ...getters.getOutstandingNotifications };
-      theNotifications.map((i) => i.status = 'readen');
+      const theNotifications = [...getters.getOutstandingNotifications];
+      theNotifications.map((i) => i.status = 'seen');
       theNotifications.forEach((i) => {
-        Db.update({ id: i.id, record: { ...i }, table: 'notifications' });
+        Db.update({ id: i.id, record: { ...i }, table: 'notifications' }, { showResult: false });
       });
       commit('readNotifications');
     },
 
-    async createNotification({ commit }, data) {
+    async createNotification({ commit }, { accountId, text, subject = 'Regular' }) {
       const record = {
-        accountId: data.accountId,
-        msg: data.text,
+        id: Date.now().toString(),
+        date: Date.now().toString(),
+        accountId,
+        subject,
+        text,
         status: 'outstanding',
       };
       const res = await Db.create({
@@ -57,6 +59,13 @@ export default {
         table: 'notifications',
       }, { showResult: false });
       if (res) commit('addNotification', { ...record });
+    },
+
+    async clearNotifications({ commit, getters }) {
+      getters.getAllNotifications.forEach((i) => {
+        Db.delete({ id: i.id.toString(), table: 'notifications' }, { showResult: false });
+      });
+      commit('clearNotifications');
     },
   },
 };

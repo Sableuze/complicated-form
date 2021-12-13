@@ -43,7 +43,7 @@ export default {
     ActionResult,
   },
   computed: {
-    ...mapGetters(['getLoadingStatus']),
+    ...mapGetters(['isLoading']),
     id() {
       return this.$route.params.id;
     },

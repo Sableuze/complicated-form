@@ -46,11 +46,10 @@ export default {
         username: this.username.trim(),
         password: this.password.trim(),
       });
-      debugger;
+
       if (status) {
         if (status && this.errors.indexOf(status) === -1) this.errors.push(status);
       } else {
-        debugger;
         this.$router.push({ name: 'Login' });
       }
     },

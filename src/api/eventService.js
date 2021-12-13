@@ -12,6 +12,6 @@ export const ably = new Ably.Realtime(process.env.VUE_APP_ABLY_API_KEY);
 
 export const send = (msg) => {
   const channel = ably.channels.get('main');
-  debugger;
+
   channel.publish('mainFlow', { event: eventTypesPosts.e_published, text: msg });
 };

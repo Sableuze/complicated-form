@@ -9,7 +9,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      requiresAuth: true,
+      keepAlive: true,
     },
   },
   {
@@ -18,6 +18,10 @@ const routes = [
     component: () => import('@/views/authPages/Auth.vue'),
     meta: {
       layout: 'LayoutAuth',
+    },
+    beforeEnter(to, from, next) {
+      if (store.getters.isLoggedIn) next('/');
+      else next();
     },
   },
 
@@ -28,6 +32,11 @@ const routes = [
     meta: {
       layout: 'LayoutAuth',
     },
+    beforeEnter(to, from, next) {
+      if (store.getters.isLoggedIn) next('/');
+      else next();
+    },
+
   },
   {
     path: '/auth/register',
@@ -36,6 +45,11 @@ const routes = [
     meta: {
       layout: 'LayoutAuth',
     },
+    beforeEnter(to, from, next) {
+      if (store.getters.isLoggedIn) next('/');
+      else next();
+    },
+
   },
   {
     path: '/auth/edit',
@@ -93,6 +107,20 @@ const routes = [
     meta: {
       requiresAuth: true,
       requiresAdmin: true,
+    },
+  },
+  {
+    path: '/:id/see',
+    name: 'SeeEvent',
+    component: () => import('@/views/postPages/SeeEvent.vue'),
+  },
+
+  {
+    path: '/manage',
+    name: 'ManagePage',
+    component: () => import('@/views/ManagePage.vue'),
+    meta: {
+      requiresAuth: true,
     },
   },
   {

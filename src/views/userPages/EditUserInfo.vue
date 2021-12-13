@@ -69,7 +69,7 @@ export default {
     });
   },
   computed: {
-    ...mapGetters(['getUser', 'getLoadingStatus', 'isProfileFilled']),
+    ...mapGetters(['getUser', 'isLoading', 'isProfileFilled']),
 
   },
   data() {
@@ -94,7 +94,7 @@ export default {
           ...this.form,
         },
       });
-      debugger;
+
       if (ok) {
         this.$router.push({ name: 'Home' });
       }

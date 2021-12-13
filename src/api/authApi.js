@@ -28,8 +28,13 @@ export default class Auth {
 
   static async login(email, password) {
     const { data } = await authentication.post('/Login', { email, password },
-      { vueAlert: errorTypesAuthApi.wrongLoginOrPassword });
+      { onError: errorTypesAuthApi.wrongLoginOrPassword });
     return data ? data.session : false;
+  }
+
+  static async logout(sessionId) {
+    debugger;
+    return authentication.post('/Logout', { sessionId }, { onSuccess: '', onError: '' });
   }
 
   static async updateUserInfo({ id, data }) {
@@ -80,7 +85,6 @@ export default class Auth {
         username,
       });
       if (data) return data.account?.username;
-      debugger;
     } catch (err) {
       console.clear();
       return 'vacant';

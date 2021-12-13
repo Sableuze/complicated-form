@@ -56,6 +56,7 @@
         class="btn label"
         type="reset"
         label="Отменить"
+        :disable="getLoadingStatus"
       ></q-btn>
       <q-btn
         filled
@@ -64,6 +65,7 @@
         type="submit"
         color="accent"
         label="Далее"
+        :loading="getLoadingStatus"
       >
       </q-btn>
     </div>
@@ -102,7 +104,6 @@ export default {
     ActionResult,
   },
   mounted() {
-    this.$store.dispatch('loadRating');
     if (this.action === 'create') {
       this.form.id = Date.now().toString();
       this.form.creatorId = this.getUser.accountId;
@@ -114,7 +115,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getRatingList', 'getLastEventId', 'getDraftEvents', 'getUser']),
+    ...mapGetters(['getRatingList', 'getLastEventId', 'getDraftEvents', 'getUser', 'isLoading']),
   },
   data() {
     return {

@@ -1,5 +1,6 @@
 <template>
-  <div class="event-body flex" v-if="theEvent">
+  <template v-if="theEvent">
+  <div class="event-body flex" >
     <div class="event-info-wrapper">
       <div class="event-info flex column">
         <div class="rating-cnt onBig">
@@ -70,6 +71,7 @@
   <div class="event-description">
     <p class="description">{{ theEvent.description }}</p>
   </div>
+  </template>
 </template>
 
 <script>
@@ -86,11 +88,14 @@ export default {
   },
   computed: {
     ...mapGetters(['getEventById']),
+    // eslint-disable-next-line vue/return-in-computed-property
     theEvent() {
-      const theEvent = { ...this.getEventById(this.eventId) };
-      debugger;
-      theEvent.dates = reformatDates(theEvent.dates, this.toReformatDate);
-      return theEvent;
+      const theEvent = this.getEventById(this.eventId);
+
+      if (theEvent) {
+        theEvent.dates = reformatDates(theEvent.dates, this.toReformatDate);
+        return theEvent;
+      }
     },
     // previewPicture() {
     //   return URL.createObjectURL(this.theEvent.picture);

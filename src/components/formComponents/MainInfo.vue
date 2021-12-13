@@ -39,33 +39,16 @@
     </div>
     <div class="flex column col-grow">
       <p class="label mb-1">Город организатора</p>
-      <q-select
-        outlined
-        no-error-icon
+      <City
         v-model="cityD"
         @update:model-value="$emit('update:city', cityD)"
-        use-input
-        hide-selected
-        fill-input
-        input-debounce="300"
-        :options="options"
-        @filter="getCity"
-        :rules="[() => !!cityD || errorTypes.noCity]"
-      >
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              No results
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
+        :rules="[() => !!cityD || errorTypes.noCity]"></City>
     </div>
   </div>
 
 </template>
 <script>
-import address from '@/api/address';
+import City from '@/components/formComponents/City.vue';
 import { errorTypesMain } from '@/helpers/errorTypes';
 import Email from '@/components/formComponents/Email.vue';
 
@@ -90,7 +73,7 @@ export default {
     },
   },
   components: {
-    Email,
+    Email, City,
   },
   mounted() {
     this.errorTypes = errorTypesMain;
@@ -104,20 +87,6 @@ export default {
       options: [],
       errorTypes: '',
     };
-  },
-  methods: {
-    async getCity(val, update) {
-      const res = await address.getCity(val);
-      update(() => {
-        if (val === '') {
-          this.options = res;
-        } else {
-          const needle = val.toLowerCase();
-          this.options = res.filter((v) => v.toLowerCase().indexOf(needle) > -1);
-        }
-      });
-    },
-
   },
 
 };

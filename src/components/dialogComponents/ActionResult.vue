@@ -43,13 +43,9 @@ export default {
   },
   methods: {
     completed() {
-      debugger;
       if (!this.isSuccess && this.redirectOnFailure && this.redirect) {
-        debugger;
         this.$router.push(this.redirect);
-        debugger;
       } else if (this.redirect) {
-        debugger;
         this.$router.push(this.redirect);
       }
     },

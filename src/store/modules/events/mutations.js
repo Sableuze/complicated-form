@@ -32,6 +32,7 @@ export default {
 
   setSuggestedEvents(state, events) {
     state.eventsSuggested = events;
+    setItem('eventsSuggested', state.eventsSuggested);
   },
 
   editEvent(state, { event, newData }) {
