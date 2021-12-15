@@ -1,23 +1,24 @@
 <template>
-  <div id="parent" class="full-width full-height justify-between row wrap"
-       style="overflow: hidden;">
-    <div class="col-8" style="overflow: auto;">
+  <div id="parent" class="full-width full-height justify-between row wrap">
+    <div class="view-window" style="overflow: auto;">
       <q-card class="no-border-radius full-height">
-        <q-card-section>
-            <q-input
+        <q-card-section class="full-height flex column">
+          <q-input
               v-model="name.value"
               class="mb-3"
               :disable="isLoading"
               debounce="400" @update:model-value="searchEvents"
               label="Название мероприятия"
             >
-
             </q-input>
-          <Published-list :events="events"></Published-list>
+          <div class="list-cnt">
+            <Published-list  ></Published-list>
+            <Preloader v-show="isLoading"></Preloader>
+          </div>
         </q-card-section>
       </q-card>
     </div>
-    <div class="col-3 bg-blue-13" style="overflow: auto;">
+    <div class="filters-window" style="overflow: auto;">
       <q-card class="no-border-radius">
         <q-card-section class="filters-cnt">
           <div class="filters">
@@ -97,30 +98,29 @@
 
 <script>
 import moment from 'moment';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import City from '@/components/formComponents/City.vue';
 import Rating from '@/components/formComponents/Rating.vue';
 import PublishedList from '@/components/PublishedList.vue';
 import { datePattern } from '@/helpers/validatorPatterns';
 import { errorTypesDate } from '@/helpers/errorTypes';
 import Db from '@/api/databaseWrapper';
+import Preloader from '@/components//Preloader.vue';
 
 export default {
   name: 'Home',
   components: {
-    City, Rating, PublishedList,
+    City, Rating, PublishedList, Preloader,
   },
+
   mounted() {
     this.errorTypes = errorTypesDate;
+    // Db.read({ query: "status == 'published'", table: 'events' }).then(({ records }) => {
+    //   this.events = records;
+    // });
   },
   computed: {
-    ...mapGetters(['isLoading']),
-    dateStartFormatted() {
-      return moment(this.filters.dateStart.value, this.dateFormat).format('X');
-    },
-    dateFinishFormatted() {
-      return moment(this.filters.dateFinish.value, this.dateFormat).format('X');
-    },
+    ...mapGetters(['isLoading', 'getAllPublishedEvents']),
   },
   data() {
     return {
@@ -153,6 +153,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['fetchAllPublishedEvents']),
     async searchEvents() {
       const name = this.name.value;
       if (!this.useFilters && !name) return false;
@@ -178,6 +179,10 @@ export default {
       this.events = records;
     },
 
+    filterLocally(id) {
+      debugger;
+      this.events = this.events.filter((i) => i.id !== id);
+    },
     toggleFilters() {
       if (!(this.$refs.dateStart.validate() && this.$refs.dateFinish.validate())) {
         if (this.useFilters) this.useFilters = false;
@@ -230,31 +235,41 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+#parent {
+  gap: 16px;
+  flex-direction: column;
+  .view-window {
+    flex: 3;
+  }
+  .filters-window{
+    flex: 1;
+    order: -1;
 
+  }
+  @media (min-width: 1200px) {
+    flex-direction: row;
+    .filters-window{
+      order: 1;
+      .filters-cnt {
+        border-left: 1px solid;
+
+      }
+    }
+  }
+}
 .filters {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.filters-cnt {
-  border-left: 1px solid;
-  position: relative;
-
-  &:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 1px;
-    background: #000;
-  }
-}
-
 .filters-btn {
   position: absolute;
   top: 50%;
   right: 0;
+}
+.list-cnt{
+  position: relative;
+  flex: 1;
 }
 </style>

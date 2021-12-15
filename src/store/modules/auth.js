@@ -15,7 +15,7 @@ const state = {
 const getters = {
   getUser: (state) => state.user,
   getAccountId: (state) => state.user.accountId,
-  isProfileFilled: (state) => Object.values(state.user.profile).length
+  isProfileFilled: (state) => state.user?.profile && Object.values(state.user.profile).length
     && Object.values(state.user.profile).every((i) => i),
   getUserRole: (state) => state.user.profile.role,
   isLoggedIn: (state) => !!state.user.username,
@@ -77,7 +77,7 @@ const actions = {
     const { email, username, id, profile } = await Auth.readUserById(userId);
     commit('setUser', { email, username, accountId: id, profile });
 
-    if (profile.role === 'admin') dispatch('getAllSuggestedEvents');
+    if (profile.role === 'admin') dispatch('fetchAllSuggestedEvents');
   },
 
   async updateUserInfo({ dispatch }, { id, data }) {
@@ -91,7 +91,8 @@ const actions = {
   async logout({ commit }) {
     const session = getItem('session');
     commit('setSession', '');
-    commit('setUser', '');
+    commit('setUser', []);
+    debugger;
     if (session?.id) await Auth.logout(session.id);
   },
 

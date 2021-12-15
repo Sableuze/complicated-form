@@ -93,6 +93,15 @@ const routes = [
     },
   },
   {
+    path: '/moderate',
+    name: 'ModerateList',
+    component: () => import('@/views/adminPages/ModerateList.vue'),
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true,
+    },
+  },
+  {
     path: '/:id/suggest',
     name: 'SuggestEvent',
     component: () => import('@/views/postPages/SuggestEvent.vue'),
@@ -101,9 +110,9 @@ const routes = [
     },
   },
   {
-    path: '/:id/moderate',
+    path: '/moderate/:id',
     name: 'ModerateEvent',
-    component: () => import('@/views/postPages/ModerateEvent.vue'),
+    component: () => import('@/views/adminPages/ModerateEvent.vue'),
     meta: {
       requiresAuth: true,
       requiresAdmin: true,
@@ -117,8 +126,8 @@ const routes = [
 
   {
     path: '/manage',
-    name: 'ManagePage',
-    component: () => import('@/views/ManagePage.vue'),
+    name: 'MyEvents',
+    component: () => import('@/views/postPages/MyEvents.vue'),
     meta: {
       requiresAuth: true,
     },
@@ -155,15 +164,8 @@ router.beforeEach((to, from, next) => {
 
   if (to.name !== 'EditUserInfo' && store.getters.isLoggedIn && !store.getters.isProfileFilled) {
     router.replace({ name: 'EditUserInfo' });
-    return;
-  }
-  if (to.matched.some((route) => route.meta.requiresAuth)) {
-    if (!store.getters.isLoggedIn) {
-      next({ name: 'Auth' });
-    }
-    next();
-  } else {
-    next();
-  }
+  } else if (to.matched.some((route) => route.meta.requiresAuth) && !store.getters.isLoggedIn) next({ name: 'Auth' });
+  else if (to.matched.some((route) => route.meta.requiresAdmin) && store.getters.getUserRole !== 'admin') next('/');
+  else next();
 });
 export default router;

@@ -1,82 +1,76 @@
 import { Notify } from 'quasar';
-import { eventTypesPosts } from '@/helpers/ablyEvents';
+import { eventTypesPosts, textTypesEvents } from '@/helpers/ablyEvents';
 import { ably } from '@/api/eventService';
 import store from '@/store';
 
-const getEvents = (accountId) => {
-  if (store.getters.getUserRole === 'admin') store.dispatch('getAllSuggestedEvents');
+const getSuggestedEvents = (accountId) => {
+  if (store.getters.getUserRole === 'admin') store.dispatch('fetchAllSuggestedEvents');
 
-  else if (store.getters.getAccountId === accountId) store.dispatch('getMySuggestedEvents');
+  else if (store.getters.getAccountId === accountId) store.dispatch('fetchMySuggestedEvents');
 };
-const isItMe = (accountId) => {
-  console.log(store.getters.getAccountId, accountId,
-    store.getters.getAccountId === accountId);
-
-  return store.getters.getAccountId === accountId;
-};
-
+const isItMe = (accountId) => store.getters.getAccountId === accountId;
+const isAdmin = () => store.getters.getUserRole === 'admin';
 export default function startEventHandler() {
   const channelMain = ably.channels.get('main');
-  const channelPersonal = ably.channels.get(store.getters.getAccountId);
+  // const channelPersonal = ably.channels.get(store.getters.getAccountId);
 
   channelMain.subscribe('mainFlow', async (msg) => {
     const { accountId } = msg.data;
 
     switch (msg.data.event) {
       case eventTypesPosts.e_suggested: {
-        getEvents(msg.data.accountId);
+        if (isAdmin) getSuggestedEvents(msg.data.accountId);
         break;
       }
       case eventTypesPosts.e_published: {
-        getEvents(msg.data.accountId);
+        if (isAdmin) getSuggestedEvents(msg.data.accountId);
+        store.dispatch('fetchAllSuggestedEvents');
         if (isItMe(accountId)) {
-          store.dispatch('getMySuggestedEvents');
+          store.dispatch('fetchMyPublishedEvents');
+          store.dispatch('fetchMySuggestedEvents');
           store.dispatch('fetchNotifications');
           Notify.create({
             message: 'Ваше мероприятие было одобрено модератором',
             type: 'positive',
             position: 'top-right',
           });
-          // channelPersonal.publish('personalFlow',
-          // { event: eventTypesPosts.e_published, text: msg.data.text });
         }
         break;
       }
-      case eventTypesPosts.e_revokedFromPublished: {
-        getEvents(msg.data.accountId);
+      case eventTypesPosts.e_unpublishedByAdmin: {
+        store.commit('filterAllPublishedEvents', msg.data.eventId);
         if (isItMe(accountId)) {
-          store.dispatch('getMyDraftEvents');
+          store.dispatch('fetchMyDraftEvents');
+          store.dispatch('fetchMyPublishedEvents');
           store.dispatch('fetchNotifications');
           Notify.create({
-            message: eventTypesPosts.revokedFromPublished,
+            message: eventTypesPosts.unpublishedByAdmin,
             type: 'negative',
             position: 'top-right',
           });
-          // channelPersonal.publish('personalFlow',
-          // { event: eventTypesPosts.e_published, text: msg.data.text });
         }
         break;
       }
       case eventTypesPosts.e_deletedByAdmin: {
-        getEvents(msg.data.accountId);
+        store.commit('filterAllPublishedEvents', msg.data.eventId);
+
         if (isItMe(accountId)) {
-          store.dispatch('getMyDraftEvents');
+          store.dispatch('fetchMyPublishedEvents');
           store.dispatch('fetchNotifications');
           Notify.create({
-            message: eventTypesPosts.deletedByAdmin,
+            message: textTypesEvents.deletedByAdmin,
             type: 'negative',
             position: 'top-right',
           });
-          // channelPersonal.publish('personalFlow',
-          // { event: eventTypesPosts.e_published, text: msg.data.text });
         }
         break;
       }
-      case eventTypesPosts.e_rejected: {
-        getEvents(accountId);
+      case eventTypesPosts.e_declined: {
+        if (isAdmin()) getSuggestedEvents(accountId);
 
         if (isItMe(accountId)) {
-          store.dispatch('getMySuggestedEvents');
+          store.dispatch('fetchMyDraftEvents');
+          store.dispatch('fetchMySuggestedEvents');
           store.dispatch('fetchNotifications');
           Notify.create({
             message: msg.data.text,
@@ -89,7 +83,7 @@ export default function startEventHandler() {
       }
 
       case eventTypesPosts.e_revoked: {
-        getEvents(accountId);
+        getSuggestedEvents(accountId);
         break;
       }
       default: {
@@ -98,26 +92,26 @@ export default function startEventHandler() {
     }
   });
 
-  channelPersonal.subscribe('personalFlow', async (msg) => {
-    switch (msg.data.event) {
-      case eventTypesPosts.e_published: {
-        store.dispatch('getMySuggestedEvents');
-        Notify.create({
-          message: msg.data.text,
-          type: 'positive',
-          position: 'top-right',
-        });
-
-        break;
-      }
-      case eventTypesPosts.e_rejected: {
-        store.dispatch('getMySuggestedEvents');
-        store.dispatch('getMyDraftEvents');
-        break;
-      }
-      default: {
-        return false;
-      }
-    }
-  });
+  // channelPersonal.subscribe('personalFlow', async (msg) => {
+  //   switch (msg.data.event) {
+  //     case eventTypesPosts.e_published: {
+  //       store.dispatch('getMySuggestedEvents');
+  //       Notify.create({
+  //         message: msg.data.text,
+  //         type: 'positive',
+  //         position: 'top-right',
+  //       });
+  //
+  //       break;
+  //     }
+  //     case eventTypesPosts.e_rejected: {
+  //       store.dispatch('getMySuggestedEvents');
+  //       store.dispatch('getMyDraftEvents');
+  //       break;
+  //     }
+  //     default: {
+  //       return false;
+  //     }
+  //   }
+  // });
 }

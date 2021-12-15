@@ -42,8 +42,12 @@ export default {
     EventShowcase,
     ActionResult,
   },
+
+  mounted() {
+    if (this.getEventStatus(this.id) !== 'draft') this.$router.replace({ name: 'Home' });
+  },
   computed: {
-    ...mapGetters(['isLoading']),
+    ...mapGetters(['isLoading', 'getEventStatus']),
     id() {
       return this.$route.params.id;
     },

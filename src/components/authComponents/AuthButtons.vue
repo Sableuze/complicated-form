@@ -9,7 +9,7 @@
     >Назад
     </q-btn>
     <q-btn
-      :disable="loadingStatus"
+      :loading="loadingStatus"
       padding="sm"
       size="lg"
       type="submit"
@@ -25,7 +25,7 @@ export default {
   name: 'AuthButtons',
   computed: {
     loadingStatus() {
-      return this.$store.getters.getLoadingStatus;
+      return this.$store.getters.isLoading;
     },
   },
 };

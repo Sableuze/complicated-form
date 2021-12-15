@@ -38,6 +38,8 @@
           @click="$router.back()"
           label="Назад"
         ></q-btn>
+        <LogoutButton :size="'lg'" :color="'grey-10'" v-else></LogoutButton>
+
         <q-btn
           :loading="getLoadingStatus"
           type="submit"
@@ -56,11 +58,12 @@ import { mapActions, mapGetters } from 'vuex';
 import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import { errorTypesInfo } from '@/helpers/errorTypes';
 import FileUploader from '@/components/formComponents/FileUploader.vue';
+import LogoutButton from '@/components/authComponents/LogoutButton.vue';
 
 export default {
   name: 'AddUserInfo',
   components: {
-    apiErrors, FileUploader,
+    apiErrors, FileUploader, LogoutButton,
   },
   mounted() {
     this.errorTypes = errorTypesInfo;
@@ -86,7 +89,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['updateUserInfo']),
+    ...mapActions(['updateUserInfo', 'logout']),
     async onSubmit() {
       const ok = await this.updateUserInfo({
         id: this.getUser.accountId,
@@ -99,6 +102,7 @@ export default {
         this.$router.push({ name: 'Home' });
       }
     },
+
   },
 };
 </script>

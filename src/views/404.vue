@@ -29,7 +29,7 @@ export default {
 .container{
   height: 70vh;
   margin: 0 auto;
-
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;

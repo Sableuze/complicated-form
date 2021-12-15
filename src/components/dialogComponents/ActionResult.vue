@@ -44,8 +44,10 @@ export default {
   methods: {
     completed() {
       if (!this.isSuccess && this.redirectOnFailure && this.redirect) {
+        if (this.redirect === 'back') this.$router.back();
         this.$router.push(this.redirect);
       } else if (this.redirect) {
+        if (this.redirect === 'back') this.$router.back();
         this.$router.push(this.redirect);
       }
     },

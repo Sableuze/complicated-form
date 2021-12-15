@@ -27,6 +27,9 @@ import NothingMessage from '@/components/NothingMessage.vue';
 
 export default {
   name: 'DraftList',
+  // created() {
+  //   this.fetchMyDraftEvents();
+  // },
   components: {
     NothingMessage,
   },
@@ -34,7 +37,7 @@ export default {
     ...mapGetters({ eventsList: 'getDraftEvents' }),
   },
   methods: {
-    ...mapActions({ deleteEvent: 'deleteEvent' }),
+    ...mapActions({ deleteEvent: 'deleteMyEvent', getMyDraftEvents: 'fetchMyDraftEvents' }),
     async removeEvent(id) {
       const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Do you really want to delete the event and all its data?',
@@ -51,7 +54,7 @@ export default {
           height: 0,
           duration: 1,
           onComplete: async () => {
-            await this.deleteEvent(id);
+            await this.deleteMyEvent(id);
             gsap.to(el, {
               opacity: 1,
               height: 'auto',

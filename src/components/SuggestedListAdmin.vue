@@ -32,10 +32,10 @@ import { gsap } from 'gsap';
 import NothingMessage from '@/components/NothingMessage.vue';
 
 export default {
-  name: 'SuggestedList',
-  // created() {
-  //   this.fetchAllSuggestedEvents();
-  // },
+  name: 'SuggestedListAdmin',
+  created() {
+    this.fetchAllSuggestedEvents();
+  },
   components: {
     NothingMessage,
   },
@@ -43,10 +43,10 @@ export default {
     ...mapGetters({ eventsList: 'getAllSuggestedEvents', userRole: 'getUserRole' }),
   },
   methods: {
-    ...mapActions(['revokeMyEvent', 'fetchAllSuggestedEvents']),
-    async removeEvent(id) {
+    ...mapActions(['declineEvent', 'fetchAllSuggestedEvents']),
+    async removeEvent(event) {
       const ok = await this.$root.$refs.confirmDialog.show({
-        message: 'Вы действительно хотите отозвать мероприятие?',
+        message: 'Вы действительно хотите отклонить мероприятие?',
         okButton: 'Да',
         okColor: 'red',
         noButton: 'Отмена',
@@ -54,13 +54,13 @@ export default {
       });
 
       if (ok) {
-        if (await this.revokeMyEvent(id)) {
-          const el = document.getElementById(id);
+        const el = document.getElementById(event.id);
+        if (await this.declineEvent(event)) {
           gsap.to(el, {
             opacity: 0,
             height: 0,
             duration: 1,
-            onComplete: async () => {
+            onComplete: () => {
               gsap.to(el, {
                 opacity: 1,
                 height: 'auto',
@@ -72,8 +72,7 @@ export default {
     },
 
     onClick(eventId) {
-      if (this.userRole === 'admin') this.$router.push((`moderate/${eventId}/`));
-      else this.$router.push((`/${eventId}/see`));
+      if (this.userRole === 'admin') this.$router.push((`/moderate/${eventId}`));
     },
 
   },

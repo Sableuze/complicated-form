@@ -8,10 +8,15 @@ import router from './router';
 
 const checkLogin = async () => {
   const session = JSON.parse(localStorage.getItem('session'));
-  if (store.getters.isLoggedIn && (!session?.id || (+session?.expires * 1000) < Date.now())) await store.dispatch('logout');
+  if (!store.getters.isLoggedIn) router.push({ name: 'Auth' });
+  if (store.getters.isLoggedIn && (!session?.id || (+session?.expires * 1000) < Date.now())) {
+    await store.dispatch('logout');
+    router.push({ name: 'Auth' });
+  }
 };
-checkLogin();
 
 createApp(App).use(store).use(router)
   .use(Quasar, quasarUserOptions)
   .mount('#app');
+
+checkLogin();

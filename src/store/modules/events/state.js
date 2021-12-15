@@ -1,7 +1,10 @@
 import { getItem } from '@/helpers/localStorageHelper';
 
 export default {
-  eventsPublished: getItem('eventsPublished') || [],
-  eventsSuggested: getItem('eventsSuggested') || [],
-  eventsDraft: getItem('eventsDraft') || [],
+  myEventsPublished: getItem('myEventsPublished') || [],
+  myEventsSuggested: getItem('myEventsSuggested') || [],
+  myEventsDraft: getItem('myEventsDraft') || [],
+
+  allSuggestedEvents: [],
+  allPublishedEvents: [],
 };

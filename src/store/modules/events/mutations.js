@@ -2,44 +2,68 @@ import { setItem } from '@/helpers/localStorageHelper';
 
 export default {
   addEventToPublished(state, payload) {
-    state.eventsPublished.push(payload);
-    setItem('eventsPublished', state.eventsPublished);
+    state.myEventsPublished.push(payload);
+    setItem('myEventsPublished', state.myEventsPublished);
   },
   addEventToSuggested(state, payload) {
-    state.eventsSuggested.push(payload);
-    setItem('eventsSuggested', state.eventsSuggested);
+    state.myEventsSuggested.push(payload);
+    setItem('myEventsSuggested', state.myEventsSuggested);
   },
   addEventToDraft(state, payload) {
-    state.eventsDraft.push(payload);
-    setItem('eventsDraft', state.eventsDraft);
+    state.myEventsDraft.push(payload);
+    setItem('myEventsDraft', state.myEventsDraft);
   },
   removeEventFromPublished(state, id) {
-    state.eventsPublished = state.eventsPublished.filter((i) => i.id !== id);
-    setItem('eventsPublished', state.eventsPublished);
+    state.myEventsPublished = state.myEventsPublished.filter((i) => i.id !== id);
+    setItem('myEventsPublished', state.myEventsPublished);
   },
   removeEventFromSuggested(state, id) {
-    state.eventsSuggested = state.eventsSuggested.filter((i) => i.id !== id);
-    setItem('eventsSuggested', state.eventsSuggested);
+    state.myEventsSuggested = state.myEventsSuggested.filter((i) => i.id !== id);
+    setItem('myEventsSuggested', state.myEventsSuggested);
   },
   removeEventFromDraft(state, id) {
-    state.eventsDraft = state.eventsDraft.filter((i) => i.id !== id);
-    setItem('eventsDraft', state.eventsDraft);
+    state.myEventsDraft = state.myEventsDraft.filter((i) => i.id !== id);
+    setItem('myEventsDraft', state.myEventsDraft);
   },
 
-  setDraftEvents(state, events) {
-    state.eventsDraft = events;
+  setMyDraftEvents(state, events) {
+    state.myEventsDraft = events;
+    setItem('myEventsDraft', state.myEventsDraft);
   },
 
-  setSuggestedEvents(state, events) {
-    state.eventsSuggested = events;
-    setItem('eventsSuggested', state.eventsSuggested);
+  setMySuggestedEvents(state, events) {
+    state.myEventsSuggested = events;
+    setItem('myEventsSuggested', state.myEventsSuggested);
+  },
+
+  setMyPublishedEvents(state, events) {
+    state.myEventsPublished = events;
+    setItem('myEventsPublished', state.myEventsPublished);
+  },
+
+  setAllSuggestedEvents(state, events) {
+    state.allSuggestedEvents = events;
+  },
+
+  setAllPublishedEvents(state, events) {
+    state.allPublishedEvents = events;
+  },
+
+  filterAllSuggestedEvents(state, id) {
+    state.allSuggestedEvents = state.allSuggestedEvents.filter((i) => i.id !== id);
+  },
+
+  filterAllPublishedEvents(state, id) {
+    state.allPublishedEvents = state.allPublishedEvents.filter((i) => i.id !== id);
+    state.myEventsPublished = state.myEventsSuggested.filter((i) => i.id !== id);
+    setItem('myEventsPublished', state.myEventsPublished);
   },
 
   editEvent(state, { event, newData }) {
     event = newData;
-    if (event.status === 'published') setItem('eventsPublished', state.eventsPublished);
+    if (event.status === 'published') setItem('myEventsPublished', state.myEventsPublished);
 
-    if (event.status === 'suggested') setItem('eventsSuggested', state.eventsSuggested);
-    if (event.status === 'draft') setItem('eventsDraft', state.eventsDraft);
+    if (event.status === 'suggested') setItem('myEventsSuggested', state.myEventsSuggested);
+    if (event.status === 'draft') setItem('myEventsDraft', state.myEventsDraft);
   },
 };

@@ -1,13 +1,23 @@
 export default {
-  getLastEventId: (state) => Math.max(0, ...state.eventsPublished.map((i) => i.id),
-    ...state.eventsSuggested.map((i) => i.id),
-    ...state.eventsDraft.map((i) => i.id)),
+  getLastEventId: (state) => Math.max(0, ...state.myEventsPublished.map((i) => i.id),
+    ...state.myEventsSuggested.map((i) => i.id),
+    ...state.myEventsDraft.map((i) => i.id)),
 
-  getPublishedEvents: (state) => state.eventsPublished,
-  getSuggestedEvents: (state) => state.eventsSuggested,
-  getDraftEvents: (state) => state.eventsDraft,
+  getPublishedEvents: (state) => state.myEventsPublished,
+  getSuggestedEvents: (state) => state.myEventsSuggested,
+  getDraftEvents: (state) => state.myEventsDraft,
 
-  getEventById: (state) => (id) => state.eventsPublished.find((i) => i.id === id)
-    || state.eventsSuggested.find((i) => i.id === id)
-    || state.eventsDraft.find((i) => i.id === id),
+  getAllSuggestedEvents: (state) => state.allSuggestedEvents,
+
+  getAllPublishedEvents: (state) => state.allPublishedEvents,
+
+  getSuggestedEventById: (state) => (id) => state.allSuggestedEvents.find((i) => i.id === id),
+
+  getEventStatus: (state, getters) => (id) => getters.getEventById(id)?.status
+    || getters.getSuggestedEventById(id)?.status,
+
+  getEventById: (state) => (id) => state.myEventsPublished.find((i) => i.id === id)
+    || state.myEventsSuggested.find((i) => i.id === id)
+    || state.myEventsDraft.find((i) => i.id === id)
+    || state.allSuggestedEvents.find((i) => i.id === id),
 };

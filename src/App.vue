@@ -1,7 +1,7 @@
 <template>
   <div>
     <ConfirmDialog ref="confirmDialog"></ConfirmDialog>
-    <component :is="layout">
+    <component style="padding-bottom: 50px" :is="layout">
 
     </component>
   </div>

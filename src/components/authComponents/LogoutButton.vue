@@ -1,9 +1,10 @@
 <template>
   <q-btn
     :color="color"
+    :disable="this.$store.getters.isLoading"
     label="Выйти"
     unelevated
-    size="sm"
+    :size="size"
     v-close-popup
     @click="onLogout"
   />
@@ -17,11 +18,15 @@ export default {
       type: String,
       default: 'indigo-10',
     },
+    size: {
+      type: String,
+      default: 'sm',
+    },
   },
   methods: {
     async onLogout() {
       const ok = await this.$root.$refs.confirmDialog.show({
-        message: 'Do you really want to logout?',
+        message: 'Вы действительно хотите выйти?',
         okButton: 'YES',
         okColor: 'red',
         icon: 'remove',
@@ -29,7 +34,7 @@ export default {
       });
       if (ok) {
         this.$store.dispatch('logout');
-        this.$router.push({ name: 'Auth' });
+        this.$router.replace({ name: 'Auth' });
       }
     },
 
