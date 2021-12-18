@@ -13,7 +13,7 @@
       overlay
       v-model="drawer"
       :width="300"
-      :breakpoint="400"
+      :breakpoint="2000"
     >
       <q-scroll-area style="height: 70%; margin-top: 200px; border-right: 1px solid #ddd">
           <Menu-list></Menu-list>

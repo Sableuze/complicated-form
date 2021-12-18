@@ -1,4 +1,4 @@
-import { successTypesPosts, successTypesDBRegular } from '@/helpers/successTypes';
+import { successTypesPosts } from '@/helpers/successTypes';
 import { eventTypesPosts, subjectTitles, textTypesEvents } from '@/helpers/ablyEvents';
 import Db from '@/api/databaseWrapper';
 import { formatDates } from '@/helpers/reformatDatesHelper';
@@ -13,10 +13,10 @@ export default {
   async createEvent({ commit }, data) {
     const theEvent = cloneDeep(data);
     theEvent.dates = formatDates(theEvent.dates);
-    const { ok } = await Db.create({ record: theEvent, table: 'events' }, { onSuccess: successTypesDBRegular.createEvent });
+    const { ok } = await Db.create({ record: theEvent, table: 'events' }, { onSuccess: successTypesPosts.onCreateEvent });
     if (ok) {
       commit('addEventToDraft', theEvent);
-
+      commit('changeSuccessStatus', true);
       return true;
     } commit('changeSuccessStatus', false);
   },
@@ -28,7 +28,7 @@ export default {
       id: theEvent.id,
       record: theEvent,
       table: 'events',
-    }, { onSuccess: 'Отправлено на модерацию' });
+    }, { onSuccess: successTypesPosts.onSuggestEvent });
     if (ok) {
       commit('addEventToSuggested', theEvent);
       commit('removeEventFromDraft', eventId);
@@ -43,7 +43,7 @@ export default {
       id: theEvent.id,
       record: theEvent,
       table: 'events',
-    }, { onSuccess: 'Отозвано из модерации' });
+    }, { onSuccess: successTypesPosts.onRevokeEvent });
     if (ok) {
       commit('removeEventFromSuggested', eventId);
       commit('addEventToDraft', theEvent);
@@ -51,7 +51,7 @@ export default {
   },
 
   async deleteMyEvent({ commit }, id) {
-    const { ok } = await Db.delete({ id: id.toString(), table: 'events' }, { onSuccess: successTypesPosts.deleteEvent });
+    const { ok } = await Db.delete({ id: id.toString(), table: 'events' }, { onSuccess: successTypesPosts.onDeleteEvent });
     if (ok) {
       commit('removeEventFromDraft', id);
       commit('changeSuccessStatus', true);
@@ -75,7 +75,8 @@ export default {
     commit('setMyPublishedEvents', records);
   },
 
-  async fetchAllPublishedEvents({ commit }, { query }) {
+  async fetchAllPublishedEvents({ commit }, { query = "status == 'published'" }) {
+    debugger;
     const { records } = await Db.read({ query, table: 'events' });
     if (records) {
       commit('setAllPublishedEvents', records);
@@ -91,7 +92,7 @@ export default {
       id: theEvent.id,
       record: theEvent,
       table: 'events',
-    }, { onSuccess: 'Мероприятие опубликовано' });
+    }, { onSuccess: successTypesPosts.onPublishEvent });
     dispatch('changeSuccessStatus', true);
     if (ok) {
       commit('addEventToPublished', theEvent);
@@ -111,7 +112,7 @@ export default {
       id: theEvent.id,
       record: theEvent,
       table: 'events',
-    }, { onSuccess: 'Отправлено в черновик пользователя' });
+    }, { onSuccess: successTypesPosts.onDeclineEvent });
     if (ok) {
       dispatch('createNotification', { accountId: theEvent.creatorId,
         subject: subjectTitles.events,

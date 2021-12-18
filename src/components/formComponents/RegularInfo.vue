@@ -6,7 +6,8 @@
     outlined
     no-error-icon
     v-model="nameD"
-    @update:model-value="$emit('update:name', nameD)"
+    @update:model-value="$emit('update:name', nameD.toLowerCase())"
+    debounce="500"
     :rules="[val => val.length > 0 || errorTypes.noName,
      val => val.length >= 5 || errorTypes.shortName,
      val => val.length <= 50 || errorTypes.tooLongName]"
@@ -21,6 +22,7 @@
     type="textarea"
     v-model="descriptionD"
     @update:model-value="$emit('update:description', descriptionD)"
+    debounce="500"
     :rules="[val => val.length > 0 || errorTypes.noDescription,
      val => val.length >= 20 || errorTypes.shortDescription]"
   >

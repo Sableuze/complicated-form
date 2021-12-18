@@ -24,7 +24,7 @@ export default function startEventHandler() {
       }
       case eventTypesPosts.e_published: {
         if (isAdmin) getSuggestedEvents(msg.data.accountId);
-        store.dispatch('fetchAllSuggestedEvents');
+        store.dispatch('fetchAllPublishedEvents', {});
         if (isItMe(accountId)) {
           store.dispatch('fetchMyPublishedEvents');
           store.dispatch('fetchMySuggestedEvents');
@@ -44,7 +44,7 @@ export default function startEventHandler() {
           store.dispatch('fetchMyPublishedEvents');
           store.dispatch('fetchNotifications');
           Notify.create({
-            message: eventTypesPosts.unpublishedByAdmin,
+            message: textTypesEvents.unpublishedByAdmin,
             type: 'negative',
             position: 'top-right',
           });

@@ -2,7 +2,7 @@
   <q-input
     outlined
     no-error-icon
-    debounce="300"
+    debounce="500"
     placeholder="Ваня..."
     :rules="[val => val.length > 0 || errorTypes.noUsername,
     val => val.length < 10 || errorTypes.tooLongUsername,

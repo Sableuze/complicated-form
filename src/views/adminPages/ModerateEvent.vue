@@ -66,4 +66,8 @@ export default {
   flex-direction: column;
   gap: 50px;
 }
+.buttons{
+  display: flex;
+  justify-content: space-around;
+}
 </style>

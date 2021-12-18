@@ -87,7 +87,7 @@ const routes = [
   {
     path: '/create',
     name: 'CreateEvent',
-    component: () => import('@/views/CreateEvent.vue'),
+    component: () => import('@/views/postPages/CreateEvent.vue'),
     meta: {
       requiresAuth: true,
     },

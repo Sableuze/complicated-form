@@ -1,6 +1,6 @@
 <template>
   <p class="label mb-1">Фотография</p>
-  <div class="picture__cnt flex q-gutter-sm">
+  <div class="picture-cnt flex q-gutter-sm">
     <div class="flex column">
       <q-file
         v-show="!pictureD"
@@ -34,6 +34,8 @@
 import { nextTick } from 'vue';
 import { errorTypesFiles } from '@/helpers/errorTypes';
 
+const reader = new FileReader();
+
 export default {
   name: 'FileUploader',
   props: {
@@ -45,13 +47,17 @@ export default {
       default: 'Главная фотография (обложка мероприятия)',
     },
   },
+
   mounted() {
     this.errorTypes = errorTypesFiles;
+    // @TODO WFT IS IT
     nextTick(() => {
       if (this.picture) {
         this.pictureD = this.picture;
       }
     });
+
+    reader.addEventListener('load', this.emitUpdate);
   },
 
   data() {
@@ -67,14 +73,11 @@ export default {
     async onFileSelect(file) {
       if (!file) return false;
       // this.previewPicture = URL.createObjectURL(file);
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        this.$emit('update:picture', reader.result);
-      });
 
       reader.readAsDataURL(file);
     },
     removeFile() {
+      debugger;
       this.pictureD = undefined;
     },
     validateFile(val) {
@@ -85,6 +88,14 @@ export default {
       this.hasErrors = true;
       return false;
     },
+
+    emitUpdate() {
+      this.$emit('update:picture', reader.result);
+    },
+  },
+
+  beforeUnmount() {
+    reader.removeEventListener('load', this.emitUpdate);
   },
 };
 </script>
@@ -99,7 +110,7 @@ export default {
   border: 4px solid $border-color;
 }
 
-.picture__cnt {
+.picture-cnt {
   > div {
     width: 126px;
   }

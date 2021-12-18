@@ -92,7 +92,6 @@ const actions = {
     const session = getItem('session');
     commit('setSession', '');
     commit('setUser', []);
-    debugger;
     if (session?.id) await Auth.logout(session.id);
   },
 

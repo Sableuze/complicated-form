@@ -4,24 +4,24 @@
       <q-card class="no-border-radius full-height">
         <q-card-section class="full-height flex column">
           <q-input
-              v-model="name.value"
-              class="mb-3"
-              :disable="isLoading"
-              debounce="400" @update:model-value="searchEvents"
-              label="Название мероприятия"
-            >
-            </q-input>
+            v-model="name.value"
+            class="mb-3"
+            :disable="isLoading"
+            debounce="400" @update:model-value="searchEvents"
+            label="Название мероприятия"
+          >
+          </q-input>
           <div class="list-cnt">
-            <Published-list  ></Published-list>
-            <Preloader v-show="isLoading"></Preloader>
+            <Published-list></Published-list>
+            <Preloader v-show="isLoading" class="preloader"></Preloader>
           </div>
         </q-card-section>
       </q-card>
     </div>
     <div class="filters-window" style="overflow: auto;">
       <q-card class="no-border-radius">
-        <q-card-section class="filters-cnt">
-          <div class="filters">
+        <q-card-section class="filters">
+          <div class="filters-cnt">
             <div class="city">
               <p class="label mb-1">Город организатора</p>
               <City v-model="filters.city.value"></City>
@@ -235,41 +235,55 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
 #parent {
   gap: 16px;
-  flex-direction: column;
+  flex-direction: row;
+
   .view-window {
     flex: 3;
   }
-  .filters-window{
+
+  .filters-window {
     flex: 1;
-    order: -1;
 
   }
-  @media (min-width: 1200px) {
-    flex-direction: row;
-    .filters-window{
-      order: 1;
-      .filters-cnt {
-        border-left: 1px solid;
+
+  .filters {
+    border-left: 1px solid;
+
+    .filters-cnt {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+
+  .list-cnt {
+    position: relative;
+    flex: 1;
+    min-height: 300px;
+  }
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    .filters-window {
+      order: -1;
+
+      .filters {
+        border-left: none;
 
       }
     }
+    .preloader {
+      height: 100%;;
+    }
+  }
+  @media (max-width: 600px) {
+    .list-cnt{
+      min-height: 250px;
+    }
   }
 }
-.filters {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
 
-.filters-btn {
-  position: absolute;
-  top: 50%;
-  right: 0;
-}
-.list-cnt{
-  position: relative;
-  flex: 1;
-}
 </style>

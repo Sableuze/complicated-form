@@ -38,7 +38,7 @@
       </q-item>
 
     </q-list>
-    <Nothing-message :fz="24" v-else></Nothing-message>
+    <Nothing-message :fz="24" v-else-if="!events.length && !isLoading"></Nothing-message>
   </div>
 </template>
 

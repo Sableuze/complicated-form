@@ -60,10 +60,14 @@ export const errorTypesFiles = {
 };
 
 export const errorTypesDate = {
+  lessThanToday: 'Дата начала должна быть актуальной',
   moreThanFinish: 'Дата начала не может быть больше даты окончания',
   lessThanStart: 'Дата окончания не может быть меньше даты начала',
   lessThanPreviousDateFinish: 'Значения в этом поле должны быть выше, чем в предыдущем',
   invalidDate: 'Введена некорректная дата',
+
+  lessThanStartTime: 'Время окончания не может быть меньше времени начала',
+  moreThanFinishTime: 'Время начала не может быть меньше времени окончания',
 };
 export const errorTypesRating = {
   noRating: 'Укажите рейтинг мероприятия',

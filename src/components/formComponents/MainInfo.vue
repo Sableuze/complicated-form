@@ -6,7 +6,8 @@
       outlined
       no-error-icon
       v-model="holderD"
-      @update:model-value="$emit('update:holder', holderD)"
+      @update:model-value="$emit('update:holder', holderD.toLowerCase())"
+      debounce="500"
       placeholder="Coca-Cola"
       :rules="[() => !!this.holder || errorTypes.noHolder,
       val => val.length >= 3 || errorTypes.short]"
@@ -25,6 +26,7 @@
         mask="+# (###) ###-##-##"
         v-model="numberD"
         @update:model-value="$emit('update:number', numberD)"
+        debounce="500"
         placeholder="+7 (999) 555-33-22"
         :rules="[val => val.length > 0  || errorTypes.nuNumber,
         val => val.replace(/[^0-9]/g,'').length === 11
@@ -33,8 +35,9 @@
     </div>
     <div class="flex column col-grow">
       <p class="label mb-1">E-mail</p>
-      <Email v-model="emailD"
-             @update:model-value="$emit('update:email', emailD)"
+      <Email
+        v-model="emailD"
+        @update:model-value="$emit('update:email', emailD)"
       ></Email>
     </div>
     <div class="flex column col-grow">

@@ -1,5 +1,5 @@
 <template>
-  <div class="moderate-cnt">
+  <div class="moderate-cnt" v-cloak>
     <Alert-box :icon="'info'">
       <template v-slot:alert-text>
         Внимательно изучите мероприятие

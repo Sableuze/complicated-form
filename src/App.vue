@@ -34,7 +34,8 @@ export default {
 #app {
   font-family: 'Montserrat', sans-serif;
 }
-.form-auth{
+
+.form-auth {
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -69,6 +70,7 @@ export default {
 .mb-1 {
   margin-bottom: 6px;
 }
+
 .mb-2 {
   margin-bottom: 12px;
 }

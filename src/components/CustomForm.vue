@@ -1,5 +1,5 @@
 <template>
-  <ActionResult></ActionResult>
+  <ActionResult :redirect="`${this.form.id}/suggest`"></ActionResult>
   <q-form
     @submit="onSubmit"
     @reset="onReset"
@@ -171,10 +171,9 @@ export default {
     async onSubmit() {
       const event = { ...this.form };
       if (this.action === 'create') {
-        const res = await this.createEvent(event);
-        if (res) this.$router.push(`/${event.id}/suggest`);
+        await this.createEvent(event);
       }
-      if (this.action === 'edit') await this.editEvent(this.form.id, event);
+      // if (this.action === 'edit') await this.editEvent({ id: this.form.id, event });
     },
     async onReset() {
       // eslint-disable-next-line no-return-assign,no-unused-vars

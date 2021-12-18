@@ -12,13 +12,15 @@ const store = createStore({
     ratingList: [],
     isSuccess: null,
     isLoading: false,
+    loadingCount: 0,
     layout: 'layout-default',
 
   },
 
   getters: {
     getSuccessStatus: (state) => state.isSuccess,
-    isLoading: (state) => state.isLoading,
+    // isLoading: (state) => state.isLoading,
+    isLoading: (state) => !!state.loadingCount,
     getRatingList: (state) => state.ratingList,
     getLayout: (state) => state.layout,
   },
@@ -32,8 +34,22 @@ const store = createStore({
       state.isSuccess = payload;
     },
 
-    changeLoadingStatus(state, payload) {
-      state.isLoading = payload;
+    // changeLoadingStatus(state, payload) {
+    //   state.isLoading = payload;
+    // },
+
+    incrementLoading(state) {
+      state.loadingCount += 1;
+      debugger;
+    },
+
+    decrementLoading(state) {
+      debugger;
+      state.loadingCount -= 1;
+    },
+
+    resetLoading(state) {
+      state.loadingCount = 0;
     },
 
     setLayout(state, payload) {
@@ -44,12 +60,10 @@ const store = createStore({
   actions: {
 
     async loadRating({ commit }) {
-      commit('changeLoadingStatus', true);
       const response = await rating.getRating();
       if (response) {
         commit('changeRatingList', response);
       }
-      commit('changeLoadingStatus', false);
     },
 
     changeLoadingStatus({ commit }, status) {
@@ -67,14 +81,14 @@ const store = createStore({
   },
 });
 addRequestHandler((fn) => {
-  store.dispatch('changeLoadingStatus', true);
+  store.commit('incrementLoading');
 
   return fn;
 });
 
 addResponseHandler(
   (success) => {
-    store.dispatch('changeLoadingStatus', false);
+    store.commit('decrementLoading');
     const { config } = success;
     if ('onSuccess' in config && config.showResult) {
       Notify.create({
@@ -88,7 +102,7 @@ addResponseHandler(
   },
 
   (error) => {
-    store.dispatch('changeLoadingStatus', false);
+    store.commit('decrementLoading');
     const { config } = error;
     // if (error.response.status === 401) {
     //   // router.push({ name: 'Auth' });

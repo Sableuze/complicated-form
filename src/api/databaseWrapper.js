@@ -27,10 +27,8 @@ export default class Db {
     return database.post('/Delete', { id, table }, { showResult, onSuccess, onError });
   }
 
-  static async read(args) {
-    const { ok, data } = await database.post('/Read', {
-      ...args,
-    }, { onError: errorTypesDB.read });
+  static async read({ query, table }, ...rest) {
+    const { ok, data } = await database.post('/Read', { query, table, ...rest }, { onError: errorTypesDB.read });
     return ok ? { records: data.records } : false;
   }
 

@@ -9,13 +9,18 @@
         <div class="date-col">
           <p class="label mb-1">Дата начала</p>
           <q-input
-            :ref="`dateInput${dateF.id}`"
+            :ref="`dateStart${dateF.id}`"
+            :id="dateF.id"
             outlined
+            debounce="500"
             v-model="dateF.dateStart"
-            @blur="this.revalidate(dateF.id)"
+            @blur="this.revalidate(['dateFinish'], dateF.id)"
+            @change="this.revalidate(['timeStart, timeFinish'], dateF.id)"
             mask="##-##-####"
             no-error-icon
-            :rules="[val => isLessThanMax(val, dateF.id) || errorTypes.moreThanFinish,
+            :rules="[
+              val => compareWithToday(val) || errorTypes.lessThanToday,
+              val => compareWithMaxDate(val, dateF.id) || errorTypes.moreThanFinish,
                val => compareWithPrev(val, dateF.id)
                || errorTypes.lessThanPreviousDateFinish,
                val => checkDate(val) || errorTypes.invalidDate]"
@@ -37,11 +42,14 @@
         <div class="date-col">
           <p class="label mb-1">Время начала</p>
           <q-input
+            :ref="`timeStart${dateF.id}`"
+            @blur="revalidate(['timeFinish'], dateF.id)"
             outlined
             no-error-icon
             v-model="dateF.timeStart"
             mask="time"
-            :rules="['time']">
+            :rules="['time', val => compareWithMaxTime(val, dateF.id)
+            || errorTypes.moreThanFinishTime]">
             <template v-slot:append>
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -62,15 +70,17 @@
         <div class="date-col">
           <p class="label mb-1">Дата окончания</p>
           <q-input
-            :ref="`dateInput${dateF.id}`"
+            :ref="`dateFinish${dateF.id}`"
             outlined
+            debounce="500"
             no-error-icon
             mask="##-##-####"
-            @blur="this.revalidate(dateF.id)"
+            @blur="this.revalidate(['dateStart'], dateF.id)"
+            @change="this.revalidate(['timeStart', 'timeFinish'], dateF.id)"
             v-model="dateF.dateFinish"
             :rules="[
                 val => checkDate(val) || errorTypes.invalidDate,
-                val => isMoreThanMin(val, dateF.id) || errorTypes.lessThanStart,
+                val => compareWithMinDate(val, dateF.id) || errorTypes.lessThanStart,
                 val => compareWithPrev(val, dateF.id) || errorTypes.lessThanPreviousDateFinish
               ]">
             <template v-slot:append>
@@ -91,11 +101,14 @@
         <div class="date-col">
           <p class="label mb-1">Время окончания</p>
           <q-input
+            :ref="`timeFinish${dateF.id}`"
+            @blur="revalidate(['timeStart'], dateF.id)"
             outlined
             no-error-icon
             v-model="dateF.timeFinish"
             mask="time"
-            :rules="['time']">
+            :rules="['time', val => compareWithMinTime(val, dateF.id)
+             || errorTypes.lessThanStartTime]">
             <template v-slot:append>
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -163,9 +176,11 @@ export default {
     };
   },
   methods: {
-    revalidate(id) {
+    revalidate(targets, id) {
       this.errorsCount = 0;
-      this.$refs[`dateInput${id}`].validate();
+      targets.forEach((t) => {
+        this.$refs[t + id].validate();
+      });
     },
     addDateRow() {
       const currentDates = this.datesD;
@@ -182,12 +197,18 @@ export default {
         // eslint-disable-next-line no-plusplus
         .map((i) => i.id === 0 || --i.id);
     },
-    getDateFinishRow(id) {
-      return this.datesD.find((i) => i.id === id).dateFinish;
+    formatDate(v) {
+      return moment(v, this.dateFormat).format('X');
     },
-    getDateStartRow(id) {
-      return this.datesD.find((i) => i.id === id).dateStart;
+
+    formatTime(v) {
+      return moment(v, 'HH:mm').format('X');
     },
+
+    getDateAttr(id, attr) {
+      return this.datesD.find((i) => i.id === id)[attr];
+    },
+
     checkDate(v) {
       const res = datePattern.test(v);
 
@@ -207,20 +228,48 @@ export default {
 
       return res;
     },
-    isMoreThanMin(v, id) {
-      const min = this.getDateStartRow(id);
+    compareWithToday(v) {
+      return this.formatDate(v) > this.formatDate(new Date());
+    },
+    compareWithMinDate(v, id) {
+      const min = this.getDateAttr(id, 'dateStart');
       if (!min) return true;
-      const res = moment(v, this.dateFormat).format('X') >= moment(min, this.dateFormat).format('X');
+      const res = this.formatDate(v) >= this.formatDate(min);
 
       if (!res) this.errorsCount += 1;
       else this.errorsCount -= 1;
 
       return res;
     },
-    isLessThanMax(v, id) {
-      const max = this.getDateFinishRow(id);
+    compareWithMaxDate(v, id) {
+      const max = this.getDateAttr(id, 'dateFinish');
       if (!max) return true;
-      const res = moment(v, this.dateFormat).format('X') < +moment(max, this.dateFormat).format('X');
+      const res = this.formatDate(v) <= this.formatDate(max);
+      if (!res) this.errorsCount += 1;
+      else this.errorsCount -= 1;
+
+      return res;
+    },
+
+    compareWithMinTime(v, id) {
+      if (this.formatDate(this.getDateAttr(id, 'dateStart')) !== this.formatDate(this.getDateAttr(id, 'dateFinish'))) {
+        return true;
+      }
+      const min = this.getDateAttr(id, 'timeStart');
+      if (!min) return true;
+      const res = this.formatTime(v) >= this.formatTime(min);
+
+      if (!res) this.errorsCount += 1;
+      else this.errorsCount -= 1;
+      return res;
+    },
+    compareWithMaxTime(v, id) {
+      if (this.formatDate(this.getDateAttr(id, 'dateStart')) !== this.formatDate(this.getDateAttr(id, 'dateFinish'))) {
+        return true;
+      }
+      const max = this.getDateAttr(id, 'timeFinish');
+      if (!max) return true;
+      const res = this.formatTime(v) <= this.formatTime(max);
 
       if (!res) this.errorsCount += 1;
       else this.errorsCount -= 1;

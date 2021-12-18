@@ -4,7 +4,7 @@
     no-error-icon
     type="email"
     placeholder="ivanov@mail.ru"
-    debounce="300"
+    debounce="500"
     :rules="[val => val.length > 0 || errorTypes.noEmail,
     val => checkEmail(val) || errorTypes.wrongEmail,
     val => readEmail(val)]"

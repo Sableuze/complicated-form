@@ -7,9 +7,12 @@ export const successTypesUser = {
 };
 
 export const successTypesPosts = {
-  createEvent: 'Меропориятие было успешно создано',
-  suggestEvent: 'Мероприятие отправлено на модерацию',
-  deleteEvent: 'Мероприятие было успешно удалено',
+  onCreateEvent: 'Меропориятие было успешно создано',
+  onDeleteEvent: 'Мероприятие было успешно удалено',
+  onSuggestEvent: 'Мероприятие отправлено на модерацию',
+  onRevokeEvent: 'Мероприятие было успешно отозвано из модерации',
+  onDeclineEvent: 'Мероприятие было успешно отклонено',
+  onPublishEvent: 'Мероприятие было успешно отозвано опубликовано',
 };
 
 export const successTypesDBRegular = {
