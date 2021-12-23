@@ -15,9 +15,9 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { useQuasar } from 'quasar';
-import Email from '@/components/formComponents/Email.vue';
-import Password from '@/components/formComponents/Password.vue';
-import apiErrors from '@/components/dialogComponents/apiErrors.vue';
+import Email from '@/components/formComponents/FormEmail.vue';
+import Password from '@/components/formComponents/FormPassword.vue';
+import apiErrors from '@/components/dialogComponents/ApiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
 export default {

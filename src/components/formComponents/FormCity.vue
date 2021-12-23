@@ -11,23 +11,20 @@
   >
     <template v-slot:no-option>
       <q-item>
-        <q-item-section class="text-grey">
-          No results
-        </q-item-section>
+        <q-item-section class="text-grey"> No results </q-item-section>
       </q-item>
     </template>
   </q-select>
-
 </template>
 
 <script>
-import address from '@/api/address';
+import Address from '@/api/addressService';
 
 export default {
   name: 'City',
   methods: {
     async getCity(val, update) {
-      const res = await address.getCity(val);
+      const res = await Address.getCity(val);
       update(() => {
         if (val === '') {
           this.options = res;
@@ -37,7 +34,6 @@ export default {
         }
       });
     },
-
   },
   data() {
     return {
@@ -47,6 +43,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

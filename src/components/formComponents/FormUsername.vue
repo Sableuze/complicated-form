@@ -4,19 +4,19 @@
     no-error-icon
     debounce="500"
     placeholder="Ваня..."
-    :rules="[val => val.length > 0 || errorTypes.noUsername,
-    val => val.length < 10 || errorTypes.tooLongUsername,
-    val => readUsername(val.toLowerCase())]"
+    :rules="[
+      (val) => val.length > 0 || errorTypes.noUsername,
+      (val) => val.length < 10 || errorTypes.tooLongUsername,
+      (val) => readUsername(val.toLowerCase()),
+    ]"
   >
-
   </q-input>
-
 </template>
 
 <script>
 import { errorTypesAuth, errorTypesRegister } from '@/helpers/errorTypes';
 import { usernamePattern } from '@/helpers/validatorPatterns';
-import Auth from '@/api/authApi';
+import Auth from '@/api/authService';
 
 export default {
   name: 'Username',
@@ -47,6 +47,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

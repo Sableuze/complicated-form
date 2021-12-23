@@ -1,6 +1,6 @@
 import { successTypesPosts } from '@/helpers/successTypes';
 import { eventTypesPosts, subjectTitles, textTypesEvents } from '@/helpers/ablyEvents';
-import Db from '@/api/databaseWrapper';
+import Db from '@/api/databaseService';
 import { formatDates } from '@/helpers/reformatDatesHelper';
 import { ably } from '@/api/eventService';
 
@@ -9,26 +9,32 @@ const cloneDeep = require('lodash.clonedeep');
 const channelMain = ably.channels.get('main');
 
 export default {
-
   async createEvent({ commit }, data) {
     const theEvent = cloneDeep(data);
     theEvent.dates = formatDates(theEvent.dates);
-    const { ok } = await Db.create({ record: theEvent, table: 'events' }, { onSuccess: successTypesPosts.onCreateEvent });
+    const { ok } = await Db.create(
+      { record: theEvent, table: 'events' },
+      { onSuccess: successTypesPosts.onCreateEvent },
+    );
     if (ok) {
       commit('addEventToDraft', theEvent);
       commit('changeSuccessStatus', true);
       return true;
-    } commit('changeSuccessStatus', false);
+    }
+    commit('changeSuccessStatus', false);
   },
 
   async suggestEvent({ commit }, eventId) {
     const theEvent = { ...this.getters.getEventById(eventId) };
     theEvent.status = 'suggested';
-    const { ok } = await Db.update({
-      id: theEvent.id,
-      record: theEvent,
-      table: 'events',
-    }, { onSuccess: successTypesPosts.onSuggestEvent });
+    const { ok } = await Db.update(
+      {
+        id: theEvent.id,
+        record: theEvent,
+        table: 'events',
+      },
+      { onSuccess: successTypesPosts.onSuggestEvent },
+    );
     if (ok) {
       commit('addEventToSuggested', theEvent);
       commit('removeEventFromDraft', eventId);
@@ -39,11 +45,14 @@ export default {
   async revokeMyEvent({ commit }, eventId) {
     const theEvent = { ...this.getters.getEventById(eventId) };
     theEvent.status = 'draft';
-    const ok = await Db.update({
-      id: theEvent.id,
-      record: theEvent,
-      table: 'events',
-    }, { onSuccess: successTypesPosts.onRevokeEvent });
+    const ok = await Db.update(
+      {
+        id: theEvent.id,
+        record: theEvent,
+        table: 'events',
+      },
+      { onSuccess: successTypesPosts.onRevokeEvent },
+    );
     if (ok) {
       commit('removeEventFromSuggested', eventId);
       commit('addEventToDraft', theEvent);
@@ -51,7 +60,10 @@ export default {
   },
 
   async deleteMyEvent({ commit }, id) {
-    const { ok } = await Db.delete({ id: id.toString(), table: 'events' }, { onSuccess: successTypesPosts.onDeleteEvent });
+    const { ok } = await Db.delete(
+      { id: id.toString(), table: 'events' },
+      { onSuccess: successTypesPosts.onDeleteEvent },
+    );
     if (ok) {
       commit('removeEventFromDraft', id);
       commit('changeSuccessStatus', true);
@@ -59,19 +71,32 @@ export default {
   },
 
   async fetchMyDraftEvents({ commit, getters }) {
-    const { records } = await Db.read({ query: `status == 'draft' and creatorId == "${getters.getUser.accountId}"`, table: 'events' });
+    const { records } = await Db.read({
+      query: `status == 'draft' and creatorId == "${getters.getUser.accountId}"`,
+      table: 'events',
+    });
     commit('setMyDraftEvents', records);
   },
 
   async fetchMySuggestedEvents({ commit, getters }) {
-    const { records } = await Db.read({ query: `status == 'suggested' and creatorId == "${getters.getUser.accountId}"`, table: 'events' },
-      { });
+    const { records } = await Db.read(
+      {
+        query: `status == 'suggested' and creatorId == "${getters.getUser.accountId}"`,
+        table: 'events',
+      },
+      {},
+    );
     commit('setMySuggestedEvents', records);
   },
 
   async fetchMyPublishedEvents({ commit, getters }) {
-    const { records } = await Db.read({ query: `status == 'published' and creatorId == "${getters.getUser.accountId}"`, table: 'events' },
-      { });
+    const { records } = await Db.read(
+      {
+        query: `status == 'published' and creatorId == "${getters.getUser.accountId}"`,
+        table: 'events',
+      },
+      {},
+    );
     commit('setMyPublishedEvents', records);
   },
 
@@ -85,77 +110,106 @@ export default {
 
   // ================================================= ADMIN FUNCTIONS
 
-  async publishEvent({ commit, dispatch }, eventId) { // for admin
+  async publishEvent({ commit, dispatch }, eventId) {
+    // for admin
     const theEvent = { ...this.getters.getEventById(eventId) };
     theEvent.status = 'published';
-    const { ok } = await Db.update({
-      id: theEvent.id,
-      record: theEvent,
-      table: 'events',
-    }, { onSuccess: successTypesPosts.onPublishEvent });
+    const { ok } = await Db.update(
+      {
+        id: theEvent.id,
+        record: theEvent,
+        table: 'events',
+      },
+      { onSuccess: successTypesPosts.onPublishEvent },
+    );
     dispatch('changeSuccessStatus', true);
     if (ok) {
       commit('addEventToPublished', theEvent);
       commit('removeEventFromSuggested', eventId);
-      dispatch('createNotification', { accountId: theEvent.creatorId,
-        subject: subjectTitles.events,
-        text: `${textTypesEvents.published} '${theEvent.name}'` });
-      channelMain.publish('mainFlow', { event: eventTypesPosts.e_published,
+      dispatch('createNotification', {
         accountId: theEvent.creatorId,
-        text: 'Ваше мероприятие опубликовано' });
+        subject: subjectTitles.events,
+        text: `${textTypesEvents.published} '${theEvent.name}'`,
+      });
+      channelMain.publish('mainFlow', {
+        event: eventTypesPosts.e_published,
+        accountId: theEvent.creatorId,
+        text: 'Ваше мероприятие опубликовано',
+      });
     }
   },
 
   async declineEvent({ commit, dispatch }, theEvent) {
     theEvent.status = 'draft';
-    const ok = await Db.update({
-      id: theEvent.id,
-      record: theEvent,
-      table: 'events',
-    }, { onSuccess: successTypesPosts.onDeclineEvent });
+    const ok = await Db.update(
+      {
+        id: theEvent.id,
+        record: theEvent,
+        table: 'events',
+      },
+      { onSuccess: successTypesPosts.onDeclineEvent },
+    );
     if (ok) {
-      dispatch('createNotification', { accountId: theEvent.creatorId,
+      dispatch('createNotification', {
+        accountId: theEvent.creatorId,
         subject: subjectTitles.events,
-        text: `${textTypesEvents.declined} '${theEvent.name}'` });
+        text: `${textTypesEvents.declined} '${theEvent.name}'`,
+      });
       commit('filterAllSuggestedEvents', theEvent.id);
 
-      channelMain.publish('mainFlow', { event: eventTypesPosts.e_declined,
+      channelMain.publish('mainFlow', {
+        event: eventTypesPosts.e_declined,
         accountId: theEvent.creatorId,
-        text: textTypesEvents.declined });
+        text: textTypesEvents.declined,
+      });
     }
   },
 
-  async unpublishEvent({ dispatch }, theEvent) { // for admin
+  async unpublishEvent({ dispatch }, theEvent) {
+    // for admin
     theEvent.status = 'draft';
-    const ok = await Db.update({
-      id: theEvent.id,
-      record: theEvent,
-      table: 'events',
-    }, { onSuccess: 'Отправлено в черновик пользователя' });
+    const ok = await Db.update(
+      {
+        id: theEvent.id,
+        record: theEvent,
+        table: 'events',
+      },
+      { onSuccess: 'Отправлено в черновик пользователя' },
+    );
     if (ok) {
-      dispatch('createNotification', { accountId: theEvent.creatorId,
+      dispatch('createNotification', {
+        accountId: theEvent.creatorId,
         subject: subjectTitles.events,
-        text: `${textTypesEvents.unpublishedByAdmin} '${theEvent.name}'` });
+        text: `${textTypesEvents.unpublishedByAdmin} '${theEvent.name}'`,
+      });
 
       channelMain.publish('mainFlow', {
         event: eventTypesPosts.e_unpublishedByAdmin,
         accountId: theEvent.creatorId,
         eventId: theEvent.id,
-        text: textTypesEvents.unpublishedByAdmin });
+        text: textTypesEvents.unpublishedByAdmin,
+      });
       return true;
     }
   },
 
   async deleteEventByAdmin({ dispatch }, theEvent) {
-    const { ok } = await Db.delete({ id: theEvent.id.toString(), table: 'events' }, { onSuccess: successTypesPosts.deleteEvent });
+    const { ok } = await Db.delete(
+      { id: theEvent.id.toString(), table: 'events' },
+      { onSuccess: successTypesPosts.deleteEvent },
+    );
     if (ok) {
-      dispatch('createNotification', { accountId: theEvent.creatorId,
-        subject: subjectTitles.events,
-        text: `Ваше мероприятие удалил АДМИН! '${theEvent.name}'` });
-
-      channelMain.publish('mainFlow', { event: eventTypesPosts.e_deletedByAdmin,
+      dispatch('createNotification', {
         accountId: theEvent.creatorId,
-        text: 'АДМИН ПИД**АС' });
+        subject: subjectTitles.events,
+        text: `Ваше мероприятие удалил АДМИН! '${theEvent.name}'`,
+      });
+
+      channelMain.publish('mainFlow', {
+        event: eventTypesPosts.e_deletedByAdmin,
+        accountId: theEvent.creatorId,
+        text: '',
+      });
       return true;
     }
   },
@@ -164,5 +218,4 @@ export default {
     const { records } = await Db.read({ query: "status == 'suggested'", table: 'events' });
     commit('setAllSuggestedEvents', records);
   },
-
 };

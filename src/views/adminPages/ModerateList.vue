@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import SuggestedListAdmin from '@/components/SuggestedListAdmin.vue';
+import SuggestedListAdmin from '@/components/adminComponents/SuggestedListAdmin.vue';
 
 export default {
   name: 'AllSuggestedEventsAdmin',

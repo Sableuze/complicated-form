@@ -11,23 +11,19 @@
         v-model="pictureD"
         @update:model-value="onFileSelect(pictureD)"
         accept=".jpg, image/*"
-        :rules="[val => validateFile(val)]"
+        :rules="[(val) => validateFile(val)]"
       >
         <template v-slot:file></template>
       </q-file>
       <div class="previewPicture" v-if="pictureD">
-        <img :src="picture" id="previewImage" alt="chosen picture">
-        <q-btn icon="close" round size="sm"
-               class="removeFile" @click="removeFile"></q-btn>
+        <img :src="picture" id="previewImage" alt="chosen picture" />
+        <q-btn icon="close" round size="sm" class="removeFile" @click="removeFile"></q-btn>
       </div>
-      <p class="hint"
-         :class="{'error' : hasErrors}"
-      >
-        {{ hasErrors ? errorTypes.noPicture : hintMsg }}</p>
+      <p class="hint" :class="{ error: hasErrors }">
+        {{ hasErrors ? errorTypes.noPicture : hintMsg }}
+      </p>
     </div>
-
   </div>
-
 </template>
 
 <script>
@@ -47,6 +43,8 @@ export default {
       default: 'Главная фотография (обложка мероприятия)',
     },
   },
+
+  emits: ['update:picture'],
 
   mounted() {
     this.errorTypes = errorTypesFiles;
@@ -141,7 +139,7 @@ export default {
     top: -10%;
     right: -10%;
     background: $close-bg;
-    color: $close-color
+    color: $close-color;
   }
 }
 </style>

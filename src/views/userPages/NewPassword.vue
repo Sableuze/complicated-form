@@ -3,29 +3,33 @@
     <p class="label">Введите новый пароль</p>
     <Password v-model="newPassword" class="mb-3" :register="true"></Password>
     <p class="label">Повторите пароль</p>
-    <Password v-model="confirmPassword" class="mb-3"
-              :rules="[val => val === newPassword || 'Пароли не совпадают']"></Password>
+    <Password
+      v-model="confirmPassword"
+      class="mb-3"
+      :rules="[(val) => val === newPassword || 'Пароли не совпадают']"
+    ></Password>
     <AuthButtons></AuthButtons>
   </q-form>
   <ActionResult
-    :redirect="{name: 'Auth'}"
+    :redirect="{ name: 'Auth' }"
     :redirectOnFailure="false"
     :successText="'Пароль успешно изменен'"
   ></ActionResult>
-
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import Password from '@/components/formComponents/Password.vue';
+import Password from '@/components/formComponents/FormPassword.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
-import Auth from '@/api/authApi';
+import Auth from '@/api/authService';
 import ActionResult from '@/components/dialogComponents/ActionResult.vue';
 
 export default {
   name: 'NewPassword',
   components: {
-    Password, AuthButtons, ActionResult,
+    Password,
+    AuthButtons,
+    ActionResult,
   },
 
   data() {
@@ -59,6 +63,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

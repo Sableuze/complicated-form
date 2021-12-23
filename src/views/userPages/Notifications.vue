@@ -16,7 +16,7 @@
           <q-item v-ripple class="item" :class="item.status === 'outstanding' && 'bg-red-1'">
             <q-item-section>
               <q-item-label>{{ item.text }}</q-item-label>
-              <q-item-label caption>{{ item.subject || "Глобальные" }}</q-item-label>
+              <q-item-label caption>{{ item.subject || 'Глобальные' }}</q-item-label>
             </q-item-section>
             <q-item-section side>
               <showBeautifulDate :date="item.date"></showBeautifulDate>
@@ -40,12 +40,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import { gsap } from "gsap";
-import showBeautifulDate from "@/components/showBeautifulDate.vue";
+import { mapActions, mapGetters } from 'vuex';
+import { gsap } from 'gsap';
+import showBeautifulDate from '@/components/ShowBeautifulDate.vue';
 
 export default {
-  name: "Notifications",
+  name: 'Notifications',
   components: {
     showBeautifulDate,
   },
@@ -53,7 +53,7 @@ export default {
     if (this.getOutstandingNotifications.length) this.readNotifications();
   },
   computed: {
-    ...mapGetters(["getUser", "getAllNotifications", "getOutstandingNotifications"]),
+    ...mapGetters(['getUser', 'getAllNotifications', 'getOutstandingNotifications']),
 
     paginatedNotifications() {
       const start = (this.currentPage - 1) * this.perPage;
@@ -74,19 +74,19 @@ export default {
   },
 
   methods: {
-    ...mapActions(["readNotifications", "clearNotifications"]),
+    ...mapActions(['readNotifications', 'clearNotifications']),
     async deleteNotifications() {
       const ok = await this.$root.$refs.confirmDialog.show({
-        message: "Вы действительно хотите удалить все уведомления?",
-        okButton: "Да",
-        okColor: "red",
-        noButton: "Отмена",
-        iconColor: "red",
+        message: 'Вы действительно хотите удалить все уведомления?',
+        okButton: 'Да',
+        okColor: 'red',
+        noButton: 'Отмена',
+        iconColor: 'red',
       });
 
       if (ok) {
         const tl = gsap.timeline({ repeatDelay: 0.1 });
-        document.querySelectorAll(".item").forEach((el) => {
+        document.querySelectorAll('.item').forEach((el) => {
           tl.to(el, {
             opacity: 0,
             height: 0,

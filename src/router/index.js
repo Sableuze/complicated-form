@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/auth',
     name: 'Auth',
-    component: () => import('@/views/authPages/Auth.vue'),
+    component: () => import('@/views/authPages/AppAuth.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -28,7 +28,7 @@ const routes = [
   {
     path: '/auth/login',
     name: 'Login',
-    component: () => import('@/views/authPages/Login.vue'),
+    component: () => import('@/views/authPages/AppLogin.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -36,12 +36,11 @@ const routes = [
       if (store.getters.isLoggedIn) next('/');
       else next();
     },
-
   },
   {
     path: '/auth/register',
     name: 'Register',
-    component: () => import('@/views/authPages/Register.vue'),
+    component: () => import('@/views/authPages/AppRegister.vue'),
     meta: {
       layout: 'LayoutAuth',
     },
@@ -49,7 +48,6 @@ const routes = [
       if (store.getters.isLoggedIn) next('/');
       else next();
     },
-
   },
   {
     path: '/auth/edit',
@@ -148,7 +146,6 @@ const routes = [
       layout: 'LayoutAuth',
     },
   },
-
 ];
 
 const router = createRouter({
@@ -165,7 +162,10 @@ router.beforeEach((to, from, next) => {
   if (to.name !== 'EditUserInfo' && store.getters.isLoggedIn && !store.getters.isProfileFilled) {
     router.replace({ name: 'EditUserInfo' });
   } else if (to.matched.some((route) => route.meta.requiresAuth) && !store.getters.isLoggedIn) next({ name: 'Auth' });
-  else if (to.matched.some((route) => route.meta.requiresAdmin) && store.getters.getUserRole !== 'admin') next('/');
+  else if (
+    to.matched.some((route) => route.meta.requiresAdmin)
+    && store.getters.getUserRole !== 'admin'
+  ) next('/');
   else next();
 });
 export default router;

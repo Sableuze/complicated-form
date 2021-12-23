@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit="onSubmit" class="mb-2" >
+  <q-form @submit="onSubmit" class="mb-2">
     <apiErrors :errorsCodes="errors" :errors="errors" v-if="errors"></apiErrors>
     <h2>Введите ваш E-Mail</h2>
     <Email v-model="email"></Email>
@@ -14,9 +14,9 @@
 
 <script>
 import { gsap } from 'gsap';
-import Email from '@/components/formComponents/Email.vue';
-import Auth from '@/api/authApi';
-import apiErrors from '@/components/dialogComponents/apiErrors.vue';
+import Email from '@/components/formComponents/FormEmail.vue';
+import Auth from '@/api/authService';
+import apiErrors from '@/components/dialogComponents/ApiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
 // import { errorTypesSendResetMessage } from '@/helpers/errorTypes';
@@ -24,7 +24,9 @@ import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 export default {
   name: 'RecoverPassword',
   components: {
-    Email, apiErrors, AuthButtons,
+    Email,
+    apiErrors,
+    AuthButtons,
   },
   mounted() {
     gsap.fromTo('.result', { opacity: 0 }, { opacity: 1, duration: 0.4 });
@@ -49,6 +51,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

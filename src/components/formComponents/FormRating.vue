@@ -2,12 +2,12 @@
   <div class="flex column">
     <p class="label mb-1">Рейтинг мероприятия</p>
     <q-select
-    outlined
-    v-model="ratingD"
-    @update:model-value="updateRating(ratingD)"
-    :options="ratingTitles"
-    :rules="[val => val.length || errorTypes.noRating]"
-  />
+      outlined
+      v-model="ratingD"
+      @update:model-value="updateRating(ratingD)"
+      :options="ratingTitles"
+      :rules="[(val) => val.length || errorTypes.noRating]"
+    />
   </div>
 </template>
 
@@ -28,9 +28,8 @@ export default {
       },
     },
   },
-  created() {
-
-  },
+  emits: ['update:rating'],
+  created() {},
   mounted() {
     this.errorTypes = errorTypesRating;
     // eslint-disable-next-line no-new
@@ -59,6 +58,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

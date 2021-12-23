@@ -1,5 +1,5 @@
 import { getItem, setItem } from '@/helpers/localStorageHelper';
-import Auth from '@/api/authApi';
+import Auth from '@/api/authService';
 
 const state = {
   user: getItem('user') || {
@@ -15,7 +15,8 @@ const state = {
 const getters = {
   getUser: (state) => state.user,
   getAccountId: (state) => state.user.accountId,
-  isProfileFilled: (state) => state.user?.profile && Object.values(state.user.profile).length
+  isProfileFilled: (state) => state.user?.profile
+    && Object.values(state.user.profile).length
     && Object.values(state.user.profile).every((i) => i),
   getUserRole: (state) => state.user.profile.role,
   isLoggedIn: (state) => !!state.user.username,
@@ -47,7 +48,6 @@ const mutations = {
   // changeRegistrationStatus(state, status) {
   //   state.isRegistrationSuccess = status;
   // },
-
 };
 
 const actions = {
@@ -99,7 +99,6 @@ const actions = {
   //   if (target === 'login') commit('changeLoginStatus', status);
   //   else if (target === 'registration') commit('changeRegistrationStatus', status);
   // },
-
 };
 
 export default {

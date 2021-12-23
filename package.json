@@ -2,13 +2,18 @@
   "name": "redbox",
   "version": "0.1.0",
   "private": true,
+  "description": "",
+  "author": "",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
+  "main": ".eslintrc.js",
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "@vue/test-utils": "^2.0.0-rc.17",
     "ably": "^1.2.15",
     "axios": "^0.23.0",
     "core-js": "^3.6.5",
@@ -19,6 +24,7 @@
     "quasar": "^2.0.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
+    "vue3-cookies": "^1.0.6",
     "vuex": "^4.0.0-0",
     "ws": "^8.3.0"
   },
@@ -26,6 +32,7 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
@@ -37,19 +44,18 @@
     "node-sass": "^4.12.0",
     "sass": "1.32.12",
     "sass-loader": "^10.1.0",
-    "vue-cli-plugin-quasar": "~4.0.4"
+    "typescript": "~3.9.3",
+    "vue-cli-plugin-quasar": "~4.0.4",
+    "vue-jest": "^5.0.0-0"
   },
-  "main": ".eslintrc.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Sableuze/complicated-form-.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/Sableuze/complicated-form-/issues"
   },
   "homepage": "https://github.com/Sableuze/complicated-form-#readme",
-  "description": ""
+  "keywords": [],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sableuze/complicated-form-.git"
+  }
 }

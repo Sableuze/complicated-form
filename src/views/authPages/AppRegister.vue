@@ -12,10 +12,10 @@
 
 <script>
 import { mapActions } from 'vuex';
-import Email from '@/components/formComponents/Email.vue';
-import Password from '@/components/formComponents/Password.vue';
-import Username from '@/components/formComponents/Username.vue';
-import apiErrors from '@/components/dialogComponents/apiErrors.vue';
+import Email from '@/components/formComponents/FormEmail.vue';
+import Password from '@/components/formComponents/FormPassword.vue';
+import Username from '@/components/formComponents/FormUsername.vue';
+import apiErrors from '@/components/dialogComponents/ApiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
 import { errorTypesRegister } from '@/helpers/errorTypes';

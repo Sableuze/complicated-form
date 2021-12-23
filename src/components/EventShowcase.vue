@@ -16,46 +16,33 @@
           <div class="info-body flex column">
             <div class="regular-info-cnt">
               <div class="list-item">
-                <q-icon class="icon" name="place"/>
-                <p class="list-text">{{
-                    `${theEvent.city}, ${theEvent.address.street}`
-                  }}
-                  <br>{{
-                    `${theEvent.address.house}`
+                <q-icon class="icon" name="place" />
+                <p class="list-text">
+                  {{ `${theEvent.city}, ${theEvent.address?.street}` }} <br />{{
+                    `${theEvent.address?.house}`
                   }}
                 </p>
               </div>
-              <template
-                v-for="dateRow in theEvent.dates"
-                :key="dateRow.id">
+              <div class="date-row" v-for="dateRow in theEvent.dates" :key="dateRow.id" >
                 <div class="list-item">
-                  <q-icon class="icon" color="accent" name="date_range"/>
-                  <p class="list-text">{{
-                      `${dateRow.dateStart}, ${dateRow.dateFinish}`
-                    }}</p>
+                  <q-icon class="icon" color="accent" name="date_range" />
+                  <p class="list-text">{{ `${dateRow.dateStart}, ${dateRow.dateFinish}` }}</p>
                 </div>
-                <div class="list-item" style="border-bottom: 1px solid red;">
-                  <q-icon class="icon" color="accent" name="schedule"/>
-                  <p class="list-text">{{
-                      `${dateRow.timeStart}, ${dateRow.timeFinish}`
-                    }}</p>
+                <div class="list-item" >
+                  <q-icon class="icon" color="accent" name="schedule" />
+                  <p class="list-text">{{ `${dateRow.timeStart}, ${dateRow.timeFinish}` }}</p>
                 </div>
-              </template>
+              </div>
             </div>
             <div class="contacts-cnt">
               <div class="list-item">
-                <q-icon class="icon" name="phone"/>
-                <p class="list-text">{{
-                    theEvent.number
-                  }}</p>
+                <q-icon class="icon" name="phone" />
+                <p class="list-text">{{ theEvent.number }}</p>
               </div>
               <div class="list-item">
-                <q-icon class="icon" name="email"/>
-                <p class="list-text">{{
-                    theEvent.email
-                  }}</p>
+                <q-icon class="icon" name="email" />
+                <p class="list-text">{{ theEvent.email }}</p>
               </div>
-
             </div>
             <div class="holder-info">
               <h2 class="holder label">{{ theEvent.holder }}</h2>
@@ -65,7 +52,7 @@
         </div>
       </div>
       <div class="event-picture">
-        <img :src="theEvent.picture" alt="preview picture">
+        <img :src="theEvent.picture" alt="preview picture" />
       </div>
     </div>
     <div class="event-description">
@@ -76,40 +63,34 @@
     <div class="event-body flex">
       <div class="event-info-wrapper">
         <div class="event-info flex column">
-          <q-skeleton class="rating-cnt">
-          </q-skeleton>
-            <q-skeleton class="title-cnt" width="440" height="92"> </q-skeleton>
+          <q-skeleton class="rating-cnt"> </q-skeleton>
+          <q-skeleton class="title-cnt" width="440" height="92"> </q-skeleton>
           <div class="info-body flex column">
             <div class="regular-info-cnt">
-                <q-skeleton  class="list-item" width="440" height="68"> </q-skeleton>
-                <q-skeleton  class="list-item" width="440" height="68"> </q-skeleton>
-                <q-skeleton  class="list-item" width="440" height="68"> </q-skeleton>
-
+              <q-skeleton class="list-item" width="440" height="68"> </q-skeleton>
+              <q-skeleton class="list-item" width="440" height="68"> </q-skeleton>
+              <q-skeleton class="list-item" width="440" height="68"> </q-skeleton>
             </div>
             <div class="contacts-cnt">
-              <q-skeleton  class="list-item" width="440" height="35"> </q-skeleton>
-              <q-skeleton  class="list-item" width="440" height="35"> </q-skeleton>
-
+              <q-skeleton class="list-item" width="440" height="35"> </q-skeleton>
+              <q-skeleton class="list-item" width="440" height="35"> </q-skeleton>
             </div>
             <div class="holder-info">
-              <q-skeleton  class="list-item" width="440" height="35"> </q-skeleton>
-
+              <q-skeleton class="list-item" width="440" height="35"> </q-skeleton>
             </div>
           </div>
         </div>
       </div>
-        <q-skeleton class="event-picture"> </q-skeleton>
+      <q-skeleton class="event-picture"> </q-skeleton>
     </div>
-    <q-skeleton class="event-description" height="100px">
-    </q-skeleton>
+    <q-skeleton class="event-description" height="100px"> </q-skeleton>
   </div>
-
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { reformatDates } from '../helpers/reformatDatesHelper';
-import Db from '@/api/databaseWrapper';
+import Db from '@/api/databaseService';
 
 const cloneDeep = require('lodash.clonedeep');
 
@@ -119,7 +100,6 @@ export default {
     eventId: {
       type: String,
     },
-
   },
   mounted() {
     const theEvent = cloneDeep(this.getEventById(this.eventId));
@@ -138,7 +118,6 @@ export default {
   },
   computed: {
     ...mapGetters(['getEventById']),
-
   },
   data() {
     return {
@@ -197,7 +176,6 @@ p {
       line-height: 39px;
       margin-bottom: 32px;
       font-weight: 800;
-
       color: $close-bg;
     }
 
@@ -206,14 +184,17 @@ p {
 
       .regular-info-cnt {
         .list-text {
-          font-size: 18px;;
+          font-size: 18px;
         }
+      }
+      .date-row{
+        padding: 20px 0 14px 0 ;
+        border-bottom: 1px solid red
       }
 
       .contacts-cnt {
         .list-text {
           font-size: 14px;
-
         }
       }
 
@@ -237,6 +218,10 @@ p {
         align-items: center;
         padding-bottom: 14px;
 
+        &:last-child{
+          padding-bottom: 0;
+        }
+
         .icon {
           color: $border-color;
           font-size: 18px;
@@ -244,7 +229,7 @@ p {
 
         .list-text {
           color: $label-color;
-          opacity: .6;
+          opacity: 0.6;
         }
       }
     }
@@ -285,7 +270,6 @@ p {
     //event body
     padding: 10px;
   }
-
 }
 
 .event-description {

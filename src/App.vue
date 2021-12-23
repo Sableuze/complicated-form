@@ -1,9 +1,7 @@
 <template>
   <div>
     <ConfirmDialog ref="confirmDialog"></ConfirmDialog>
-    <component style="padding-bottom: 50px" :is="layout">
-
-    </component>
+    <component style="padding-bottom: 50px" :is="layout"> </component>
   </div>
 </template>
 
@@ -15,6 +13,7 @@ import ConfirmDialog from '@/components/dialogComponents/ConfirmDialog.vue';
 export default {
   name: 'app',
   components: { LayoutAuth, LayoutDefault, ConfirmDialog },
+
   computed: {
     layout() {
       if (this.$route.meta.layout === 'LayoutAuth') {
@@ -22,9 +21,7 @@ export default {
       }
       return 'LayoutDefault';
     },
-
   },
-
 };
 </script>
 

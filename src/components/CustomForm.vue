@@ -1,10 +1,6 @@
 <template>
-  <ActionResult :redirect="`${this.form.id}/suggest`"></ActionResult>
-  <q-form
-    @submit="onSubmit"
-    @reset="onReset"
-    class="q-gutter-md"
-  >
+  <ActionResult :redirect="`/${+this.form.id}/suggest`"></ActionResult>
+  <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
     <div class="form-section form-header">
       <Main-info
         v-model:holder="form.holder"
@@ -19,34 +15,18 @@
       </Main-info>
     </div>
     <div class="form-section form-body">
-      <Regular-info
-        v-model:name="form.name"
-        v-model:description="form.description"
-      >
+      <Regular-info v-model:name="form.name" v-model:description="form.description">
         <template v-slot:pictureUploader>
-          <File-uploader
-            v-model:picture="form.picture">
-          </File-uploader>
+          <File-uploader v-model:picture="form.picture"> </File-uploader>
         </template>
         <template v-slot:title-regular><h2 class="title mb-0">Общая информация</h2></template>
       </Regular-info>
-      <Dates
-        v-model:dates="form.dates"
-        :dates-example="datesExample"
-      ></Dates>
+      <Dates v-model:dates="form.dates" :dates-example="datesExample"></Dates>
     </div>
     <div class="form-section form-footer">
       <div class="footer-inputs">
-        <Rating
-          v-if="this.getRatingList"
-          class="col-grow"
-          v-model:rating="form.rating"
-        ></Rating>
-        <Address
-          class="col-grow"
-          v-model:address="form.address"
-          :city="form.city"
-        ></Address>
+        <Rating v-if="this.getRatingList" class="col-grow" v-model:rating="form.rating"></Rating>
+        <Address class="col-grow" v-model:address="form.address" :city="form.city"></Address>
       </div>
     </div>
     <div class="buttons">
@@ -70,7 +50,6 @@
       </q-btn>
     </div>
   </q-form>
-
 </template>
 
 <script>
@@ -78,22 +57,15 @@ import { mapActions, mapGetters } from 'vuex';
 import MainInfo from '@/components/formComponents/MainInfo.vue';
 import RegularInfo from '@/components/formComponents/RegularInfo.vue';
 import FileUploader from '@/components/formComponents/FileUploader.vue';
-import Dates from '@/components/formComponents/Dates.vue';
-import Rating from '@/components/formComponents/Rating.vue';
-import Address from '@/components/formComponents/Address.vue';
+import Dates from '@/components/formComponents/FormDates.vue';
+import Rating from '@/components/formComponents/FormRating.vue';
+import Address from '@/components/formComponents/FormAddress.vue';
 import ActionResult from '@/components/dialogComponents/ActionResult.vue';
 import { reformatDates } from '@/helpers/reformatDatesHelper';
 
 export default {
   name: 'Form',
-  props: {
-    action: {
-      type: String,
-      validator(value) {
-        return ['create', 'edit'].includes(value);
-      },
-    },
-  },
+  inject: ['action'],
   components: {
     RegularInfo,
     MainInfo,
@@ -147,7 +119,6 @@ export default {
           house: '',
         },
         status: 'draft',
-
       },
       datesExample: {
         id: 0,
@@ -197,7 +168,6 @@ export default {
         this.form.address = this.addressExample;
       }
     },
-
   },
 };
 </script>
@@ -218,9 +188,7 @@ export default {
 .buttons {
   display: flex;
   gap: 20px;
-
 }
 
 // ==============================================================
-
 </style>

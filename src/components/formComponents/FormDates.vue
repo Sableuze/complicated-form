@@ -1,10 +1,6 @@
 <template>
   <div class="dates-cnt">
-
-    <div class="date-row flex items-center list-item"
-         v-for="dateF in datesD"
-         :key="dateF.id"
-    >
+    <div class="date-row flex items-center list-item" v-for="dateF in datesD" :key="dateF.id">
       <div class="dates-col-wrapper start">
         <div class="date-col">
           <p class="label mb-1">Дата начала</p>
@@ -19,19 +15,23 @@
             mask="##-##-####"
             no-error-icon
             :rules="[
-              val => compareWithToday(val) || errorTypes.lessThanToday,
-              val => compareWithMaxDate(val, dateF.id) || errorTypes.moreThanFinish,
-               val => compareWithPrev(val, dateF.id)
-               || errorTypes.lessThanPreviousDateFinish,
-               val => checkDate(val) || errorTypes.invalidDate]"
+              (val) => compareWithToday(val) || errorTypes.lessThanToday,
+              (val) => compareWithMaxDate(val, dateF.id) || errorTypes.moreThanFinish,
+              (val) => compareWithPrev(val, dateF.id) || errorTypes.lessThanPreviousDateFinish,
+              (val) => checkDate(val) || errorTypes.invalidDate,
+            ]"
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" cover transition-show="scale"
-                               transition-hide="scale">
+                <q-popup-proxy
+                  ref="qDateProxy"
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
                   <q-date today-btn mask="DD-MM-YYYY" v-model="dateF.dateStart">
                     <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat/>
+                      <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
                   </q-date>
                 </q-popup-proxy>
@@ -48,14 +48,17 @@
             no-error-icon
             v-model="dateF.timeStart"
             mask="time"
-            :rules="['time', val => compareWithMaxTime(val, dateF.id)
-            || errorTypes.moreThanFinishTime]">
+            :rules="[
+              'time',
+              (val) => compareWithMaxTime(val, dateF.id) || errorTypes.moreThanFinishTime,
+            ]"
+          >
             <template v-slot:append>
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                   <q-time v-model="dateF.timeStart">
                     <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat/>
+                      <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
                   </q-time>
                 </q-popup-proxy>
@@ -64,8 +67,7 @@
           </q-input>
         </div>
       </div>
-      <div class="separator">
-      </div>
+      <div class="separator"></div>
       <div class="dates-col-wrapper finish">
         <div class="date-col">
           <p class="label mb-1">Дата окончания</p>
@@ -79,23 +81,27 @@
             @change="this.revalidate(['timeStart', 'timeFinish'], dateF.id)"
             v-model="dateF.dateFinish"
             :rules="[
-                val => checkDate(val) || errorTypes.invalidDate,
-                val => compareWithMinDate(val, dateF.id) || errorTypes.lessThanStart,
-                val => compareWithPrev(val, dateF.id) || errorTypes.lessThanPreviousDateFinish
-              ]">
+              (val) => checkDate(val) || errorTypes.invalidDate,
+              (val) => compareWithMinDate(val, dateF.id) || errorTypes.lessThanStart,
+              (val) => compareWithPrev(val, dateF.id) || errorTypes.lessThanPreviousDateFinish,
+            ]"
+          >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy ref="qDateProxy" cover transition-show="scale"
-                               transition-hide="scale">
+                <q-popup-proxy
+                  ref="qDateProxy"
+                  cover
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
                   <q-date today-btn mask="DD-MM-YYYY" minimal v-model="dateF.dateFinish">
                     <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat/>
+                      <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
                   </q-date>
                 </q-popup-proxy>
               </q-icon>
             </template>
-
           </q-input>
         </div>
         <div class="date-col">
@@ -107,14 +113,17 @@
             no-error-icon
             v-model="dateF.timeFinish"
             mask="time"
-            :rules="['time', val => compareWithMinTime(val, dateF.id)
-             || errorTypes.lessThanStartTime]">
+            :rules="[
+              'time',
+              (val) => compareWithMinTime(val, dateF.id) || errorTypes.lessThanStartTime,
+            ]"
+          >
             <template v-slot:append>
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                   <q-time v-model="dateF.timeFinish">
                     <div class="row items-center justify-end">
-                      <q-btn v-close-popup label="Close" color="primary" flat/>
+                      <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
                   </q-time>
                 </q-popup-proxy>
@@ -129,8 +138,8 @@
         icon="close"
         round
         size="sm"
-        @click="removeDateRow(dateF.id)">
-
+        @click="removeDateRow(dateF.id)"
+      >
       </q-btn>
     </div>
     <DateRowExample></DateRowExample>
@@ -139,12 +148,11 @@
       @click="addDateRow"
       class="addDateRowBtn q-py-lg"
       :icon="hasErrors ? 'close' : 'add'"
-      :label="hasErrors ?  'Исправьте ошибки' : 'Добавить дату'"
+      :label="hasErrors ? 'Исправьте ошибки' : 'Добавить дату'"
       :disable="hasErrors > 0"
     >
     </q-btn>
   </div>
-
 </template>
 
 <script>
@@ -159,6 +167,7 @@ export default {
     DateRowExample,
   },
   props: ['dates', 'datesExample'],
+  emits: ['update:dates'],
   mounted() {
     this.errorTypes = errorTypesDate;
   },
@@ -193,7 +202,8 @@ export default {
       const startIndex = this.datesD.findIndex((i) => i.id === id);
       this.datesD = this.datesD.filter((i) => i.id !== id);
 
-      this.datesD.slice(startIndex)
+      this.datesD
+        .slice(startIndex)
         // eslint-disable-next-line no-plusplus
         .map((i) => i.id === 0 || --i.id);
     },
@@ -252,7 +262,10 @@ export default {
     },
 
     compareWithMinTime(v, id) {
-      if (this.formatDate(this.getDateAttr(id, 'dateStart')) !== this.formatDate(this.getDateAttr(id, 'dateFinish'))) {
+      if (
+        this.formatDate(this.getDateAttr(id, 'dateStart'))
+        !== this.formatDate(this.getDateAttr(id, 'dateFinish'))
+      ) {
         return true;
       }
       const min = this.getDateAttr(id, 'timeStart');
@@ -264,7 +277,10 @@ export default {
       return res;
     },
     compareWithMaxTime(v, id) {
-      if (this.formatDate(this.getDateAttr(id, 'dateStart')) !== this.formatDate(this.getDateAttr(id, 'dateFinish'))) {
+      if (
+        this.formatDate(this.getDateAttr(id, 'dateStart'))
+        !== this.formatDate(this.getDateAttr(id, 'dateFinish'))
+      ) {
         return true;
       }
       const max = this.getDateAttr(id, 'timeFinish');
@@ -283,7 +299,6 @@ export default {
         this.$emit('update:dates', this.datesD);
       },
       deep: true,
-
     },
   },
 };
@@ -309,7 +324,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 26px;
-
 }
 
 :deep(.date-row) {
@@ -342,7 +356,6 @@ export default {
   background: $input-border-color;
   @media (max-width: 1150px) {
     display: none;
-
   }
 }
 
@@ -352,5 +365,4 @@ export default {
     align-self: center;
   }
 }
-
 </style>

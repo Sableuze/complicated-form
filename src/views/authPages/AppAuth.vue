@@ -6,7 +6,8 @@
       padding="md"
       class="label self-center"
       color="accent"
-      @click="this.$router.push({name :'Login'})">
+      @click="this.$router.push({ name: 'Login' })"
+    >
       Войти
     </q-btn>
     <q-btn
@@ -14,13 +15,14 @@
       padding="md"
       class="label self-center"
       color="accent"
-      @click="this.$router.push({name :'Register'})">Зарегестрироваться</q-btn>
+      @click="this.$router.push({ name: 'Register' })"
+      >Зарегестрироваться</q-btn
+    >
   </div>
-
 </template>
 
 <script>
-import Db from '@/api/databaseWrapper';
+import Db from '@/api/databaseService';
 
 export default {
   name: 'Auth',
@@ -28,13 +30,12 @@ export default {
     Db.list();
     Db.read({ table: 'users' });
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
 <style scoped lang="scss">
-.login-choice{
+.login-choice {
   display: flex;
   height: 100%;
   justify-content: center;
@@ -43,5 +44,4 @@ export default {
     display: grid;
   }
 }
-
 </style>

@@ -1,13 +1,14 @@
 <template>
   <div id="parent" class="full-width full-height justify-between row wrap">
-    <div class="view-window" style="overflow: auto;">
+    <div class="view-window" style="overflow: auto">
       <q-card class="no-border-radius full-height">
         <q-card-section class="full-height flex column">
           <q-input
             v-model="name.value"
             class="mb-3"
             :disable="isLoading"
-            debounce="400" @update:model-value="searchEvents"
+            debounce="400"
+            @update:model-value="searchEvents"
             label="Название мероприятия"
           >
           </q-input>
@@ -18,7 +19,7 @@
         </q-card-section>
       </q-card>
     </div>
-    <div class="filters-window" style="overflow: auto;">
+    <div class="filters-window" style="overflow: auto">
       <q-card class="no-border-radius">
         <q-card-section class="filters">
           <div class="filters-cnt">
@@ -38,17 +39,22 @@
                 no-error-icon
                 lazy-rules
                 ref="dateStart"
-
-                :rules="[val => isLessThanMax(val) || errorTypes.moreThanFinish,
-               val => checkDate(val) || errorTypes.invalidDate]"
+                :rules="[
+                  (val) => isLessThanMax(val) || errorTypes.moreThanFinish,
+                  (val) => checkDate(val) || errorTypes.invalidDate,
+                ]"
               >
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" cover transition-show="scale"
-                                   transition-hide="scale">
+                    <q-popup-proxy
+                      ref="qDateProxy"
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
                       <q-date today-btn mask="DD-MM-YYYY" v-model="filters.dateStart.value">
                         <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Close" color="primary" flat/>
+                          <q-btn v-close-popup label="Close" color="primary" flat />
                         </div>
                       </q-date>
                     </q-popup-proxy>
@@ -64,53 +70,63 @@
                 mask="##-##-####"
                 no-error-icon
                 lazy-rules
-                :rules="[val => isMoreThanMin(val) || errorTypes.lessThanStart,
+                :rules="[
+                  (val) => isMoreThanMin(val) || errorTypes.lessThanStart,
 
-               val => checkDate(val) || errorTypes.invalidDate]"
+                  (val) => checkDate(val) || errorTypes.invalidDate,
+                ]"
               >
                 <template v-slot:append>
                   <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" cover transition-show="scale"
-                                   transition-hide="scale">
+                    <q-popup-proxy
+                      ref="qDateProxy"
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
                       <q-date today-btn mask="DD-MM-YYYY" v-model="filters.dateFinish.value">
                         <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Close" color="primary" flat/>
+                          <q-btn v-close-popup label="Close" color="primary" flat />
                         </div>
                       </q-date>
                     </q-popup-proxy>
                   </q-icon>
                 </template>
               </q-input>
-
             </div>
           </div>
           <div class="toggle-cnt">
             <h2 class="label">Включить фильтры</h2>
-            <q-toggle v-model="useFilters" :disable="isLoading"
-                      @update:model-value="toggleFilters"></q-toggle>
+            <q-toggle
+              v-model="useFilters"
+              :disable="isLoading"
+              @update:model-value="toggleFilters"
+            ></q-toggle>
           </div>
         </q-card-section>
       </q-card>
     </div>
   </div>
-
 </template>
 
 <script>
 import moment from 'moment';
 import { mapActions, mapGetters } from 'vuex';
-import City from '@/components/formComponents/City.vue';
-import Rating from '@/components/formComponents/Rating.vue';
-import PublishedList from '@/components/PublishedList.vue';
+import City from '@/components/formComponents/FormCity.vue';
+import Rating from '@/components/formComponents/FormRating.vue';
+import PublishedList from '@/components/listComponents/PublishedList.vue';
 import { datePattern } from '@/helpers/validatorPatterns';
 import { errorTypesDate } from '@/helpers/errorTypes';
-import Db from '@/api/databaseWrapper';
-import Preloader from '@/components//Preloader.vue';
+import Db from '@/api/databaseService';
+import Preloader from '@/components/PreloaderCustom.vue';
 
 export default {
   name: 'Home',
   components: {
-    City, Rating, PublishedList, Preloader,
+    City,
+    Rating,
+    PublishedList,
+    Preloader,
   },
 
   mounted() {
@@ -142,7 +158,6 @@ export default {
           operand: '<=',
           value: '',
           date: true,
-
         },
         city: {
           operand: '==',
@@ -246,7 +261,6 @@ export default {
 
   .filters-window {
     flex: 1;
-
   }
 
   .filters {
@@ -272,18 +286,16 @@ export default {
 
       .filters {
         border-left: none;
-
       }
     }
     .preloader {
-      height: 100%;;
+      height: 100%;
     }
   }
   @media (max-width: 600px) {
-    .list-cnt{
+    .list-cnt {
       min-height: 250px;
     }
   }
 }
-
 </style>

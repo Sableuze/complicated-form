@@ -19,26 +19,25 @@
       :options="options"
       @filter="onFilter"
       lazy-rules
-      :rules="[() => !!this.street || errorTypes.noStreet,
-      () => !!this.house || errorTypes.noHouse ]"
+      :rules="[
+        () => !!this.street || errorTypes.noStreet,
+        () => !!this.house || errorTypes.noHouse,
+      ]"
     >
       <template v-slot:no-option>
         <q-item>
-          <q-item-section class="text-grey">
-            No results
-          </q-item-section>
+          <q-item-section class="text-grey"> No results </q-item-section>
         </q-item>
       </template>
       <template v-if="addressToShow" v-slot:append>
-        <q-icon name="cancel" @click.stop="onResetInput" class="cursor-pointer"/>
+        <q-icon name="cancel" @click.stop="onResetInput" class="cursor-pointer" />
       </template>
     </q-select>
-
   </div>
 </template>
 
 <script>
-import address from '@/api/address';
+import Address from '@/api/addressService';
 import { errorTypesAddress } from '@/helpers/errorTypes';
 
 export default {
@@ -51,6 +50,7 @@ export default {
       type: String,
     },
   },
+  emits: ['update:address'],
   mounted() {
     this.errorTypes = errorTypesAddress;
   },
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     async getStreet(val, update) {
-      const res = await address.getStreet(val, this.city);
+      const res = await Address.getStreet(val, this.city);
       this.streetId = res.allData.suggestions;
       update(() => {
         if (val === '') {
@@ -82,7 +82,7 @@ export default {
     },
 
     async getHouse(val, update) {
-      const res = await address.getHouse(val, this.streetId);
+      const res = await Address.getHouse(val, this.streetId);
       update(() => {
         if (val === '') {
           this.options = res.values;
@@ -109,18 +109,17 @@ export default {
     async chooseStreet() {
       this.addressToShow += `, ${this.addressItem}`;
       this.street = this.addressItem;
-      await this.$emit('update:address', { street: this.street, house: this.address.house });
-      this.streetId = this.streetId.find((i) => i.value === this.street)
-        .data.street_fias_id;
+      await this.emitUpdate('address', { street: this.street, house: this.address.house });
+      this.streetId = this.streetId.find((i) => i.value === this.street).data.street_fias_id;
       this.searchHouse = true;
       this.options = [];
       this.placeholder = 'Выберите номер дома';
       this.$refs.addressSelect.updateInputValue('');
       this.$refs.addressSelect.showPopup();
     },
-    async chooseHouse() {
+    chooseHouse() {
       this.house = this.addressItem;
-      await this.$emit('update:address', { house: this.house, street: this.address.street });
+      this.emitUpdate('address', { house: this.house, street: this.address.street });
       this.options = [];
     },
 
@@ -130,7 +129,11 @@ export default {
       this.options = [];
       this.house = null;
       this.searchHouse = false;
-      this.$emit('update:address', { house: undefined, street: undefined });
+      this.emitUpdate('address', { house: undefined, street: undefined });
+    },
+
+    emitUpdate(target, newVal) {
+      this.$emit(`update:${target}`, newVal);
     },
   },
   watch: {
@@ -142,6 +145,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

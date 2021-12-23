@@ -2,7 +2,6 @@ import { createStore } from 'vuex';
 import { Notify } from 'quasar';
 import rating from '@/api/rating';
 import events from './modules/events';
-import alerts from './modules/alerts';
 import auth from './modules/auth';
 import notifications from './modules/notifications';
 import { addRequestHandler, addResponseHandler } from '@/api/http';
@@ -14,12 +13,10 @@ const store = createStore({
     isLoading: false,
     loadingCount: 0,
     layout: 'layout-default',
-
   },
 
   getters: {
     getSuccessStatus: (state) => state.isSuccess,
-    // isLoading: (state) => state.isLoading,
     isLoading: (state) => !!state.loadingCount,
     getRatingList: (state) => state.ratingList,
     getLayout: (state) => state.layout,
@@ -34,17 +31,11 @@ const store = createStore({
       state.isSuccess = payload;
     },
 
-    // changeLoadingStatus(state, payload) {
-    //   state.isLoading = payload;
-    // },
-
     incrementLoading(state) {
       state.loadingCount += 1;
-      debugger;
     },
 
     decrementLoading(state) {
-      debugger;
       state.loadingCount -= 1;
     },
 
@@ -58,7 +49,6 @@ const store = createStore({
   },
 
   actions: {
-
     async loadRating({ commit }) {
       const response = await rating.getRating();
       if (response) {
@@ -73,11 +63,12 @@ const store = createStore({
     changeSuccessStatus({ commit }, status) {
       commit('changeSuccessStatus', status);
     },
-
   },
 
   modules: {
-    events, auth, alerts, notifications,
+    events,
+    auth,
+    notifications,
   },
 });
 addRequestHandler((fn) => {
@@ -116,7 +107,7 @@ addResponseHandler(
       });
       return { ok: false };
     }
-    return Promise.reject((error));
+    return Promise.reject(error);
   },
 );
 

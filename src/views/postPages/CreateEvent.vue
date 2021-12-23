@@ -13,6 +13,9 @@ export default {
   components: {
     CustomForm,
   },
+  provide: {
+    action: 'create',
+  },
 };
 </script>
 

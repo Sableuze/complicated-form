@@ -1,5 +1,5 @@
 import { dadata } from '@/api/http';
-
+// getCity => getStreet => getHouse
 export default class Address {
   static async getCity(q) {
     const { data } = await dadata.post('', {
@@ -28,7 +28,6 @@ export default class Address {
         },
       ],
       restrict_value: true,
-
     });
     if (data) {
       return { values: data.suggestions.map((i) => i.value), allData: data };
@@ -45,7 +44,6 @@ export default class Address {
         },
       ],
       restrict_value: true,
-
     });
     if (data) {
       return { values: data.suggestions.map((i) => i.value), allData: data };

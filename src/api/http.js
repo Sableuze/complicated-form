@@ -1,36 +1,34 @@
 import axios from 'axios';
-import { dadataToken, authToken, db } from '@/api/tokens';
 
 export const redbox = axios.create({
   baseURL: 'http://testwork.rdbx24.ru/api/',
 });
 export const dadata = axios.create({
-  baseURL: 'https://suggestions.dadata.ru:443/suggestions/api/4_1/rs/suggest/address',
+  baseURL: process.env.VUE_APP_DADATA_API_URL,
   params: {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Token ${dadataToken}`,
+      Authorization: `Token ${process.env.VUE_APP_DADATA_API_KEY}`,
     },
   },
-
 });
 
 export const authentication = axios.create({
-  baseURL: 'https://api.m3o.com/v1/user',
+  baseURL: process.env.VUE_APP_AUTH_API_URL,
   withCredentials: true,
 });
 
 authentication.defaults.headers.common['Content-Type'] = 'application/json';
-authentication.defaults.headers.common.Authorization = `Bearer ${authToken}`;
+authentication.defaults.headers.common.Authorization = `Bearer ${process.env.VUE_APP_AUTH_API_KEY}`;
 
 export const database = axios.create({
-  baseURL: 'https://api.m3o.com/v1/db',
+  baseURL: process.env.VUE_APP_DB_API_URL,
   withCredentials: true,
 });
 
 database.defaults.headers.common['Content-Type'] = 'application/json';
-database.defaults.headers.common.Authorization = `Bearer ${db}`;
+database.defaults.headers.common.Authorization = `Bearer ${process.env.VUE_APP_DB_API_KEY}`;
 export function addRequestHandler(fn) {
   authentication.interceptors.request.use(fn);
   database.interceptors.request.use(fn);

@@ -1,15 +1,15 @@
 <template>
   <div>
-    <ActionResult :failureText="''" :successText="''" :redirect="{name: 'Home'}"></ActionResult>
+    <ActionResult :failureText="''" :successText="''" :redirect="{ name: 'Home' }"></ActionResult>
     <h2 class="title"></h2>
-<!--    <api-errors :errorCodes="errors" :source="errorTypes"></api-errors>-->
+    <!--    <api-errors :errorCodes="errors" :source="errorTypes"></api-errors>-->
     <q-form @submit="onSubmit">
       <q-input
         v-model="code"
         mask="###-###-###"
         label="Неужели админ??"
         ref="codeInput"
-        :rules="[val => !!val || errorTypes.noCode]"
+        :rules="[(val) => !!val || errorTypes.noCode]"
       >
       </q-input>
 
@@ -19,10 +19,9 @@
         color="deep-orange-10"
         size="lg"
         class="self-center q-mt-lg"
-        label="Активировать">
-
+        label="Активировать"
+      >
       </q-btn>
-
     </q-form>
   </div>
 </template>
@@ -30,7 +29,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { Notify } from 'quasar';
-import Db from '@/api/databaseWrapper';
+import Db from '@/api/databaseService';
 import ActionResult from '@/components/dialogComponents/ActionResult.vue';
 // import apiErrors from '@/components/dialogComponents/apiErrors.vue';
 import { errorTypesRedeem } from '@/helpers/errorTypes';
@@ -67,10 +66,13 @@ export default {
     ...mapActions(['updateUserInfo']),
 
     async onSubmit() {
-      const records = await Db.read({
-        query: `code == "${this.code}"`,
-        table: 'codes',
-      }, false);
+      const records = await Db.read(
+        {
+          query: `code == "${this.code}"`,
+          table: 'codes',
+        },
+        false,
+      );
       if (records.length) {
         this.setTheCode(records);
         if (this.theCode) {
@@ -104,6 +106,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

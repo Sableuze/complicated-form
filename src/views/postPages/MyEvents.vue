@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <div class="lists">
-      <div class="draft"><h2 class="title">В черновике :</h2>
+      <div class="draft">
+        <h2 class="title">В черновике :</h2>
         <Draft-list></Draft-list>
       </div>
       <div class="suggested">
@@ -14,7 +15,8 @@
       padding="md"
       class="label self-center"
       color="accent"
-      @click="this.$router.push({name: 'CreateEvent'})">
+      @click="this.$router.push({ name: 'CreateEvent' })"
+    >
       Создать мероприятие
     </q-btn>
   </div>
@@ -22,9 +24,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import DraftList from '@/components/DraftList.vue';
-import SuggestedList from '@/components/SuggestedList.vue';
-import Db from '@/api/databaseWrapper';
+import DraftList from '@/components/listComponents/DraftList.vue';
+import SuggestedList from '@/components/listComponents/SuggestedList.vue';
+import Db from '@/api/databaseService';
 
 export default {
   name: 'ManagePage',
@@ -40,10 +42,8 @@ export default {
   },
   methods: {
     ...mapActions([]),
-    onSubmit() {
-    },
-    onReset() {
-    },
+    onSubmit() {},
+    onReset() {},
   },
 };
 </script>
@@ -62,7 +62,7 @@ export default {
 
   > div {
     flex: 1;
-    max-width: 350px
+    max-width: 350px;
   }
 
   @media (max-width: 768px) {

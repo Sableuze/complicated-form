@@ -5,19 +5,19 @@
     type="email"
     placeholder="ivanov@mail.ru"
     debounce="500"
-    :rules="[val => val.length > 0 || errorTypes.noEmail,
-    val => checkEmail(val) || errorTypes.wrongEmail,
-    val => readEmail(val)]"
+    :rules="[
+      (val) => val.length > 0 || errorTypes.noEmail,
+      (val) => checkEmail(val) || errorTypes.wrongEmail,
+      (val) => readEmail(val),
+    ]"
   >
-
   </q-input>
-
 </template>
 
 <script>
 import { errorTypesMain, errorTypesRegister } from '@/helpers/errorTypes';
 import { emailPattern } from '@/helpers/validatorPatterns';
-import Auth from '@/api/authApi';
+import Auth from '@/api/authService';
 
 export default {
   name: 'Email',
@@ -49,6 +49,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
