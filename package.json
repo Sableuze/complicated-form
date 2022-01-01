@@ -29,6 +29,7 @@
     "ws": "^8.3.0"
   },
   "devDependencies": {
+    "@quasar/quasar-app-extension-testing-unit-jest": "^2.2.3",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",

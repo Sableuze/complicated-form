@@ -4,9 +4,8 @@
     <p class="label mb-1">Организатор</p>
     <q-input
       outlined
-      no-error-icon
-      v-model="holderD"
-      @update:model-value="emitUpdate('holder', holderD.toLowerCase().trim())"
+      :model-value="holder"
+      @update:model-value="emitUpdate('holder', $event.toLowerCase().trim())"
       debounce="500"
       placeholder="Coca-Cola"
       :rules="[
@@ -25,8 +24,8 @@
         no-error-icon
         type="tel"
         mask="+# (###) ###-##-##"
-        v-model="numberD"
-        @update:model-value="emitUpdate('number', numberD)"
+        :model-value="number"
+        @update:model-value="emitUpdate('number', $event)"
         debounce="500"
         placeholder="+7 (999) 555-33-22"
         :rules="[
@@ -37,13 +36,13 @@
     </div>
     <div class="flex column col-grow">
       <p class="label mb-1">E-mail</p>
-      <Email v-model="emailD" @update:model-value="emitUpdate('email', emailD.trim())"></Email>
+      <Email :model-value="email" @update:model-value="emitUpdate('email', $event.trim())"></Email>
     </div>
     <div class="flex column col-grow">
       <p class="label mb-1">Город организатора</p>
       <City
-        v-model="cityD"
-        @update:model-value="emitUpdate('city', cityD)"
+        :model-value="city"
+        @update:model-value="emitUpdate('city', $event)"
         :rules="[() => !!cityD || errorTypes.noCity]"
       ></City>
     </div>
@@ -84,10 +83,6 @@ export default {
   },
   data() {
     return {
-      holderD: this.holder,
-      numberD: this.number,
-      emailD: this.email,
-      cityD: this.city,
       options: [],
       errorTypes: '',
     };
@@ -96,6 +91,7 @@ export default {
     emitUpdate(target, newVal) {
       this.$emit(`update:${target}`, newVal);
     },
+
   },
 };
 </script>

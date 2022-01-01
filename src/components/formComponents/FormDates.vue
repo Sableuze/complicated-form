@@ -193,9 +193,8 @@ export default {
     },
     addDateRow() {
       const currentDates = this.datesD;
-      const lastId = currentDates[currentDates.length - 1].id || 0;
-      const newDate = { ...this.datesExample };
-      newDate.id = lastId + 1;
+      const lastId = Math.max(0, ...currentDates.map((i) => i.id));
+      const newDate = { ...this.datesExample, id: lastId + 1 };
       currentDates.push(newDate);
     },
     removeDateRow(id) {
@@ -262,8 +261,7 @@ export default {
     },
 
     compareWithMinTime(v, id) {
-      if (
-        this.formatDate(this.getDateAttr(id, 'dateStart'))
+      if (this.formatDate(this.getDateAttr(id, 'dateStart'))
         !== this.formatDate(this.getDateAttr(id, 'dateFinish'))
       ) {
         return true;

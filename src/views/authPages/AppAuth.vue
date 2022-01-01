@@ -22,14 +22,9 @@
 </template>
 
 <script>
-import Db from '@/api/databaseService';
 
 export default {
   name: 'Auth',
-  mounted() {
-    Db.list();
-    Db.read({ table: 'users' });
-  },
   methods: {},
 };
 </script>

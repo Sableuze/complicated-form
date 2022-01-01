@@ -3,19 +3,19 @@
   <div class="picture-cnt flex q-gutter-sm">
     <div class="flex column">
       <q-file
-        v-show="!pictureD"
+        v-show="!picture"
         ref="imageLoad"
         borderless
         no-error-icon
         class="loadPicture flex"
-        v-model="pictureD"
-        @update:model-value="onFileSelect(pictureD)"
+        :model-value="picture"
+        @update:model-value="onFileSelect($event)"
         accept=".jpg, image/*"
         :rules="[(val) => validateFile(val)]"
       >
         <template v-slot:file></template>
       </q-file>
-      <div class="previewPicture" v-if="pictureD">
+      <div class="previewPicture" v-if="picture">
         <img :src="picture" id="previewImage" alt="chosen picture" />
         <q-btn icon="close" round size="sm" class="removeFile" @click="removeFile"></q-btn>
       </div>
@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { nextTick } from 'vue';
 import { errorTypesFiles } from '@/helpers/errorTypes';
 
 const reader = new FileReader();
@@ -49,18 +48,12 @@ export default {
   mounted() {
     this.errorTypes = errorTypesFiles;
     // @TODO WFT IS IT
-    nextTick(() => {
-      if (this.picture) {
-        this.pictureD = this.picture;
-      }
-    });
 
-    reader.addEventListener('load', this.emitUpdate);
+    reader.addEventListener('load', this.loadImageEventHandler);
   },
 
   data() {
     return {
-      pictureD: '',
       errorTypes: '',
       hasErrors: false,
     };
@@ -71,12 +64,10 @@ export default {
     async onFileSelect(file) {
       if (!file) return false;
       // this.previewPicture = URL.createObjectURL(file);
-
       reader.readAsDataURL(file);
     },
     removeFile() {
-      debugger;
-      this.pictureD = undefined;
+      this.emitUpdate('picture', undefined);
     },
     validateFile(val) {
       if (val) {
@@ -87,13 +78,18 @@ export default {
       return false;
     },
 
-    emitUpdate() {
-      this.$emit('update:picture', reader.result);
+    loadImageEventHandler() {
+      this.emitUpdate('picture', reader.result);
+    },
+
+    emitUpdate(target, newVal) {
+      debugger;
+      this.$emit(`update:${target}`, newVal);
     },
   },
 
   beforeUnmount() {
-    reader.removeEventListener('load', this.emitUpdate);
+    reader.removeEventListener('load', this.loadImageEventHandler);
   },
 };
 </script>

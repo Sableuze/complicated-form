@@ -127,17 +127,20 @@ export default {
     },
     chooseHouse(addressItem) {
       this.house = addressItem;
-      this.emitUpdate('address', { house: this.house, street: this.address.street });
+      this.emitUpdate('address', { street: this.address.street, house: this.house });
       this.options = [];
     },
 
     onResetInput() {
+      console.log('reset');
       this.addressItem = null;
       this.addressToShow = this.city;
       this.options = [];
-      this.house = null;
+      this.street = undefined;
+      this.house = undefined;
       this.searchHouse = false;
-      this.emitUpdate('address', { house: undefined, street: undefined });
+      this.placeholder = 'Выберите улицу';
+      this.emitUpdate('address', { street: undefined, house: undefined });
     },
 
     emitUpdate(target, newVal) {

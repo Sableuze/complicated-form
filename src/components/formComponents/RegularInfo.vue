@@ -5,8 +5,8 @@
     <q-input
       outlined
       no-error-icon
-      v-model="nameD"
-      @update:model-value="emitUpdate('name', nameD.toLowerCase().trim())"
+      :model-value="name"
+      @update:model-value="emitUpdate('name', $event.toLowerCase().trim())"
       debounce="500"
       :rules="[
         (val) => val.length > 0 || errorTypes.noName,
@@ -22,8 +22,8 @@
       outlined
       no-error-icon
       type="textarea"
-      v-model="descriptionD"
-      @update:model-value="emitUpdate('description', descriptionD.trim())"
+      :model-value="description"
+      @update:model-value="emitUpdate('description', $event.trim())"
       debounce="500"
       :rules="[
         (val) => val.length > 0 || errorTypes.noDescription,
@@ -46,8 +46,6 @@ export default {
   },
   data() {
     return {
-      nameD: this.name,
-      descriptionD: this.description,
       errorTypes: '',
     };
   },

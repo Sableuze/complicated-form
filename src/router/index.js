@@ -3,8 +3,13 @@ import { gsap } from 'gsap';
 import Home from '@/views/Home.vue';
 
 export default function initNewRouter(store) {
-
   const routes = [
+    {
+      path: '/jest',
+      name: 'Testing',
+      component: () => import('@/views/TestComp.vue'),
+    },
+
     {
       path: '/',
       name: 'Home',
@@ -153,21 +158,21 @@ export default function initNewRouter(store) {
     history: createWebHistory(),
     routes,
     scrollBehavior() {
-      return {top: 0};
+      return { top: 0 };
     },
   });
   router.beforeEach((to, from, next) => {
-    gsap.fromTo('body', {opacity: 0}, {opacity: 1, duration: 1});
+    gsap.fromTo('body', { opacity: 0 }, { opacity: 1, duration: 1 });
     store.dispatch('changeSuccessStatus', null);
 
     if (to.name !== 'EditUserInfo' && store.getters.isLoggedIn && !store.getters.isProfileFilled) {
-      router.replace({name: 'EditUserInfo'});
-    } else if (to.matched.some((route) => route.meta.requiresAuth) && !store.getters.isLoggedIn) next({name: 'Auth'});
+      router.replace({ name: 'EditUserInfo' });
+    } else if (to.matched.some((route) => route.meta.requiresAuth) && !store.getters.isLoggedIn) next({ name: 'Auth' });
     else if (
       to.matched.some((route) => route.meta.requiresAdmin)
       && store.getters.getUserRole !== 'admin'
     ) next('/');
     else next();
   });
-   return  router;
+  return router;
 }
