@@ -66,6 +66,18 @@ export default (Db, channel) => ({
     } else commit('changeSuccessStatus', false);
   },
 
+  // eslint-disable-next-line no-unused-vars
+  fetchSeparateEvent({ commit }, { query }) {
+    return new Promise((resolve, reject) => {
+      // const { ok, records } =
+      Db.read({ query, table: 'events' }, {}).then((response) => {
+        resolve(response);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  },
+
   async fetchMyDraftEvents({ commit, getters }) {
     const { records } = await Db.read({
       query: `status == 'draft' and creatorId == "${getters.getUser.accountId}"`,
@@ -126,7 +138,6 @@ export default (Db, channel) => ({
         subject: subjectTitles.events,
         text: `${textTypesEvents.published} '${theEvent.name}'`,
       });
-      console.log(channel);
       channel.publish('mainFlow', {
         event: eventTypesPosts.e_published,
         accountId: theEvent.creatorId,
