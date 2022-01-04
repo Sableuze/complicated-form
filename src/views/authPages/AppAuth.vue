@@ -7,6 +7,8 @@
       class="label self-center"
       color="accent"
       @click="this.$router.push({ name: 'Login' })"
+
+      data-testid="sign-in"
     >
       Войти
     </q-btn>
@@ -15,6 +17,7 @@
       padding="md"
       class="label self-center"
       color="accent"
+      data-testid="sign-up"
       @click="this.$router.push({ name: 'Register' })"
       >Зарегестрироваться</q-btn
     >

@@ -1,7 +1,7 @@
 <template>
 
     <q-list padding>
-      <q-item clickable v-ripple :to="{name: 'Home'}">
+      <q-item clickable v-ripple :to="{name: 'Home'}" exact>
         <q-item-section avatar>
           <q-icon name="home"/>
         </q-item-section>

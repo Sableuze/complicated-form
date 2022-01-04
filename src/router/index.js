@@ -4,146 +4,147 @@ import Home from '@/views/Home.vue';
 
 export default function initNewRouter(store) {
   const routes = [
-    {
-      path: '/jest',
-      name: 'Testing',
-      component: () => import('@/views/TestComp.vue'),
-    },
-
+    // {
+    //   path: '/jest',
+    //   name: 'Testing',
+    //   component: () => import('@/views/TestComp.vue'),
+    // },
     {
       path: '/',
-      name: 'Home',
-      component: Home,
-      meta: {
-        keepAlive: true,
-      },
+      component: () => import('@/layouts/LayoutDefault.vue'),
+      children: [
+        {
+          path: '',
+          name: 'Home',
+          component: Home,
+          meta: {
+            keepAlive: true,
+          },
+        },
+        {
+          path: 'create',
+          name: 'CreateEvent',
+          component: () => import('@/views/postPages/CreateEvent.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'moderate',
+          name: 'ModerateList',
+          component: () => import('@/views/adminPages/ModerateList.vue'),
+          meta: {
+            requiresAuth: true,
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: ':id/suggest',
+          name: 'SuggestEvent',
+          component: () => import('@/views/postPages/SuggestEvent.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'moderate/:id',
+          name: 'ModerateEvent',
+          component: () => import('@/views/adminPages/ModerateEvent.vue'),
+          meta: {
+            requiresAuth: true,
+            requiresAdmin: true,
+          },
+        },
+        {
+          path: ':id/see',
+          name: 'SeeEvent',
+          component: () => import('@/views/postPages/SeeEvent.vue'),
+        },
+
+        {
+          path: 'manage',
+          name: 'MyEvents',
+          component: () => import('@/views/postPages/MyEvents.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'notifications',
+          name: 'Notifications',
+          component: () => import('@/views/userPages/Notifications.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'activate',
+          name: 'ActivateCode',
+          component: () => import('@/views/userPages/ActivateCode.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+
+      ],
     },
     {
       path: '/auth',
-      name: 'Auth',
-      component: () => import('@/views/authPages/AppAuth.vue'),
-      meta: {
-        layout: 'LayoutAuth',
-      },
-      beforeEnter(to, from, next) {
-        if (store.getters.isLoggedIn) next('/');
-        else next();
-      },
+      component: () => import('@/layouts/LayoutAuth.vue'),
+      children: [
+        {
+          path: '',
+          name: 'Auth',
+          component: () => import('@/views/authPages/AppAuth.vue'),
+
+          beforeEnter(to, from, next) {
+            if (store.getters.isLoggedIn) next('/');
+            else next();
+          },
+        },
+
+        {
+          path: 'login',
+          name: 'Login',
+          component: () => import('@/views/authPages/AppLogin.vue'),
+
+          beforeEnter(to, from, next) {
+            if (store.getters.isLoggedIn) next('/');
+            else next();
+          },
+        },
+        {
+          path: 'register',
+          name: 'Register',
+          component: () => import('@/views/authPages/AppRegister.vue'),
+
+          beforeEnter(to, from, next) {
+            if (store.getters.isLoggedIn) next('/');
+            else next();
+          },
+        },
+        {
+          path: 'edit',
+          name: 'EditUserInfo',
+          component: () => import('@/views/userPages/EditUserInfo.vue'),
+          meta: {
+            requiresAuth: true,
+          },
+        },
+        {
+          path: 'recover',
+          name: 'RecoverPassword',
+          component: () => import('@/views/userPages/RecoverPassword.vue'),
+
+        },
+        {
+          path: 'reset',
+          name: 'NewPassword',
+          component: () => import('@/views/userPages/NewPassword.vue'),
+
+        }],
     },
 
-    {
-      path: '/auth/login',
-      name: 'Login',
-      component: () => import('@/views/authPages/AppLogin.vue'),
-      meta: {
-        layout: 'LayoutAuth',
-      },
-      beforeEnter(to, from, next) {
-        if (store.getters.isLoggedIn) next('/');
-        else next();
-      },
-    },
-    {
-      path: '/auth/register',
-      name: 'Register',
-      component: () => import('@/views/authPages/AppRegister.vue'),
-      meta: {
-        layout: 'LayoutAuth',
-      },
-      beforeEnter(to, from, next) {
-        if (store.getters.isLoggedIn) next('/');
-        else next();
-      },
-    },
-    {
-      path: '/auth/edit',
-      name: 'EditUserInfo',
-      component: () => import('@/views/userPages/EditUserInfo.vue'),
-      meta: {
-        layout: 'LayoutAuth',
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/auth/recover',
-      name: 'RecoverPassword',
-      component: () => import('@/views/userPages/RecoverPassword.vue'),
-      meta: {
-        layout: 'LayoutAuth',
-      },
-    },
-    {
-      path: '/auth/reset',
-      name: 'NewPassword',
-      component: () => import('@/views/userPages/NewPassword.vue'),
-      meta: {
-        layout: 'LayoutAuth',
-      },
-    },
-    {
-      path: '/activate',
-      name: 'ActivateCode',
-      component: () => import('@/views/userPages/ActivateCode.vue'),
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/create',
-      name: 'CreateEvent',
-      component: () => import('@/views/postPages/CreateEvent.vue'),
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/moderate',
-      name: 'ModerateList',
-      component: () => import('@/views/adminPages/ModerateList.vue'),
-      meta: {
-        requiresAuth: true,
-        requiresAdmin: true,
-      },
-    },
-    {
-      path: '/:id/suggest',
-      name: 'SuggestEvent',
-      component: () => import('@/views/postPages/SuggestEvent.vue'),
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/moderate/:id',
-      name: 'ModerateEvent',
-      component: () => import('@/views/adminPages/ModerateEvent.vue'),
-      meta: {
-        requiresAuth: true,
-        requiresAdmin: true,
-      },
-    },
-    {
-      path: '/:id/see',
-      name: 'SeeEvent',
-      component: () => import('@/views/postPages/SeeEvent.vue'),
-    },
-
-    {
-      path: '/manage',
-      name: 'MyEvents',
-      component: () => import('@/views/postPages/MyEvents.vue'),
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: '/notifications',
-      name: 'Notifications',
-      component: () => import('@/views/userPages/Notifications.vue'),
-      meta: {
-        requiresAuth: true,
-      },
-    },
     {
       path: '/:pathMatch(.*)*',
       name: 'notFound',

@@ -1,27 +1,27 @@
 <template>
   <div>
     <ConfirmDialog ref="confirmDialog"></ConfirmDialog>
-    <component style="padding-bottom: 50px" :is="layout"> </component>
+<!--    <component style="padding-bottom: 50px" :is="layout"> </component>-->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import LayoutAuth from '@/layouts/LayoutAuth.vue';
-import LayoutDefault from '@/layouts/LayoutDefault.vue';
+// import LayoutAuth from '@/layouts/LayoutAuth.vue';
+// import LayoutDefault from '@/layouts/LayoutDefault.vue';
 import ConfirmDialog from '@/components/dialogComponents/ConfirmDialog.vue';
 
 export default {
   name: 'app',
-  components: { LayoutAuth, LayoutDefault, ConfirmDialog },
+  // LayoutAuth, LayoutDefault
+  components: { ConfirmDialog },
 
-  computed: {
-    layout() {
-      if (this.$route.meta.layout === 'LayoutAuth') {
-        return 'LayoutAuth';
-      }
-      return 'LayoutDefault';
-    },
-  },
+  // computed: {
+  //   layout() {
+  //     if (this.$route.meta.layout === 'LayoutAuth') return 'LayoutAuth';
+  //     return 'LayoutDefault';
+  //   },
+  // },
 };
 </script>
 

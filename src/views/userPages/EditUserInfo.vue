@@ -10,29 +10,29 @@
         :rules="[val => val.length >= 3 || errorTypes.shortName]"
       >
       </q-input>
-      <q-input
-        borderless
-        v-model="form.blockNumber"
-        label="Номер блока"
-        mask="###"
-        :rules="[val => !!val || errorTypes.noBlockNumber]"
-      ></q-input>
-      <q-input
-        borderless
-        :disable="getLoadingStatus"
-        v-model="form.roomNumber"
-        :label="(form.blockNumber || 'Номер комнаты')+'.'"
-        mask="#"
-        placeholder="Номер комнаты"
-        :rules="[val => !!val || errorTypes.noRoomNumber]"
-      ></q-input>
+<!--      <q-input-->
+<!--        borderless-->
+<!--        v-model="form.blockNumber"-->
+<!--        label="Номер блока"-->
+<!--        mask="###"-->
+<!--        :rules="[val => !!val || errorTypes.noBlockNumber]"-->
+<!--      ></q-input>-->
+<!--      <q-input-->
+<!--        borderless-->
+<!--        :disable="isLoading"-->
+<!--        v-model="form.roomNumber"-->
+<!--        :label="(form.blockNumber || 'Номер комнаты')+'.'"-->
+<!--        mask="#"-->
+<!--        placeholder="Номер комнаты"-->
+<!--        :rules="[val => !!val || errorTypes.noRoomNumber]"-->
+<!--      ></q-input>-->
       <file-uploader
         v-model:picture="form.picture"
         :hintMsg="''">
       </file-uploader>
       <div class="buttons">
         <q-btn
-          :disable="getLoadingStatus"
+          :disable="isLoading"
           v-if="isProfileFilled"
           size="lg"
           @click="$router.back()"
@@ -41,7 +41,7 @@
         <LogoutButton :size="'lg'" :color="'grey-10'" v-else></LogoutButton>
 
         <q-btn
-          :loading="getLoadingStatus"
+          :loading="isLoading"
           type="submit"
           color="deep-orange-10"
           size="lg"
@@ -80,8 +80,8 @@ export default {
       form: {
         name: '',
         picture: '',
-        blockNumber: '',
-        roomNumber: '',
+        // blockNumber: '',
+        // roomNumber: '',
         role: 'user',
       },
       errorTypes: '',

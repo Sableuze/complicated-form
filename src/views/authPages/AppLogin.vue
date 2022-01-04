@@ -14,7 +14,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { useQuasar } from 'quasar';
 import Email from '@/components/formComponents/FormEmail.vue';
 import Password from '@/components/formComponents/FormPassword.vue';
 import apiErrors from '@/components/dialogComponents/ApiErrors.vue';
@@ -28,10 +27,6 @@ export default {
     Password,
     apiErrors,
     AuthButtons,
-  },
-  mounted() {
-    const $q = useQuasar();
-    $q.notify('Message');
   },
   computed: {
     ...mapGetters(['getUser']),
