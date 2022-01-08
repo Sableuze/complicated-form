@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { errorTypesFiles } from '@/helpers/errorTypes';
+import { errorTypesFiles } from '@/helpers/validation/errorTypes';
 
 const reader = new FileReader();
 

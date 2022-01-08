@@ -13,7 +13,7 @@ import connectApiAndInterceptors from './connectors/interceptors.connector';
 
 import initNewWS from './utils/ws';
 import initNewEventHandler from './utils/ablyWSEventHandler';
-import { errorTypesDefault } from './helpers/errorTypes';
+import { errorTypesDefault } from './helpers/validation/errorTypes';
 
 import initNewDataReloader from './plugins/reloadData';
 

@@ -27,9 +27,9 @@ import NothingMessage from '@/components/NothingMessage.vue';
 
 export default {
   name: 'DraftList',
-  // created() {
-  //   this.fetchMyDraftEvents();
-  // },
+  created() {
+    this.fetchMyDraftEvents();
+  },
   components: {
     NothingMessage,
   },
@@ -37,7 +37,7 @@ export default {
     ...mapGetters({ eventsList: 'getDraftEvents' }),
   },
   methods: {
-    ...mapActions({ deleteEvent: 'deleteMyEvent', getMyDraftEvents: 'fetchMyDraftEvents' }),
+    ...mapActions(['deleteMyEvent', 'fetchMyDraftEvents']),
     async removeEvent(id) {
       const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Do you really want to delete the event and all its data?',

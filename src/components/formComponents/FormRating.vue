@@ -13,7 +13,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { errorTypesRating } from '@/helpers/errorTypes';
+import { errorTypesRating } from '@/helpers/validation/errorTypes';
 
 export default {
   name: 'Rating',

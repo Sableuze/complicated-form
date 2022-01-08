@@ -38,7 +38,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { errorTypesAddress } from '@/helpers/errorTypes';
+import { errorTypesAddress } from '@/helpers/validation/errorTypes';
 
 export default {
   name: 'Address',

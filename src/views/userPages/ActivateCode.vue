@@ -32,7 +32,7 @@ import { Notify } from 'quasar';
 import Db from '@/api/databaseService';
 import ActionResult from '@/components/dialogComponents/ActionResult.vue';
 // import apiErrors from '@/components/dialogComponents/apiErrors.vue';
-import { errorTypesRedeem } from '@/helpers/errorTypes';
+import { errorTypesRedeem } from '@/helpers/validation/errorTypes';
 
 export default {
   name: 'ActivateCode',

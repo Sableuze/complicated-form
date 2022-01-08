@@ -97,6 +97,16 @@ export default (Auth) => ({
       if (session?.id) await Auth.logout(session.id);
     },
 
+    // eslint-disable-next-line no-unused-vars
+    checkEmail({ commit }, email) {
+      return Auth.readUserByEmail(email);
+    },
+
+    // eslint-disable-next-line no-unused-vars
+    checkUsername({ commit }, username) {
+      return Auth.readUserByUsername(username);
+    },
+
     // changeAuthStatus({ commit }, { target, status }) {
     //   if (target === 'login') commit('changeLoginStatus', status);
     //   else if (target === 'registration') commit('changeRegistrationStatus', status);

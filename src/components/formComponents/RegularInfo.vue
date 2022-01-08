@@ -5,7 +5,7 @@
     <q-input
       outlined
       no-error-icon
-      :model-value="name"
+      :model-value="capitalize(name)"
       @update:model-value="emitUpdate('name', $event.toLowerCase().trim())"
       debounce="500"
       :rules="[
@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import { errorTypesRegular } from '@/helpers/errorTypes';
+import { errorTypesRegular } from '@/helpers/validation/errorTypes';
+import { capitalize } from '@/helpers/capitalize';
 
 export default {
   name: 'RegularInfo',
@@ -53,6 +54,7 @@ export default {
     emitUpdate(target, newVal) {
       this.$emit(`update:${target}`, newVal);
     },
+    capitalize,
   },
 };
 </script>

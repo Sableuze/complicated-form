@@ -19,7 +19,7 @@ import Auth from '@/api/authService';
 import apiErrors from '@/components/dialogComponents/ApiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
-// import { errorTypesSendResetMessage } from '@/helpers/errorTypes';
+// import { errorTypesSendResetMessage } from '@/helpers/validation/errorTypes';
 
 export default {
   name: 'RecoverPassword',

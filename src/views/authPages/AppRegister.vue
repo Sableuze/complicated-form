@@ -18,7 +18,7 @@ import Username from '@/components/formComponents/FormUsername.vue';
 import apiErrors from '@/components/dialogComponents/ApiErrors.vue';
 import AuthButtons from '@/components/authComponents/AuthButtons.vue';
 
-import { errorTypesRegister } from '@/helpers/errorTypes';
+import { errorTypesRegister } from '@/helpers/validation/errorTypes';
 
 export default {
   name: 'Register',

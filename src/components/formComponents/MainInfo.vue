@@ -43,14 +43,14 @@
       <City
         :model-value="city"
         @update:model-value="emitUpdate('city', $event)"
-        :rules="[() => !!cityD || errorTypes.noCity]"
+        :rules="[(val) => !!val || errorTypes.noCity]"
       ></City>
     </div>
   </div>
 </template>
 <script>
 import City from '@/components/formComponents/FormCity.vue';
-import { errorTypesMain } from '@/helpers/errorTypes';
+import { errorTypesMain } from '@/helpers/validation/errorTypes';
 import Email from '@/components/formComponents/FormEmail.vue';
 
 export default {

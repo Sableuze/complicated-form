@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import { errorTypesAuth, errorTypesRegister } from '@/helpers/errorTypes';
-import { usernamePattern } from '@/helpers/validatorPatterns';
-import Auth from '@/api/authService';
+import { mapActions } from 'vuex';
+import { errorTypesAuth, errorTypesRegister } from '@/helpers/validation/errorTypes';
+import { usernamePattern } from '@/helpers/validation/validatorPatterns';
 
 export default {
   name: 'Username',
@@ -35,13 +35,16 @@ export default {
     };
   },
   methods: {
-    checkUsername(val) {
+    ...mapActions(['checkUsername']),
+    validateUsername(val) {
       return usernamePattern.test(val);
     },
-    async readUsername(val) {
+    async readUsername(username) {
+      debugger;
       if (!this.register) return true;
-      const res = await Auth.readUserByUsername(val);
-      return res !== val || this.errorTypes.takenUsername;
+      const res = await this.checkUsername(username);
+      debugger;
+      return res !== username || this.errorTypes.takenUsername;
     },
   },
 };

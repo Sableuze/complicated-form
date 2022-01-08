@@ -115,8 +115,8 @@ import { mapActions, mapGetters } from 'vuex';
 import City from '@/components/formComponents/FormCity.vue';
 import Rating from '@/components/formComponents/FormRating.vue';
 import PublishedList from '@/components/listComponents/PublishedList.vue';
-import { datePattern } from '@/helpers/validatorPatterns';
-import { errorTypesDate } from '@/helpers/errorTypes';
+import { datePattern } from '@/helpers/validation/validatorPatterns';
+import { errorTypesDate } from '@/helpers/validation/errorTypes';
 import Db from '@/api/databaseService';
 import Preloader from '@/components/PreloaderCustom.vue';
 

@@ -1,13 +1,14 @@
 <template>
   <q-input
     outlined
+    spellcheck="false"
     no-error-icon
     type="email"
     placeholder="ivanov@mail.ru"
     debounce="500"
     :rules="[
       (val) => val.length > 0 || errorTypes.noEmail,
-      (val) => checkEmail(val) || errorTypes.wrongEmail,
+      (val) => validateEmail(val) || errorTypes.wrongEmail,
       (val) => readEmail(val),
     ]"
   >
@@ -15,9 +16,9 @@
 </template>
 
 <script>
-import { errorTypesMain, errorTypesRegister } from '@/helpers/errorTypes';
-import { emailPattern } from '@/helpers/validatorPatterns';
-import Auth from '@/api/authService';
+import { mapActions } from 'vuex';
+import { errorTypesMain, errorTypesRegister } from '@/helpers/validation/errorTypes';
+import { emailPattern } from '@/helpers/validation/validatorPatterns';
 
 export default {
   name: 'Email',
@@ -36,14 +37,14 @@ export default {
     };
   },
   methods: {
-    checkEmail(val) {
+    ...mapActions(['checkEmail']),
+    validateEmail(val) {
       return emailPattern.test(val);
     },
-    async readEmail(val) {
+    async readEmail(email) {
       if (!this.register) return true;
-      const res = await Auth.readUserByEmail(val);
-      console.log(res);
-      return res !== val || this.errorTypes.takenEmail;
+      const res = await this.checkEmail(email);
+      return res !== email || this.errorTypes.takenEmail;
     },
   },
 };

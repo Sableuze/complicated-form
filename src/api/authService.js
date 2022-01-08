@@ -1,6 +1,6 @@
 // import { authentication } from './http';
 // // eslint-disable-next-line import/prefer-default-export
-// import { errorTypesAuthApi } from '@/helpers/errorTypes';
+// import { errorTypesAuthApi } from '@/helpers/validation/errorTypes';
 
 export default (authentication, errorTypesAuthApi, successTypesUser) => ({
   async register({ email, username, password }) {
@@ -130,13 +130,8 @@ export default (authentication, errorTypesAuthApi, successTypesUser) => ({
 
   async readUserByEmail(email) {
     try {
-      const { data } = await authentication.post(
-        '/Read',
-        {
-          email,
-        },
-        { showResult: false },
-      );
+      const { data } = await authentication.post('/Read', { email },
+        { showResult: false });
       if (data) return data.account?.email;
     } catch (err) {
       console.clear();

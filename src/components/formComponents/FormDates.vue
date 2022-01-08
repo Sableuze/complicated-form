@@ -158,8 +158,8 @@
 <script>
 import moment from 'moment';
 import DateRowExample from '@/components/formComponents/DateRowExample.vue';
-import { datePattern } from '@/helpers/validatorPatterns';
-import { errorTypesDate } from '@/helpers/errorTypes';
+import { datePattern } from '@/helpers/validation/validatorPatterns';
+import { errorTypesDate } from '@/helpers/validation/errorTypes';
 
 export default {
   name: 'Dates',

@@ -56,7 +56,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import apiErrors from '@/components/dialogComponents/ApiErrors.vue';
-import { errorTypesInfo } from '@/helpers/errorTypes';
+import { errorTypesInfo } from '@/helpers/validation/errorTypes';
 import FileUploader from '@/components/formComponents/FileUploader.vue';
 import LogoutButton from '@/components/authComponents/LogoutButton.vue';
 

@@ -5,8 +5,8 @@ import createAddressApi from './addressService';
 import createAuthApi from './authService';
 import createDbApi from './databaseService';
 
-import { errorTypesAuthApi, errorTypesDB } from '@/helpers/errorTypes';
-import { successTypesUser, successTypesDBRegular } from '@/helpers/successTypes';
+import { errorTypesAuthApi, errorTypesDB } from '@/helpers/validation/errorTypes';
+import { successTypesUser, successTypesDBRegular } from '@/helpers/validation/successTypes';
 
 export default (redbox, dadata, authentication, database) => ({
   rating: createRatingApi(redbox),

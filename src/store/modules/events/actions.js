@@ -1,4 +1,4 @@
-import { successTypesPosts } from '@/helpers/successTypes';
+import { successTypesPosts } from '@/helpers/validation/successTypes';
 import { eventTypesPosts, subjectTitles, textTypesEvents } from '@/helpers/ablyEvents';
 import { formatDates } from '@/helpers/reformatDatesHelper';
 
@@ -94,24 +94,22 @@ export default (Db, channel) => ({
       },
       {},
     );
-    commit('setMySuggestedEvents', records);
+    if (records) commit('setMySuggestedEvents', records);
   },
 
   async fetchMyPublishedEvents({ commit, getters }) {
     const { records } = await Db.read(
-      {
-        query: `status == 'published' and creatorId == "${getters.getUser.accountId}"`,
-        table: 'events',
-      },
+      { query: `status == 'published' and creatorId == "${getters.getUser.accountId}"`,
+        table: 'events' },
       {},
     );
-    commit('setMyPublishedEvents', records);
+    if (records) commit('setMyPublishedEvents', records);
   },
 
   async fetchAllPublishedEvents({ commit }, { query = "status == 'published'" }) {
     const { records } = await Db.read({ query, table: 'events' }, {});
     if (records) {
-      commit('setAllPublishedEvents', records);
+      if (records) commit('setAllPublishedEvents', records);
     }
   },
 

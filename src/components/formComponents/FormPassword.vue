@@ -1,6 +1,7 @@
 <template>
   <q-input
     outlined
+    spellcheck="false"
     :type="hidePassword ? 'password' : 'text' "
     no-error-icon
     :rules="[val => val.length > 0 || errorTypes.noPassword,
@@ -18,8 +19,8 @@
 </template>
 
 <script>
-import { errorTypesAuth, errorTypesRegister } from '@/helpers/errorTypes';
-import { passwordPattern } from '@/helpers/validatorPatterns';
+import { errorTypesAuth, errorTypesRegister } from '@/helpers/validation/errorTypes';
+import { passwordPattern } from '@/helpers/validation/validatorPatterns';
 
 export default {
   name: 'Password',

@@ -33,17 +33,17 @@ import NothingMessage from '@/components/NothingMessage.vue';
 
 export default {
   name: 'SuggestedList',
-  // created() {
-  //   this.fetchAllSuggestedEvents();
-  // },
+  created() {
+    this.fetchMySuggestedEvents();
+  },
   components: {
     NothingMessage,
   },
   computed: {
-    ...mapGetters({ eventsList: 'getAllSuggestedEvents', userRole: 'getUserRole' }),
+    ...mapGetters({ eventsList: 'getSuggestedEvents', userRole: 'getUserRole' }),
   },
   methods: {
-    ...mapActions(['revokeMyEvent', 'fetchAllSuggestedEvents']),
+    ...mapActions(['revokeMyEvent', 'fetchMySuggestedEvents']),
     async removeEvent(id) {
       const ok = await this.$root.$refs.confirmDialog.show({
         message: 'Вы действительно хотите отозвать мероприятие?',
@@ -72,8 +72,8 @@ export default {
     },
 
     onClick(eventId) {
-      if (this.userRole === 'admin') this.$router.push((`moderate/${eventId}/`));
-      else this.$router.push((`/${eventId}/see`));
+      if (this.userRole === 'admin') this.$router.push({ name: 'ModerateEvent', params: { id: eventId } });
+      else this.$router.push({ name: 'SeeEvent', params: { id: eventId } });
     },
 
   },
