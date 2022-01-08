@@ -28,6 +28,7 @@ The stack:
 
 6) User events page
   It consists of the events he created, but haven't suggested yet and of the events that are under moderation
+  ![local-e](https://user-images.githubusercontent.com/78899681/148650772-2eb55088-ca83-4ad3-9235-a2f2e1dcb00e.png)
 
 7) Notifications 
   All notifications that the user has got. A fresh notification is highlight until page is closed, after closing its status changes to 'seen'. Pagination is realized
