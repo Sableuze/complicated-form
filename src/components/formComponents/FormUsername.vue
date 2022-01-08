@@ -40,10 +40,8 @@ export default {
       return usernamePattern.test(val);
     },
     async readUsername(username) {
-      debugger;
       if (!this.register) return true;
       const res = await this.checkUsername(username);
-      debugger;
       return res !== username || this.errorTypes.takenUsername;
     },
   },

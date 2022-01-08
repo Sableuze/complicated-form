@@ -42,7 +42,6 @@ const checkLogin = async (store, router) => {
 };
 
 const buildApp = (store, router, reloadData) => {
-  console.log(reloadData);
   createApp(App).use(store).use(router).use(Quasar, quasarUserOptions)
     .provide('reloadData', reloadData)
     .mount('#app');

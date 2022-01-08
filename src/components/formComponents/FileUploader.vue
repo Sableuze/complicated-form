@@ -83,7 +83,6 @@ export default {
     },
 
     emitUpdate(target, newVal) {
-      debugger;
       this.$emit(`update:${target}`, newVal);
     },
   },

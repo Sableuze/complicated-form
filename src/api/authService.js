@@ -42,7 +42,6 @@ export default (authentication, errorTypesAuthApi, successTypesUser) => ({
   },
 
   async logout(sessionId) {
-    debugger;
     return authentication.post(
       '/Logout',
       { sessionId },

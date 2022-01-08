@@ -195,7 +195,6 @@ export default {
     },
 
     filterLocally(id) {
-      debugger;
       this.events = this.events.filter((i) => i.id !== id);
     },
     toggleFilters() {

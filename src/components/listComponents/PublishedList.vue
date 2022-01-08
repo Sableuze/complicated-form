@@ -70,7 +70,6 @@ export default {
   methods: {
     ...mapActions(['unpublishEvent', 'deleteEventByAdmin', 'fetchAllPublishedEvents']),
     deleteEventFromLocal(id) {
-      debugger;
       this.$emit('deleteFromLocal', id);
     },
     async onDeleteEvent(event) {

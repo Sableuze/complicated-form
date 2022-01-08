@@ -19,7 +19,6 @@ export default (Address) => ({
     },
     // eslint-disable-next-line no-unused-vars
     async fetchStreet({ commit }, { query, city }) {
-      debugger;
       const res = await Address.getStreet(query, city);
       if (res) return res;
     },

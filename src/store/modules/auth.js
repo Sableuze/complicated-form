@@ -26,12 +26,10 @@ export default (Auth) => ({
 
   mutations: {
     setUser(state, user) {
-      debugger;
       state.user = user;
       setItem('user', state.user);
     },
     setSession(state, { id, expires }) {
-      debugger;
       state.session = { id, expires };
       setItem('session', state.session);
     },

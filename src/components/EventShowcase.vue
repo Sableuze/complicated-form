@@ -111,7 +111,6 @@ export default {
       // this.fetchSeparateEvent({ query: `id == "${this.eventId}"` }));
       this.fetchSeparateEvent({ query: `id == "${this.eventId}"` })
         .then(({ records }) => {
-          debugger;
           if (records.length) {
             const event = records.find((i) => i.id === this.eventId);
             event.dates = reformatDates(event.dates, this.toReformatDate);
